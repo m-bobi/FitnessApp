@@ -1,0 +1,4 @@
+.idea
+backend/.idea
+backend/bin/Debug/net8.0
+backend/obj
