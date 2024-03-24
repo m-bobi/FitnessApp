@@ -1,8 +1,9 @@
-namespace backend.Models;
-
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace backend.Models;
+
+// We use these packages to tell what metadata we use
 
 public class User
 {
@@ -24,26 +25,24 @@ public class User
 
     [Required]
     [EmailAddress]
-    public string Email { get; set; } = "";
+    public string Email { get; set; } = ""; // Have to make email unique.
 
     [StringLength(100)]
     public string Address { get; set; } = "";
 
     [RegularExpression(@"^\d{10}$", ErrorMessage = "Invalid phone number format")]
     public string Mobile { get; set; } = "";
-
+    
+    
     public int Age { get; set; }
-
+    
     public string Gender { get; set; }
 
     [ForeignKey("MemberTypeId")]
-    public int? MemberTypeId { get; set; }
+    public int? MemberTypeId { get; }
 
     [ForeignKey("TrainerId")]
-    public int? TrainerId { get; set; } 
-
-    // public MemberType MemberType { get; set; }
-    // public Trainer Trainer { get; set; }
+    public int? TrainerId { get; } 
 
     [Column(TypeName = "datetime")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
