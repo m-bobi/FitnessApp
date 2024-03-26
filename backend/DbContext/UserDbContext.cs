@@ -1,35 +1,37 @@
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace backend.DbContext;
-
-public class UserDbContext : Microsoft.EntityFrameworkCore.DbContext
-
-
+namespace backend.DbContext
 {
-    // public DataContext(DbContextOptions options) : base(options)
-    // {
-    // }
-    
-    public DbSet<User> Users { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class UserDbContext : IdentityDbContext<User>
     {
+        public UserDbContext(DbContextOptions options) : base(options)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<User>(entity =>
+
+        }
+
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             {
-                entity.HasKey(e => e.UserId);
-                entity.Property(e => e.Name).IsRequired();
-                entity.Property(e => e.Username).IsRequired();
-                entity.Property(e => e.Email).IsRequired();
-                entity.Property(e => e.Password).IsRequired();
-                entity.Property(e => e.Mobile).IsRequired();
-                entity.Property(e => e.Age).IsRequired();
-                entity.Property(e => e.Gender).IsRequired();
-                entity.Property(e => e.Address).IsRequired();
-            });
-            modelBuilder.Entity<User>().ToTable("users");
+                base.OnModelCreating(modelBuilder);
+                modelBuilder.Entity<User>(entity =>
+                {
+                    entity.HasKey(e => e.UserId);
+                    entity.Property(e => e.Name).IsRequired();
+                    entity.Property(e => e.Username).IsRequired();
+                    entity.Property(e => e.Email).IsRequired();
+                    entity.Property(e => e.Password).IsRequired();
+                    entity.Property(e => e.Mobile).IsRequired();
+                    entity.Property(e => e.Age).IsRequired();
+                    entity.Property(e => e.Gender).IsRequired();
+                    entity.Property(e => e.Address).IsRequired();
+                });
+                modelBuilder.Entity<User>().ToTable("users");
+            }
         }
     }
 }
