@@ -1,8 +1,9 @@
-namespace backend.DbContext;
-using Microsoft.EntityFrameworkCore;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
-public class UserDbContext : DbContext
+namespace backend.DbContext;
+
+public class UserDbContext : Microsoft.EntityFrameworkCore.DbContext
 
 
 {
@@ -27,12 +28,6 @@ public class UserDbContext : DbContext
                 entity.Property(e => e.Age).IsRequired();
                 entity.Property(e => e.Gender).IsRequired();
                 entity.Property(e => e.Address).IsRequired();
-
-
-
-
-
-
             });
             modelBuilder.Entity<User>().ToTable("users");
         }
