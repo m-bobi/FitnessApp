@@ -1,3 +1,6 @@
+using backend.DbContext;
+using Microsoft.EntityFrameworkCore;
+
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +12,6 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("http://localhost:3000");
         });
 });
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -26,5 +27,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 
-
-app.Run();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<UserDbContext>(options =>
+    {
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); 
+    }
+);
