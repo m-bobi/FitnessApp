@@ -1,17 +1,26 @@
 using backend.DbContext;
 using Microsoft.EntityFrameworkCore;
 
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy  =>
+    options.AddPolicy("_myAllowSpecificOrigins",
+        builder =>
         {
-            policy.WithOrigins("http://localhost:3000");
+            builder.WithOrigins("http://localhost:3000");
         });
 });
+
+// Configure the DbContext
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<UserDbContext>(options =>
+{
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); 
+});
+
+// Add other services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -25,11 +34,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("_myAllowSpecificOrigins");
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<UserDbContext>(options =>
-    {
-        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); 
-    }
-);
+
+app.Run();
+
+// Continue configuring your application...
