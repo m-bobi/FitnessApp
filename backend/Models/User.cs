@@ -1,9 +1,10 @@
+// We use these packages to tell what metadata we use
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models;
 
-// We use these packages to tell what metadata we use
 
 public class User
 {
