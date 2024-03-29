@@ -13,5 +13,6 @@ public class Class
     [Required]
     public string ClassType { get; set; }
 
-    [Column(TypeName = "datetime")] public DateTime WorkoutDateTime { get; set; }
+    [Column(TypeName = "datetime")] 
+    public DateTime WorkoutDateTime { get; set; }
 }

@@ -2,10 +2,12 @@ using backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
+
+
 namespace backend.DbContext
 {
 
-    public class UserDbContext : IdentityDbContext<User>
+    public class UserDbContext : IdentityDbContext
     {
         public UserDbContext(DbContextOptions options) : base(options)
         {
@@ -13,6 +15,12 @@ namespace backend.DbContext
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Class> Class {get; set;}
+        public DbSet<Gym> Gym { get; set; }
+        public DbSet<Manager> Manager { get; set;}
+        public DbSet<Members> Members { get; set; }
+        public DbSet<Offers> Offers { get; set; }
+        public DbSet<Orders>Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
