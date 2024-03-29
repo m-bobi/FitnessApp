@@ -23,6 +23,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 // Add other services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -34,7 +35,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.MapControllers();
+app.UseAuthorization();
+
 app.UseCors("_myAllowSpecificOrigins");
+
 
 
 app.Run();
