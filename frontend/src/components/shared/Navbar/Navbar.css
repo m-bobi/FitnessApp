@@ -1,0 +1,47 @@
+.navbar{
+    padding: 2% 4%;
+    width: 100%;
+    background-color:transparent;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.logo{
+    content: url("../../../assets/logo.png");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}
+
+.logoHolder{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navLinks{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    gap: max(30px,2vw);
+}
+.navLinks a{
+    color: #ffffff;
+}
+
+.searchIcon{
+    filter: invert(1);
+    width: max(30px,2vw);
+    height: max(30px,2vw);
+}
+
+.navbar .scrolled{
+    background-color:#454845
+}
