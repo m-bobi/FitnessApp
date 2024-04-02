@@ -9,13 +9,13 @@ public class UserController : Controller
 {
     private readonly ApplicationDbContext _dbContext;
 
-    // database injection
+    // Database Injection
     public UserController(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    //  api creating to get users starts here
+    //  Create API to get all users.
     [HttpGet("getAllUsers")]
     public async Task<List<User>> GetAllUsers()
     {
@@ -23,9 +23,9 @@ public class UserController : Controller
        return await _dbContext.Users.ToListAsync();
        
     }
-    //  api creating to get users ends here
+
     
-    // api creating to add users starts here
+    // Create API to add user.
     [HttpPost("addUser")]
     public async Task<IActionResult> AddUser(User user)
     {
@@ -40,5 +40,4 @@ public class UserController : Controller
             return Ok();
         }
     }
-    // api creating to add users ends here
 }
