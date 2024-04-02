@@ -11,9 +11,9 @@ using backend.DbContext;
 
 namespace backend.Migrations
 {
-    [DbContext(typeof(UserDbContext))]
-    [Migration("20240329003158_addedTablesToDB")]
-    partial class addedTablesToDB
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20240402161527_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -229,12 +229,13 @@ namespace backend.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ClassId"));
 
+                    b.Property<DateTime>("ClassDateTime")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("ClassType")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("WorkoutDateTime")
-                        .HasColumnType("datetime");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("ClassId");
 
@@ -367,6 +368,169 @@ namespace backend.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("backend.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PaymentId"));
+
+                    b.Property<float>("PaymentAmount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("PaymentDateTime")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("PaymentId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("backend.Models.Permission", b =>
+                {
+                    b.Property<int?>("PermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("PermissionId"));
+
+                    b.Property<string>("PermissionDescription")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
+
+                    b.HasKey("PermissionId");
+
+                    b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("backend.Models.PersonalizedWorkout", b =>
+                {
+                    b.Property<int?>("PersonalizedId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("PersonalizedId"));
+
+                    b.Property<string>("PersonalizedName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PersonalizedType")
+                        .IsRequired()
+                        .HasMaxLength(22)
+                        .HasColumnType("varchar(22)");
+
+                    b.HasKey("PersonalizedId");
+
+                    b.ToTable("PerWorkouts");
+                });
+
+            modelBuilder.Entity("backend.Models.Products", b =>
+                {
+                    b.Property<int?>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("ProductId"));
+
+                    b.Property<string>("ProductCategory")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
+
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("ProductImage")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<double>("ProductPrice")
+                        .HasColumnType("double");
+
+                    b.Property<int>("ProductStock")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("backend.Models.Roles", b =>
+                {
+                    b.Property<int?>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("RoleId"));
+
+                    b.Property<string>("RoleType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("backend.Models.Sponsors", b =>
+                {
+                    b.Property<int?>("SponsorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("SponsorId"));
+
+                    b.Property<string>("SponsorCompanyName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SponsorType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("SponsorId");
+
+                    b.ToTable("Sponsors");
+                });
+
+            modelBuilder.Entity("backend.Models.Trainers", b =>
+                {
+                    b.Property<int?>("TrainerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("TrainerId"));
+
+                    b.Property<string>("PermissionId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TrainerAddress")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("TrainerEmail")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("TrainerName")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainerId");
+
+                    b.ToTable("Trainers");
+                });
+
             modelBuilder.Entity("backend.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -415,6 +579,56 @@ namespace backend.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("backend.Models.WorkoutPlans", b =>
+                {
+                    b.Property<int?>("WorkoutPlanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("WorkoutPlanId"));
+
+                    b.Property<int?>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("WorkoutTimeDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("WorkoutType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.HasKey("WorkoutPlanId");
+
+                    b.ToTable("WorkoutPlans");
+                });
+
+            modelBuilder.Entity("backend.Models.Workouts", b =>
+                {
+                    b.Property<int?>("WorkoutId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("WorkoutId"));
+
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkoutDescription")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("WorkoutName")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
+
+                    b.HasKey("WorkoutId");
+
+                    b.ToTable("Workouts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

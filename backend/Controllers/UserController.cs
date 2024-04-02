@@ -7,10 +7,10 @@ namespace backend.Controllers;
 
 public class UserController : Controller
 {
-    private readonly UserDbContext _dbContext;
+    private readonly ApplicationDbContext _dbContext;
 
     // database injection
-    public UserController(UserDbContext dbContext)
+    public UserController(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }

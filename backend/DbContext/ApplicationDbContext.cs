@@ -1,15 +1,13 @@
 using backend.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
-
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.DbContext
 {
 
-    public class UserDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
-        public UserDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
         }
@@ -21,6 +19,15 @@ namespace backend.DbContext
         public DbSet<Members> Members { get; set; }
         public DbSet<Offers> Offers { get; set; }
         public DbSet<Orders>Orders { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PersonalizedWorkout> PerWorkouts { get; set; }
+        public DbSet<Products> Products { get; set; }
+        public DbSet<Roles> Roles { get; set; }
+        public DbSet<Sponsors> Sponsors { get; set; }
+        public DbSet<Trainers> Trainers { get; set; }
+        public DbSet<WorkoutPlans> WorkoutPlans { get; set; }
+        public DbSet<Workouts> Workouts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
