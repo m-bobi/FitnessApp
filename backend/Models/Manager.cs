@@ -5,7 +5,7 @@ namespace backend.Models;
 
 // We use these packages to tell what metadata we use
 
-public class Managers
+public class Manager
 {
     [Key]
     public int ManagerId { get; set; }
