@@ -17,9 +17,6 @@ function App() {
           </Routes>
         </Router>
       </div>
-      <main>
-        <div className="h-[40000px]"></div>
-      </main>
     </>
   );
 }
