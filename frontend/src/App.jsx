@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [forecastData, setForecastData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-    fetchWeatherForecast();
+    fetchUsers();
   }, []);
 
-  const fetchWeatherForecast = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:5259/weatherforecast');
+      const response = await fetch('http://localhost:5259/getAllUsers');
       if (!response.ok) {
-        throw new Error('Failed to fetch weather forecast');
+        throw new Error('Failed to fetch user');
       }
       const data = await response.json();
-      setForecastData(data);
+      setUserData(data);
     } catch (error) {
-      console.error('Error fetching weather forecast:', error);
+      console.error('Error fetching user:', error);
     }
   };
 
   return (
     <div>
-      <h2>Weather Forecast</h2>
+      <h2>User?</h2>
       <ul>
-        {forecastData.map((forecast, index) => (
+        {userData.map((user, index) => (
           <li key={index}>
-            Date: {forecast.date}, Temperature: {forecast.temperatureC}°C, Summary: {forecast.summary}
+            name: {user.name} username: {user.username} email: {user.email} password: {user.password}
           </li>
         ))}
       </ul>
