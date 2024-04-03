@@ -29,7 +29,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className={scrolled ? 'navbar scrolled' : 'navbar'}>
+    <div className={scrolled ? 'navbar-scrolled' : 'navbar'}>
         <Link to="/" className='logoHolder'>
             <div className='logo'></div>
         </Link>

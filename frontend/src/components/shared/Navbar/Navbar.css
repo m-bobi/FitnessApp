@@ -42,6 +42,15 @@
     height: max(30px,2vw);
 }
 
-.navbar .scrolled{
-    background-color:#454845
+.navbar-scrolled{
+    padding: 2% 4%;
+        width: 100%;
+        background-color: rgb(23, 22, 22);
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
 }

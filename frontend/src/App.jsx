@@ -3,24 +3,24 @@ import Home from './pages/Home/Home';
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 
 function App() {
-  
+
 
   return (
-    <div>
-       <Router>
-        
-        
+    <>
+      {" "}
+      <div>
+        <Router>
           <Routes>
+            <Route exact path="/" element={<Home />} />
 
-             
-              <Route exact path="/" element={<Home />} />
-
-              <Route path="*" element={<Navigate to ="/" />}/>
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-
         </Router>
-           
-    </div>
+      </div>
+      <main>
+        <div className="h-[40000px]"></div>
+      </main>
+    </>
   );
 }
 
