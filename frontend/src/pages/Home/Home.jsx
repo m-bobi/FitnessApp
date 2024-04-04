@@ -10,7 +10,6 @@ const Home = () => {
         style={{ backgroundImage: `url(${background})` }}
       >
           <Navbar />
-          <ListOrders />
 
       </main>
   );
