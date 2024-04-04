@@ -28,6 +28,15 @@ const ListOrders = () => {
             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
               Order Status
             </th>
+            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+              User Id
+            </th>
+            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+              Order Amount
+            </th>
+            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+              Date
+            </th>
           </tr>
         </thead>
         <tbody>
