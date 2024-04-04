@@ -5,7 +5,6 @@ import ListOrders from '../../components/OrderCrud/ListOrders';
 
 const Home = () => {
   return (
-    <>
       <main
         className="bg-cover h-screen"
         style={{ backgroundImage: `url(${background})` }}
@@ -14,7 +13,6 @@ const Home = () => {
           <ListOrders />
 
       </main>
-    </>
   );
 }
 
