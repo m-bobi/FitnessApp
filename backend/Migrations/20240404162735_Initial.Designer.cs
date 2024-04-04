@@ -12,13 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:backend/Migrations/20240411095741_productAdd.Designer.cs
-    [Migration("20240411095741_productAdd")]
-    partial class productAdd
-========
-    [Migration("20240404162847_init")]
-    partial class init
->>>>>>>> 2665a12 (+ Added Orders Page, changed DateTime for Orders):backend/Migrations/20240404162847_init.Designer.cs
+    [Migration("20240404162735_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -360,8 +355,7 @@ namespace backend.Migrations
 
                     b.Property<string>("OrderStatus")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("longtext");
 
                     b.Property<float>("OrderTotalAmount")
                         .HasColumnType("float");
