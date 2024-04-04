@@ -1,15 +1,14 @@
-import React, { useState, useEffect, lazy } from 'react';
+import React, { useState, useEffect, lazy ,Suspense} from 'react';
 import Home from './pages/Home/Home';
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 
 function App() {
 
   const Orders = lazy(() => import('./pages/Orders/Orders'))
-  
+
   return (
-    <>
-      {" "}
       <div>
+        <Suspense >
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
@@ -18,8 +17,8 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
+        </Suspense>
       </div>
-    </>
   );
 }
 
