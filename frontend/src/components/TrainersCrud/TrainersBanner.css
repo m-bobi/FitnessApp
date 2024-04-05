@@ -1,0 +1,47 @@
+.trainersBanner{
+   background: url("../../assets/banner10.jpg");
+   height: max(500px,20vw);
+   background-size: 100%;
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+
+.trainersHeading{
+    /* margin-top: max(80px,5vw); */
+    padding: 4%;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: max(15px,1.2vw);
+}
+.trainersHeading p{
+    color: #ffffff;
+    /* margin-top: max(80px,5vw); */
+    padding-left: 10%;
+    cursor: pointer;
+}
+
+.trainers-page .navLinks a{
+    color: #ffffff !important;
+}
+
+.trainersH{
+    font-size: max(40px,3vw);
+    font-weight: 500;
+}
+
+.ascendTrainers{
+    font-size: max(15px,1vw);
+}
+.ascendTrainers:hover{
+    color: var(--mainColor);
+    transition: 0.4s ease;
+}
+
+.redP{
+    color: var(--mainColor);
+}
