@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import background from '../../assets/shape-17.webp'
-import ListOrders from '../../components/OrderCrud/ListOrders';
+
 
 const Home = () => {
   return (
