@@ -1,0 +1,9 @@
+
+
+.trainersSection{
+    padding: 4%;
+}
+
+.createButton{
+    background-color: var(--mainColor) !important;
+}
