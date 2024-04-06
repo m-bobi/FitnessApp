@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using backend.DbContext;
 using backend.Models;
 using Microsoft.AspNetCore.Cors;
