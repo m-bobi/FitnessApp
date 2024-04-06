@@ -9,19 +9,19 @@ public class Trainers
     public int? TrainerId { get; set; }
 
     [Required]
-    public string TrainerName { get; set; } 
+    public string TrainerName { get; set; }
 
     [EmailAddress]
-    [Required] 
+    [Required]
     public string TrainerEmail { get; set; }
 
-    [Required] [StringLength(20)] 
-    public string TrainerAddress { get; set; } 
+    [Required] [StringLength(20)]
+    public string TrainerAddress { get; set; }
 
-    [Required] [StringLength(20)] 
+    [Required] [StringLength(20)]
     public string TrainerType { get; set; }
 
-    [Required] [StringLength(20)] 
+    [Required] [StringLength(20)]
     public string TrainerImage { get; set; }
 
     [ForeignKey("PermissionId")]

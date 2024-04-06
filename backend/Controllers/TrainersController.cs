@@ -23,7 +23,7 @@ public class TrainersController : Controller
     {
         return await _dbContext.Trainers.ToListAsync();
     }
-    
+
 
     [HttpPost("addTrainer")]
     public async Task<IActionResult> AddTrainer( [FromBody]Trainers trainer)
@@ -39,7 +39,7 @@ public class TrainersController : Controller
             return Ok();
         }
     }
-    
+
     // [HttpPost("addTrainer")]
     // public async Task<IActionResult> AddTrainer([FromForm] Trainers trainer, IFormFile trainerImage)
     // {
@@ -61,11 +61,11 @@ public class TrainersController : Controller
     //         return Ok();
     //     }
     // }
-    
-    
 
-    
-    
+
+
+
+
     // Create API to get a specific order by ID.
     [HttpGet("getTrainer/{id}")]
     // [EnableCors("_myAllowSpecificOrigins")]
@@ -78,7 +78,7 @@ public class TrainersController : Controller
         }
         return Ok(trainer);
     }
-    
+
     // Create API to delete an order by ID.
     [HttpDelete("deleteTrainer/{id}")]
     // [EnableCors("_myAllowSpecificOrigins")]
@@ -104,27 +104,27 @@ public class TrainersController : Controller
         {
             return BadRequest("Invalid trainer data");
         }
-    
+
         var existingtrainer = await _dbContext.Trainers.FindAsync(trainer.TrainerId);
         if (existingtrainer == null)
         {
             return NotFound();
         }
-    
+
         _dbContext.Entry(existingtrainer).CurrentValues.SetValues(trainer);
         await _dbContext.SaveChangesAsync();
         return Ok("Trainer updated successfully");
     }
-    
-    
-    
-    
-    
-    
-    
 
-    
-    
+
+
+
+
+
+
+
+
+
     // [HttpPut("updateTrainer/{id}")]
     // public async Task<IActionResult> UpdateTrainer(int id, Trainers trainer)
     // {
@@ -165,8 +165,8 @@ public class TrainersController : Controller
     //         return StatusCode(StatusCodes.Status500InternalServerError, "Error updating the trainer.");
     //     }
     // }
-    
-   
+
+
 }
 
 

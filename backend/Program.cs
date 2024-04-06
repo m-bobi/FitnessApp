@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); 
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 // Add other services
