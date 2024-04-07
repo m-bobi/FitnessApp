@@ -18,45 +18,32 @@ const ListOrders = () => {
   }, []);
 
   return (
-    <div className="absolute top-52 left-56">
-      <table className="table-auto border border-collapse">
+    <div className="flex justify-center pt-40">
+      <table className="table-auto rounded-lg shadow-md">
         <thead>
-          <tr>
-            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
-              Order ID
-            </th>
-            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+          <tr className="bg-gray-100 text-gray-600 text-left">
+            <th className="px-3 py-2 font-medium tracking-wider">Order ID</th>
+            <th className="px-3 py-2 font-medium tracking-wider">
               Order Status
             </th>
-            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
-              User Id
-            </th>
-            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+            <th className="px-3 py-2 font-medium tracking-wider">User Id</th>
+            <th className="px-3 py-2 font-medium tracking-wider">
               Order Amount
             </th>
-            <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
-              Date
-            </th>
+            <th className="px-3 py-2 font-medium tracking-wider">Date</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((order) => (
-            <tr key={order.orderId}>
-              <td className="px-3 py-2 border border-gray-200">
-                {order.orderId}
-              </td>
-              <td className="px-3 py-2 border border-gray-200">
-                {order.orderStatus}
-              </td>
-              <td className="px-3 py-2 border border-gray-200">
-                {order.userId}
-              </td>
-              <td className="px-3 py-2 border border-gray-200">
-                {order.orderTotalAmount}
-              </td>
-              <td className="px-3 py-2 border border-gray-200">
-                {order.orderDate}
-              </td>
+          {orders.map((order, index) => (
+            <tr
+              key={order.orderId}
+              className={index % 2 === 0 ? 'bg-slate-800' : ''}
+            >
+              <td className="px-3 py-2">{order.orderId}</td>
+              <td className="px-3 py-2">{order.orderStatus}</td>
+              <td className="px-3 py-2">{order.userId}</td>
+              <td className="px-3 py-2">{order.orderTotalAmount}</td>
+              <td className="px-3 py-2">{new Date(order.orderDate).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>

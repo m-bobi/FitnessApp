@@ -40,7 +40,7 @@ const AddOrders = () => {
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
-        className="absolute top-96 block text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900"
+        className="absolute top-0 right-96 mt-6 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900"
         type="button"
         onClick={toggleModal}
       >

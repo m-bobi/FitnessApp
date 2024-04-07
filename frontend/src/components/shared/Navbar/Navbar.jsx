@@ -34,10 +34,11 @@ const Navbar = () => {
             <div className='logo'></div>
         </Link>
 
-        <div className='navLinks text-zinc-900'>
+        <div className='navLinks'>
             <Link to="/UserCRUD">User</Link>
             <Link to="/TrainerCRUD">Trainer</Link>
             <Link to="/orders">Orders</Link>
+            <Link to="/dashboard">Dashboard</Link>
         </div>
 
         <div className='nav-auth'>
