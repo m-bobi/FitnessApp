@@ -44,7 +44,7 @@ public class OrdersController : Controller
     // Create API to add an order.
     [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("addOrder")]
-    public async Task<IActionResult> AddOrder([FromBody] Orders order)
+    public async Task<IActionResult> AddOrder([FromBody]Orders order)
     {
         if (order is null)
         {

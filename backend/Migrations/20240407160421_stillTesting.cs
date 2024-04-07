@@ -7,11 +7,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
+<<<<<<< HEAD:backend/Migrations/20240404162735_Initial.cs
 <<<<<<<< HEAD:backend/Migrations/20240411095741_productAdd.cs
     public partial class productAdd : Migration
 ========
     public partial class Initial : Migration
 >>>>>>>> 2665a12 (+ Added Orders Page, changed DateTime for Orders):backend/Migrations/20240404162735_Initial.cs
+=======
+    public partial class stillTesting : Migration
+>>>>>>> 93724d4 (+ AddOrder operation.):backend/Migrations/20240407160421_stillTesting.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
