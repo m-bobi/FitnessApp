@@ -25,7 +25,7 @@ public class OrdersController : Controller
 
     // Create API to add an order.
     [HttpPost("addOrder")]
-    public async Task<IActionResult> AddOrder(Orders order)
+    public async Task<IActionResult> AddOrder([FromBody]Orders order)
     {
         if (order is null)
         {

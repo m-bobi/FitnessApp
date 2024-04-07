@@ -14,7 +14,8 @@ public class Orders
     [Column(TypeName = "datetime")] public DateTime OrderDate { get; set; } = DateTime.Now;
     
     public float OrderTotalAmount { get; set; }
-    
+
+    [StringLength(20)] [Required]
     public string OrderStatus { get; set; }
     
     [ForeignKey("UserId")]
