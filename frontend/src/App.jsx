@@ -1,36 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy ,Suspense} from 'react';
+import Home from './pages/Home/Home';
+import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 
 function App() {
-  const [userData, setUserData] = useState([]);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:5259/getAllUsers');
-      if (!response.ok) {
-        throw new Error('Failed to fetch user');
-      }
-      const data = await response.json();
-      setUserData(data);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  };
+  const Orders = lazy(() => import('./pages/Orders/Orders'))
 
   return (
-    <div>
-      <h2>User?</h2>
-      <ul>
-        {userData.map((user, index) => (
-          <li key={index}>
-            name: {user.name} username: {user.username} email: {user.email} password: {user.password}
-          </li>
-        ))}
-      </ul>
-    </div>
+      <div>
+        <Suspense >
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/orders" element={<Orders />} />
+
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Router>
+        </Suspense>
+      </div>
   );
 }
 
