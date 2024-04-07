@@ -352,7 +352,8 @@ namespace backend.Migrations
 
                     b.Property<string>("OrderStatus")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<float>("OrderTotalAmount")
                         .HasColumnType("float");

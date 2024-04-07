@@ -2,6 +2,7 @@ import React from 'react'
 import ListOrders from '../../components/OrderCrud/ListOrders';
 import Navbar from '../../components/shared/Navbar/Navbar';
 import background from "../../assets/shape-17.webp";
+import AddOrders from '../../components/OrderCrud/AddOrders';
 
 
 const Orders = () => {
@@ -13,6 +14,7 @@ const Orders = () => {
     >
       <Navbar />
       <ListOrders />
+      <AddOrders/>
     </div>
   );
 }
