@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240405213834_trainerNameFixed")]
-    partial class trainerNameFixed
+    [Migration("20240406210925_startedAgain")]
+    partial class startedAgain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -511,6 +511,7 @@ namespace backend.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("TrainerId"));
 
                     b.Property<string>("PermissionId")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("TrainerAddress")
@@ -522,9 +523,19 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("TrainerImage")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
                     b.Property<string>("TrainerName")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("TrainerType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("TrainerId");
 

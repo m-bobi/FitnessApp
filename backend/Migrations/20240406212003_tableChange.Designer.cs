@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240402161527_init")]
-    partial class init
+    [Migration("20240406212003_tableChange")]
+    partial class tableChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -522,9 +522,19 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("TrainerName")
+                    b.Property<string>("TrainerImage")
                         .IsRequired()
-                        .HasColumnType("int");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("TrainerName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TrainerType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("TrainerId");
 
