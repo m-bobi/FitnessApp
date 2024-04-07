@@ -13,21 +13,49 @@ const TrainersSection = () => {
   const [trainerType, setTrainerType] = useState('');
   const [trainerEmail, setTrainerEmail] = useState('');
   const [trainerImage, setTrainerImage] = useState('');
-  const [trainerAdress, setTrainerAdress] = useState('');
+  const [trainerAddress, setTrainerAddress] = useState('');
 
-  const addTrainer = () => {
-    axios.post("http://localhost:5259/addTrainer", {
-    TrainerName: trainerName,
-    TrainerEmail: trainerEmail,
-    TrainerAddress: trainerAdress,
-    TrainerType: trainerType,
-    TrainerImage: trainerImage,
-}).then(() => {
-    console.log("success");
-});
+//   const addTrainer = () => {
+//     try {
+//         axios.post("http://localhost:5259/addTrainer", {
+//             TrainerName: trainerName,
+//             TrainerEmail: trainerEmail,
+//             TrainerAddress: trainerAddress,
+//             TrainerType: trainerType,
+//             TrainerImage: trainerImage,
+//         }).then(() => {
+//             console.log("success");
+//         }).catch(error => {
+//             console.error("Error:", error);
+//         });
+//     } catch (error) {
+//         console.error("Error:", error);
+//     }
 
 
+// }
+
+const addTrainer = (event) => {
+  event.preventDefault();
+  try {
+      axios.post("http://localhost:5259/addTrainer", {
+          trainerName: trainerName,
+          trainerEmail: trainerEmail,
+          trainerAddress: trainerAddress,
+          trainerType: trainerType,
+          trainerImage: trainerImage
+      }).then(() => {
+          console.log("success");
+      }).catch(error => {
+          console.error("Error:", error);
+      });
+  } catch (error) {
+      console.error("Error:", error);
   }
+
+}
+
+
 
 
   return (
@@ -86,17 +114,16 @@ const TrainersSection = () => {
               </div>
               {/* Modal body */}
               <div className="p-4 md:p-5">
-                <form className="space-y-4" action="#">
+                <form className="space-y-4" onSubmit={addTrainer} method='POST'>
                   <div>
                     <label
-                      htmlFor="email"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Trainer Name
                     </label>
                     <input
                       type="text"
-                      name="email"
+                      name="TrainerName"
                       id="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter trainer name"
@@ -106,31 +133,13 @@ const TrainersSection = () => {
                   </div>
                   <div>
                     <label
-                      htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Trainer Type
-                    </label>
-                    <input
-                       type="text"
-                      name="password"
-                      id="password"
-                      placeholder="Enter trainer type"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      required
-                      onChange={(event) => {setTrainerType(event.target.value)}}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="password"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Trainer Email
                     </label>
                     <input
                       type="text"
-                      name="password"
+                      name="TrainerEmail"
                       id="password"
                       placeholder="Enter trainer email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -141,34 +150,49 @@ const TrainersSection = () => {
 
                   <div>
                     <label
-                      htmlFor="password"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Trainer Adress
                     </label>
                     <input
                        type="text"
-                      name="password"
+                      name="TrainerAdress"
                       id="password"
                       placeholder="Enter trainer adress"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {setTrainerAdress(event.target.value)}}
+                      onChange={(event) => {setTrainerAddress(event.target.value)}}
                     />
                   </div>
 
                   <div>
+                  <div>
                     <label
-                      htmlFor="password"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Trainer Type
+                    </label>
+                    <input
+                       type="text"
+                      name="TrainerType"
+                      id="password"
+                      placeholder="Enter trainer type"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      required
+                      onChange={(event) => {setTrainerType(event.target.value)}}
+                    />
+                  </div>
+                 
+                    <label
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Trainer Image
                     </label>
                     <input
                       type="text"
-                      name="password"
+                      name="TrainerImage"
                       id="password"
-                      placeholder="••••••••"
+                      placeholder="Trainer image"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={(event) => {setTrainerImage(event.target.value)}}
@@ -176,8 +200,7 @@ const TrainersSection = () => {
                   </div>
                 
                   <button
-                    type="submit"
-                    onClick={addTrainer}
+                    type='submit'
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                    Add Trainer
