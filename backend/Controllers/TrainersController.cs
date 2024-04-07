@@ -1,10 +1,10 @@
 using backend.DbContext;
 using backend.Models;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
+
 
 public class TrainersController : Controller
 {
@@ -17,18 +17,17 @@ public class TrainersController : Controller
     }
 
     // Create API to get all orders.
-    [EnableCors("_myAllowSpecificOrigins")]
+    // [EnableCors("_myAllowSpecificOrigins")]
     [HttpGet("getAllTrainers")]
-    public async Task<List<Trainers>> GetAllOrders()
+    public async Task<List<Trainers>> GetAllTrainers()
     {
         return await _dbContext.Trainers.ToListAsync();
     }
     
 
     // Create API to add an order.
-    [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("addTrainer")]
-    public async Task<IActionResult> AddTrainer(Trainers trainer)
+    public async Task<IActionResult> AddTrainer( [FromBody]Trainers trainer)
     {
         if (trainer is null)
         {
@@ -43,9 +42,12 @@ public class TrainersController : Controller
     }
     
     
+
+    
+    
     // Create API to get a specific order by ID.
     [HttpGet("getTrainer/{id}")]
-    [EnableCors("_myAllowSpecificOrigins")]
+    // [EnableCors("_myAllowSpecificOrigins")]
     public async Task<IActionResult> GetTrainerById(int id)
     {
         var trainer = await _dbContext.Trainers.FindAsync(id);
@@ -58,7 +60,7 @@ public class TrainersController : Controller
     
     // Create API to delete an order by ID.
     [HttpDelete("deleteTrainer/{id}")]
-    [EnableCors("_myAllowSpecificOrigins")]
+    // [EnableCors("_myAllowSpecificOrigins")]
     public async Task<IActionResult> DeleteTrainer(int id)
     {
         var trainer = await _dbContext.Trainers.FindAsync(id);
@@ -74,7 +76,7 @@ public class TrainersController : Controller
 
     // Create API to update an existing order.
     [HttpPut("updateTrainer")]
-    [EnableCors("_myAllowSpecificOrigins")]
+    // [EnableCors("_myAllowSpecificOrigins")]
     public async Task<IActionResult> UpdateTrainer(Trainers trainer)
     {
         if (trainer is null || trainer.TrainerId == 0)
