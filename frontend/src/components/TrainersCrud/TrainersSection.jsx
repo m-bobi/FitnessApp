@@ -1,60 +1,81 @@
-import React, { useState } from 'react';
-import './TrainersSection.css';
+import React, { useEffect, useState } from "react";
+import "./TrainersSection.css";
 import axios from "axios";
 
 const TrainersSection = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
-  const [trainerName, setTrainerName] = useState('');
-  const [trainerType, setTrainerType] = useState('');
-  const [trainerEmail, setTrainerEmail] = useState('');
-  const [trainerImage, setTrainerImage] = useState('');
-  const [trainerAddress, setTrainerAddress] = useState('');
-
-//   const addTrainer = () => {
-//     try {
-//         axios.post("http://localhost:5259/addTrainer", {
-//             TrainerName: trainerName,
-//             TrainerEmail: trainerEmail,
-//             TrainerAddress: trainerAddress,
-//             TrainerType: trainerType,
-//             TrainerImage: trainerImage,
-//         }).then(() => {
-//             console.log("success");
-//         }).catch(error => {
-//             console.error("Error:", error);
-//         });
-//     } catch (error) {
-//         console.error("Error:", error);
-//     }
 
 
-// }
 
-const addTrainer = (event) => {
-  event.preventDefault();
-  try {
-      axios.post("http://localhost:5259/addTrainer", {
+
+// Function to open the edit modal
+ 
+
+  const [trainerName, setTrainerName] = useState("");
+  const [trainerType, setTrainerType] = useState("");
+  const [trainerEmail, setTrainerEmail] = useState("");
+  const [trainerImage, setTrainerImage] = useState("");
+  const [trainerAddress, setTrainerAddress] = useState("");
+
+
+  const addTrainer = async (event) => {
+    event.preventDefault();
+    try {
+      axios
+        .post("http://localhost:5259/addTrainer", {
           trainerName: trainerName,
           trainerEmail: trainerEmail,
           trainerAddress: trainerAddress,
           trainerType: trainerType,
-          trainerImage: trainerImage
-      }).then(() => {
-          console.log("success");
-      }).catch(error => {
+          trainerImage: trainerImage,
+        })
+        .then(() => {
+          // if (response.status === 200) {
+            console.log("success");
+          //   setTrainers(prevTrainers => [...prevTrainers, response.data]);
+          // }
+
+
+          setTrainerName("");
+          setTrainerType("");
+          setTrainerEmail("");
+          setTrainerImage("");
+          setTrainerAddress("");
+
+          
+        })
+        .catch((error) => {
           console.error("Error:", error);
-      });
-  } catch (error) {
+        });
+    } catch (error) {
       console.error("Error:", error);
-  }
+    }
+  };
 
-}
 
+
+  const [trainers, setTrainers] = useState([]);
+
+  useEffect(() => {
+    const fetchTrainers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5259/getAllTrainers"
+        );
+        setTrainers(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchTrainers();
+  }, [trainers]);
 
 
 
@@ -65,7 +86,6 @@ const addTrainer = (event) => {
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
         className="createButton block text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900"
-
         type="button"
         onClick={toggleModal}
       >
@@ -86,7 +106,7 @@ const addTrainer = (event) => {
               {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                 Create a new trainer!
+                  Create a new trainer!
                 </h3>
                 <button
                   type="button"
@@ -114,11 +134,9 @@ const addTrainer = (event) => {
               </div>
               {/* Modal body */}
               <div className="p-4 md:p-5">
-                <form className="space-y-4" onSubmit={addTrainer} method='POST'>
+                <form className="space-y-4 myForm" onSubmit={addTrainer} method="POST">
                   <div>
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Trainer Name
                     </label>
                     <input
@@ -127,14 +145,15 @@ const addTrainer = (event) => {
                       id="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter trainer name"
-                      onChange={(event) => {setTrainerName(event.target.value)}}
+                      onChange={(event) => {
+                        setTrainerName(event.target.value);
+                      }}
+                      value={trainerName}
                       required
                     />
                   </div>
                   <div>
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Trainer Email
                     </label>
                     <input
@@ -144,48 +163,51 @@ const addTrainer = (event) => {
                       placeholder="Enter trainer email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {setTrainerEmail(event.target.value)}}
+                      onChange={(event) => {
+                        setTrainerEmail(event.target.value);
+                      }}
+                      value={trainerEmail}
                     />
                   </div>
 
                   <div>
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Trainer Adress
                     </label>
                     <input
-                       type="text"
+                      type="text"
                       name="TrainerAdress"
                       id="password"
                       placeholder="Enter trainer adress"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {setTrainerAddress(event.target.value)}}
+                      onChange={(event) => {
+                        setTrainerAddress(event.target.value);
+                      }}
+                      value={trainerAddress}
                     />
                   </div>
 
                   <div>
-                  <div>
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Trainer Type
-                    </label>
-                    <input
-                       type="text"
-                      name="TrainerType"
-                      id="password"
-                      placeholder="Enter trainer type"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      required
-                      onChange={(event) => {setTrainerType(event.target.value)}}
-                    />
-                  </div>
-                 
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Trainer Type
+                      </label>
+                      <input
+                        type="text"
+                        name="TrainerType"
+                        id="password"
+                        placeholder="Enter trainer type"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        required
+                        onChange={(event) => {
+                          setTrainerType(event.target.value);
+                        }}
+                        value={trainerType}
+                      />
+                    </div>
+
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Trainer Image
                     </label>
                     <input
@@ -195,15 +217,18 @@ const addTrainer = (event) => {
                       placeholder="Trainer image"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {setTrainerImage(event.target.value)}}
+                      onChange={(event) => {
+                        setTrainerImage(event.target.value);
+                      }}
+                      value={trainerImage}
                     />
                   </div>
-                
+
                   <button
-                    type='submit'
+                    type="submit"
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                   Add Trainer
+                    Add Trainer
                   </button>
                 </form>
               </div>
@@ -211,6 +236,48 @@ const addTrainer = (event) => {
           </div>
         </div>
       )}
+
+      <div className="allTrainers">
+        <div className="allTrainersHeading">
+          <p>
+            <span className="redP">Our</span> Trainers
+          </p>
+        </div>
+
+        <div className="allTrainersCards flex flex-wrap justify-center">
+          {trainers &&
+            trainers.map((t, index) => {
+              return (
+                <div className="trainerCard  rounded overflow-hidden shadow-lg ">
+                  {/* <img
+                    className="w-full"
+                    src="/img/card-top.jpg"
+                    alt="Sunset in the mountains"
+                  /> */}
+                  <div className="px-6 py-4 middleContentTrainerCard">
+                    <div className="font-bold text-xl mb-2">
+                      {t.trainerName}
+                    </div>
+                    <p className="text-gray-700 text-base">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                      Voluptatibus quia, nulla! Maiores et perferendis eaque,
+                      exercitationem praesentium nihil.
+                    </p>
+                    <p>Contact the trainer: {t.trainerEmail}</p>
+                    <p>Trainer is located at: {t.trainerAddress}</p>
+                    <p className="trainerType">{t.trainerType}</p>
+                  </div>
+                  <div className="px-6 pt-4 pb-2">
+                    
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      </div>
+
+   
+
     </div>
   );
 };
