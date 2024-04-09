@@ -16,14 +16,22 @@ public class OrdersController : Controller
         _dbContext = dbContext;
     }
 
-    // Create API to get all orders.
-    [EnableCors("_myAllowSpecificOrigins")]
+// Create API to get all orders with pagination.
     [HttpGet("getAllOrders")]
-    public async Task<List<Orders>> GetAllOrders()
+    public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10)
     {
-        return await _dbContext.Orders.ToListAsync();
+        var totalOrders = await _dbContext.Orders.CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalOrders / limit);
+        var orders = await _dbContext.Orders
+            .OrderByDescending(o => o.OrderId)
+            .Skip((page - 1) * limit)
+            .Take(limit)
+            .ToListAsync();
+
+        return Ok(new { orders, totalPages });
     }
-    
+
+
 
     // Create API to add an order.
     [EnableCors("_myAllowSpecificOrigins")]
@@ -41,8 +49,8 @@ public class OrdersController : Controller
             return Ok();
         }
     }
-    
-    
+
+
     // Create API to get a specific order by ID.
     [EnableCors("_myAllowSpecificOrigins")]
     [HttpGet("getOrder/{id}")]
@@ -55,7 +63,7 @@ public class OrdersController : Controller
         }
         return Ok(order);
     }
-    
+
     // Create API to delete an order by ID.
     [EnableCors("_myAllowSpecificOrigins")]
     [HttpDelete("deleteOrder/{id}")]
@@ -73,9 +81,8 @@ public class OrdersController : Controller
     }
 
     // Create API to update an existing order.
-    [EnableCors("_myAllowSpecificOrigins")]
-    [HttpPut("updateOrder")]
-    public async Task<IActionResult> UpdateOrder(Orders order)
+    [HttpPut("updateOrder/{id}")]
+    public async Task<IActionResult> UpdateOrder([FromBody]Orders order)
     {
         if (order is null || order.OrderId == 0)
         {
