@@ -7,12 +7,12 @@ import DashboardNavigation from '../../components/shared/Navbar/DashboardNavigat
 const Orders = () => {
 
   return (
-    <div
-      className="bg-cover h-screen"
-    >
+    <div className="flex">
       <DashboardNavigation />
-      <ListOrders />
-      <AddOrders/>
+      <div className="flex-1 ml-64 p-8">
+        <ListOrders />
+        <AddOrders />
+      </div>
     </div>
   );
 }

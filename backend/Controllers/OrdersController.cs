@@ -15,12 +15,21 @@ public class OrdersController : Controller
         _dbContext = dbContext;
     }
 
-    // Create API to get all orders.
+// Create API to get all orders with pagination.
     [HttpGet("getAllOrders")]
-    public async Task<List<Orders>> GetAllOrders()
+    public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10)
     {
-        return await _dbContext.Orders.ToListAsync();
+        var totalOrders = await _dbContext.Orders.CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalOrders / limit);
+        var orders = await _dbContext.Orders
+            .OrderByDescending(o => o.OrderId)
+            .Skip((page - 1) * limit)
+            .Take(limit)
+            .ToListAsync();
+
+        return Ok(new { orders, totalPages });
     }
+
     
 
     // Create API to add an order.
@@ -68,8 +77,8 @@ public class OrdersController : Controller
     }
 
     // Create API to update an existing order.
-    [HttpPut("updateOrder")]
-    public async Task<IActionResult> UpdateOrder(Orders order)
+    [HttpPut("updateOrder/{id}")]
+    public async Task<IActionResult> UpdateOrder([FromBody]Orders order)
     {
         if (order is null || order.OrderId == 0)
         {
