@@ -15,17 +15,35 @@ public class OrdersController : Controller
         _dbContext = dbContext;
     }
 
-    // Create API to get all orders.
+// Create API to get all orders with pagination.
     [HttpGet("getAllOrders")]
-    public async Task<List<Orders>> GetAllOrders()
+    [ResponseCache(Duration = 30)] // Caching the response
+    public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10)
     {
-        return await _dbContext.Orders.ToListAsync();
+        try
+        {
+            var totalOrders = await _dbContext.Orders.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalOrders / limit);
+
+            var orders = await _dbContext.Orders
+                .OrderByDescending(o => o.OrderId)
+                .Skip((page - 1) * limit)
+                .Take(limit)
+                .ToListAsync();
+
+            return Ok(new { orders, totalPages });
+        }
+        catch (Exception ex)
+        {
+            // Error Logging
+            Console.WriteLine("Error fetching orders: " + ex.Message);
+            return StatusCode(500, "Internal server error");
+        }
     }
-    
 
     // Create API to add an order.
     [HttpPost("addOrder")]
-    public async Task<IActionResult> AddOrder([FromBody]Orders order)
+    public async Task<IActionResult> AddOrder([FromBody] Orders order)
     {
         if (order is null)
         {
@@ -38,29 +56,23 @@ public class OrdersController : Controller
             return Ok();
         }
     }
-    
-    
+
+
     // Create API to get a specific order by ID.
     [HttpGet("getOrder/{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
         var order = await _dbContext.Orders.FindAsync(id);
-        if (order == null)
-        {
-            return NotFound();
-        }
+        if (order == null) return NotFound();
         return Ok(order);
     }
-    
+
     // Create API to delete an order by ID.
     [HttpDelete("deleteOrder/{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
     {
         var order = await _dbContext.Orders.FindAsync(id);
-        if (order == null)
-        {
-            return NotFound();
-        }
+        if (order == null) return NotFound();
 
         _dbContext.Orders.Remove(order);
         await _dbContext.SaveChangesAsync();
@@ -68,24 +80,16 @@ public class OrdersController : Controller
     }
 
     // Create API to update an existing order.
-    [HttpPut("updateOrder")]
-    public async Task<IActionResult> UpdateOrder(Orders order)
+    [HttpPut("updateOrder/{id}")]
+    public async Task<IActionResult> UpdateOrder([FromBody] Orders order)
     {
-        if (order is null || order.OrderId == 0)
-        {
-            return BadRequest("Invalid order data");
-        }
+        if (order is null || order.OrderId == 0) return BadRequest("Invalid order data");
 
         var existingOrder = await _dbContext.Orders.FindAsync(order.OrderId);
-        if (existingOrder == null)
-        {
-            return NotFound();
-        }
+        if (existingOrder == null) return NotFound();
 
         _dbContext.Entry(existingOrder).CurrentValues.SetValues(order);
         await _dbContext.SaveChangesAsync();
         return Ok("Order updated successfully");
     }
 }
-
-

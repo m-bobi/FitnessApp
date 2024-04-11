@@ -25,6 +25,7 @@ const AddOrders = () => {
         })
         .then(() => {
           console.log("success");
+          window.alert("Order has been added.");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -35,19 +36,17 @@ const AddOrders = () => {
   };
 
   return (
-    <div>
-      {/* Modal toggle */}
+    <div className="relative">
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
-        className="absolute top-96 block text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900"
+        className="mt-6 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900 fixed top-4 right-4 z-50"
         type="button"
         onClick={toggleModal}
       >
         Create Order
       </button>
 
-      {/* Main modal */}
       {isOpen && (
         <div
           id="authentication-modal"
@@ -56,9 +55,7 @@ const AddOrders = () => {
           className="fixed top-0 right-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
         >
           <div className="relative p-4 w-full max-w-md">
-            {/* Modal content */}
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Create a new order!
@@ -87,7 +84,6 @@ const AddOrders = () => {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              {/* Modal body */}
               <div className="p-4 md:p-5">
                 <form className="space-y-4" onSubmit={addOrder} method="POST">
                   <div>
