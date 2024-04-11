@@ -1,5 +1,5 @@
-# KinetiX - Fitness Web App
-KinetiX is a web application targetting the fitness industry it helps users get started on their fitness journey, by providing them with plans and trainers.
+# Ascend - Fitness Web App
+Ascend is a web application targetting the fitness industry it helps users get started on their fitness journey, by providing them with plans and trainers.
 
 ## Prequisites
 You need a few things to get started with the project.
