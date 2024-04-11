@@ -20,11 +20,10 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/UserCRUD" element={<User />} />
             <Route exact path="/orders" element={<Orders />} />
+            <Route exact path="/products" element={<Products/>} />
             <Route exact path="/trainers" element={<Trainers />} />
             {/* <Route exact path="/editTrainer/:id" element={<EditTrainers />} /> */}
-            <Route exact path="/products" element={<Products/>} />
-            <Route exact path="/dashboard" element={<Dashboard />} />
-            <Route exact path="/trainers" element={<Trainers />} />
+            <Route exact path="/dashboard" element={<Dashboard  />}  />
             {/* <Route exact path="/editTrainer/:id" element={<EditTrainers />} /> */}
 
             <Route path="*" element={<Navigate to="/" />} />

@@ -12,6 +12,11 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:backend/Migrations/20240407160421_stillTesting.Designer.cs
+<<<<<<< HEAD:backend/Migrations/20240404162847_init.Designer.cs
+>>>>>>> d21c91a (+ Added Product CRUD)
 <<<<<<<< HEAD:backend/Migrations/20240411095741_productAdd.Designer.cs
     [Migration("20240411095741_productAdd")]
     partial class productAdd
@@ -19,6 +24,17 @@ namespace backend.Migrations
     [Migration("20240404162847_init")]
     partial class init
 >>>>>>>> 2665a12 (+ Added Orders Page, changed DateTime for Orders):backend/Migrations/20240404162847_init.Designer.cs
+<<<<<<< HEAD
+=======
+=======
+    [Migration("20240407160421_stillTesting")]
+    partial class stillTesting
+>>>>>>> 93724d4 (+ AddOrder operation.):backend/Migrations/20240407160421_stillTesting.Designer.cs
+========
+    [Migration("20240411095741_productAdd")]
+    partial class productAdd
+>>>>>>>> d21c91a (+ Added Product CRUD):backend/Migrations/20240411095741_productAdd.Designer.cs
+>>>>>>> d21c91a (+ Added Product CRUD)
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
