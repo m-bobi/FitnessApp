@@ -6,21 +6,23 @@ import Dashboard from './pages/Dashboard/Dashboard';
 function App() {
 
   const Orders = lazy(() => import('./pages/Orders/Orders'))
+  const Products = lazy(() => import("./pages/Products/Products"));
 
   return (
-      <div>
-        <Suspense >
+    <div>
+      <Suspense>
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/orders" element={<Orders />} />
-            <Route exact path="/dashboard" element={<Dashboard/>}/>
+            <Route exact path="/products" element={<Products/>} />
+            <Route exact path="/dashboard" element={<Dashboard />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
-        </Suspense>
-      </div>
+      </Suspense>
+    </div>
   );
 }
 

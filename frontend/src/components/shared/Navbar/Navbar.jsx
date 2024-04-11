@@ -38,6 +38,7 @@ const Navbar = () => {
             <Link to="/UserCRUD">User</Link>
             <Link to="/TrainerCRUD">Trainer</Link>
             <Link to="/orders">Orders</Link>
+            <Link to="/products">Products</Link>
             <Link to="/dashboard">Dashboard</Link>
         </div>
 

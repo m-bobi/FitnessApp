@@ -17,7 +17,6 @@ public class OrdersController : Controller
 
 // Create API to get all orders with pagination.
     [HttpGet("getAllOrders")]
-    [ResponseCache(Duration = 30)] // Caching the response
     public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10)
     {
         try
