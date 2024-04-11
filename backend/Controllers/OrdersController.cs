@@ -18,6 +18,7 @@ public class OrdersController : Controller
 
 // Create API to get all orders with pagination.
     [HttpGet("getAllOrders")]
+    [ResponseCache(Duration = 30)] // Caching the response
     public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10)
     {
         try
@@ -44,7 +45,7 @@ public class OrdersController : Controller
     // Create API to add an order.
     [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("addOrder")]
-    public async Task<IActionResult> AddOrder([FromBody]Orders order)
+    public async Task<IActionResult> AddOrder([FromBody] Orders order)
     {
         if (order is null)
         {
@@ -61,6 +62,8 @@ public class OrdersController : Controller
 
 
 
+
+
     // Create API to get a specific order by ID.
     [EnableCors("_myAllowSpecificOrigins")]
     [HttpGet("getOrder/{id}")]
@@ -70,6 +73,7 @@ public class OrdersController : Controller
         if (order == null) return NotFound();
         return Ok(order);
     }
+
 
 
     // Create API to delete an order by ID.
