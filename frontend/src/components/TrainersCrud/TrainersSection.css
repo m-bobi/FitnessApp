@@ -120,3 +120,24 @@
 .trainerType{
     color: darkgray;
 }
+.editModal{
+    background-color: #ffffff;
+    width: 30%;
+    padding: 2%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: max(10px,2vw);
+}
+
+.updateButton{
+    color: #ffffff;
+}
+
+.editInputs{
+    color: darkgray;
+}
+
+.editInputs:focus {
+    border-color: #6b7280; 
+  }
