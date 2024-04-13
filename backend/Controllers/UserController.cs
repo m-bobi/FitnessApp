@@ -23,18 +23,15 @@ public class UserController : Controller
     [HttpGet("getAllUsers")]
     public async Task<List<User>> GetAllUsers()
     {
-        
-       return await _dbContext.Users.ToListAsync();
-       
+        return await _dbContext.Users.ToListAsync();
     }
 
-    
     // Create API to add user.
     [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("addUser")]
     public async Task<IActionResult> AddUser(User user)
     {
-        if(user is null)
+        if (user is null)
         {
             return BadRequest();
         }
@@ -44,5 +41,58 @@ public class UserController : Controller
             await _dbContext.SaveChangesAsync();
             return Ok();
         }
+    }
+
+    // Create API to get a specific user by ID.
+    [HttpGet("getUser/{id}")]
+    public async Task<IActionResult> GetUserById(int id)
+    {
+        var user = await _dbContext.Users.FindAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(user);
+    }
+
+    // Create API to delete a user by ID.
+    [HttpDelete("deleteUser/{id}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        var user = await _dbContext.Users.FindAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        _dbContext.Users.Remove(user);
+        await _dbContext.SaveChangesAsync();
+        return Ok("User deleted successfully");
+    }
+
+    // Create API to update an existing user.
+    [HttpPut("updateUser")]
+    public async Task<IActionResult> UpdateUser(User user)
+    {
+        if (user is null || user.UserId == 0)
+        {
+            return BadRequest("Invalid user data");
+        }
+
+        var existingUser = await _dbContext.Users.FindAsync(user.UserId);
+        if (existingUser == null)
+        {
+            return NotFound();
+        }
+
+        if (user.UserId != existingUser.UserId)
+        {
+            return BadRequest("User ID mismatch");
+        }
+
+        _dbContext.Entry(existingUser).CurrentValues.SetValues(user);
+        await _dbContext.SaveChangesAsync();
+        return Ok("User updated successfully");
     }
 }
