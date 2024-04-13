@@ -25,7 +25,6 @@ public class TrainersController : Controller
     }
     
 
-    // Create API to add an order.
     [HttpPost("addTrainer")]
     public async Task<IActionResult> AddTrainer( [FromBody]Trainers trainer)
     {
@@ -40,6 +39,28 @@ public class TrainersController : Controller
             return Ok();
         }
     }
+    
+    // [HttpPost("addTrainer")]
+    // public async Task<IActionResult> AddTrainer([FromForm] Trainers trainer, IFormFile trainerImage)
+    // {
+    //     if (trainer is null || trainerImage is null)
+    //     {
+    //         return BadRequest();
+    //     }
+    //     else
+    //     {
+    //         // Convert IFormFile to byte[]
+    //         using (var memoryStream = new MemoryStream())
+    //         {
+    //             await trainerImage.CopyToAsync(memoryStream);
+    //             trainer.TrainerImage = memoryStream.ToArray();
+    //         }
+    //
+    //         await _dbContext.AddAsync(trainer);
+    //         await _dbContext.SaveChangesAsync();
+    //         return Ok();
+    //     }
+    // }
     
     
 
@@ -75,9 +96,9 @@ public class TrainersController : Controller
     }
 
     // Create API to update an existing order.
-    [HttpPut("updateTrainer")]
+    [HttpPut("updateTrainer/{id}")]
     // [EnableCors("_myAllowSpecificOrigins")]
-    public async Task<IActionResult> UpdateTrainer(Trainers trainer)
+    public async Task<IActionResult> UpdateTrainer([FromBody] Trainers trainer)
     {
         if (trainer is null || trainer.TrainerId == 0)
         {
@@ -95,15 +116,24 @@ public class TrainersController : Controller
         return Ok("Trainer updated successfully");
     }
     
-    // [HttpPut("updateTrainer")]
-    // public async Task<IActionResult> UpdateTrainer(Trainers trainer)
+    
+    
+    
+    
+    
+    
+
+    
+    
+    // [HttpPut("updateTrainer/{id}")]
+    // public async Task<IActionResult> UpdateTrainer(int id, Trainers trainer)
     // {
     //     if (trainer is null || trainer.TrainerId == 0)
     //     {
     //         return BadRequest("Invalid trainer data");
     //     }
     //
-    //     var existingtrainer = await _dbContext.Trainers.FindAsync(trainer.TrainerId);
+    //     var existingtrainer = await _dbContext.Trainers.FindAsync(id);
     //     if (existingtrainer == null)
     //     {
     //         return NotFound("Trainer not found");
@@ -135,7 +165,10 @@ public class TrainersController : Controller
     //         return StatusCode(StatusCodes.Status500InternalServerError, "Error updating the trainer.");
     //     }
     // }
-
+    
+   
 }
+
+
 
 
