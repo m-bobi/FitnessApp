@@ -12,25 +12,19 @@ const AddProducts = () => {
   const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productCategory, setProductCategory] = useState("");
-  const [productImage, setProductImage] = useState(null); // Updated to store file
+  const [productImage, setProductImage] = useState(""); // Updated to store file
   const [productStock, setProductStock] = useState("");
 
   const addProduct = async (event) => {
     event.preventDefault();
-
-    const formData = new FormData();
-    formData.append("productName", productName);
-    formData.append("productDescription", productDescription);
-    formData.append("productPrice", productPrice);
-    formData.append("productCategory", productCategory);
-    formData.append("productImage", productImage); // Append the file
-    formData.append("productStock", productStock);
-
     try {
-      await axios.post("http://localhost:5259/addProduct", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      await axios.post("http://localhost:5259/addProduct", {
+        productName: productName,
+        productDescription: productDescription,
+        productPrice: productPrice,
+        productCategory: productCategory,
+        productImage: productImage,
+        productStock: productStock
       });
       console.log("Success");
       window.alert("Product has been added.");
@@ -175,13 +169,13 @@ const AddProducts = () => {
                       Product Image
                     </label>
                     <input
-                      type="file"
+                      type="text"
                       name="ProductImage"
-                      accept="image/*"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       onChange={(event) => {
-                        setProductImage(event.target.files[0]);
+                        setProductImage(event.target.value);
                       }}
+                      value={productImage}
                     />
                   </div>
 
