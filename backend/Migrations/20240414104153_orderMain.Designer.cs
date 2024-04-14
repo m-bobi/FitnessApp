@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240411095741_productAdd")]
-    partial class productAdd
+    [Migration("20240414104153_orderMain")]
+    partial class orderMain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -523,9 +523,19 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("TrainerName")
+                    b.Property<string>("TrainerImage")
                         .IsRequired()
-                        .HasColumnType("int");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("TrainerName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TrainerType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("TrainerId");
 

@@ -34,3 +34,10 @@ body::-webkit-scrollbar {
 html {
     scroll-behavior: smooth;
 }
+
+input{
+    outline: none;
+}
+select{
+    outline: none;
+}
