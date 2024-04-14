@@ -3,7 +3,7 @@ import { CiTrash } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
 import axios from "axios";
 
-const UserCRUD = () => {
+const ListUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editedUser, setEditedUser] = useState({});
@@ -16,24 +16,19 @@ const UserCRUD = () => {
     email: "",
   });
 
-  const usersPerPage = 10;
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:5259/getAllUsers");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching Trainers:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5259/getAllUsers?page=${currentPage}&limit=${usersPerPage}`
-        );
-
-        setUsers(response.data?.users || []); // Added null check and default value
-        setTotalPages(response.data?.totalPages || 0); // Added null check and default value
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
     fetchUsers();
-  }, [currentPage]);
+  }, [users]);
+
 
   const handleDelete = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
@@ -98,6 +93,14 @@ const UserCRUD = () => {
         />
         <input
           type="text"
+          name="password"
+          placeholder="Filter by Password"
+          value={filter.password}
+          onChange={handleFilterChange}
+          className="border rounded-lg px-2 py-1"
+        />
+         <input
+          type="text"
           name="email"
           placeholder="Filter by Email"
           value={filter.email}
@@ -111,8 +114,14 @@ const UserCRUD = () => {
             <th className="px-3 py-2 font-medium tracking-wider">User ID</th>
             <th className="px-3 py-2 font-medium tracking-wider">Name</th>
             <th className="px-3 py-2 font-medium tracking-wider">Username</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Password</th>
             <th className="px-3 py-2 font-medium tracking-wider">Email</th>
-            <th className="px-3 py-2 font-medium tracking-wider">Actions</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Address</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Mobile</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Age</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Member ID</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Trainer ID</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Created</th>
           </tr>
         </thead>
         <tbody>
@@ -121,10 +130,17 @@ const UserCRUD = () => {
               key={user.UserId}
               className={index % 2 === 0 ? "bg-slate-800" : ""}
             >
-              <td className="px-3 py-2">{user.UserId}</td>
-              <td className="px-3 py-2">{user.Name}</td>
-              <td className="px-3 py-2">{user.Username}</td>
-              <td className="px-3 py-2">{user.Email}</td>
+              <td className="px-3 py-2">{user.userId}</td>
+              <td className="px-3 py-2">{user.name}</td>
+              <td className="px-3 py-2">{user.username}</td>
+              <td className="px-3 py-2">{user.password}</td>
+              <td className="px-3 py-2">{user.email}</td>
+              <td className="px-3 py-2">{user.address}</td>
+              <td className="px-3 py-2">{user.mobile}</td>
+              <td className="px-3 py-2">{user.age}</td>
+              <td className="px-3 py-2">{user.memberTypeId}</td>
+              <td className="px-3 py-2">{user.trainerId}</td>
+              <td className="px-3 py-2">{user.createdAt}</td>
               <td className="px-3 py-2">
                 <button
                   className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
@@ -134,7 +150,7 @@ const UserCRUD = () => {
                 </button>
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => handleDelete(user.UserId)}
+                  onClick={() => handleDelete(user.userId)}
                 >
                   <CiTrash />
                 </button>
@@ -183,4 +199,4 @@ const UserCRUD = () => {
   );
 };
 
-export default UserCRUD;
+export default ListUsers;

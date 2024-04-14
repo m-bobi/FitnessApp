@@ -3,11 +3,6 @@ import axios from "axios";
 
 const AddUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
-
   const [Name, setName] = useState("");
   const [Username, setUsername] = useState("");
   const [Password, setPassword] = useState("");
@@ -16,28 +11,27 @@ const AddUsers = () => {
   const [Mobile, setMobile] = useState("");
   const [Age, setAge] = useState("");
   const [Gender, setGender] = useState("");
-  const [CreatedAt, setCreatedAt] = useState("");
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   const addUser = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append("Name", Name);
-    formData.append("Username", Username);
-    formData.append("Password", Password);
-    formData.append("Email", Email);
-    formData.append("Address", Address); // Append the file
-    formData.append("Mobile", Mobile);
-    formData.append("Age", Age);
-    formData.append("Gender", Gender);
-    formData.append("CreatedAt", CreatedAt);
+    const userdata = {
+      Name: Name,
+      Username: Username,
+      Password: Password,
+      Email: Email,
+      Address: Address,
+      Mobile: Mobile,
+      Age: Age,
+      Gender: Gender,
+    };
 
     try {
-      await axios.post("http://localhost:5259/addUser", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post("http://localhost:5259/addUser", userdata);
       console.log("Success");
       window.alert("User has been added.");
     } catch (error) {
@@ -97,6 +91,8 @@ const AddUsers = () => {
               </div>
               <div className="p-4 md:p-5">
                 <form className="space-y-4" onSubmit={addUser} method="POST">
+
+            
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Name
@@ -114,12 +110,12 @@ const AddUsers = () => {
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Surname
+                      Username
                     </label>
                     <input
                       type="text"
-                      name="Surname"
-                      placeholder="Enter Surname"
+                      name="Username"
+                      placeholder="Enter Username"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={(event) => {
@@ -177,7 +173,7 @@ const AddUsers = () => {
                   </div>
 
                   <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Mobile
                     </label>
                     <input
@@ -188,6 +184,38 @@ const AddUsers = () => {
                       required
                       onChange={(event) => {
                         setMobile(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Age
+                    </label>
+                    <input
+                      type="number"
+                      name="Age"
+                      placeholder="Enter Age"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      required
+                      onChange={(event) => {
+                        setAge(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Gender
+                    </label>
+                    <input
+                      type="character"
+                      name="Gender"
+                      placeholder="Enter Gender"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      required
+                      onChange={(event) => {
+                        setGender(event.target.value);
                       }}
                     />
                   </div>
