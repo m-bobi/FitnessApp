@@ -31,10 +31,6 @@ public class OrdersController : Controller
                 .Take(limit)
                 .ToListAsync();
 
-        return Ok(new { orders, totalPages });
-    }
-
-
             return Ok(new { orders, totalPages });
         }
         catch (Exception ex)
