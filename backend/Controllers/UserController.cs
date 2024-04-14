@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using backend.DbContext;
 using backend.Models;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +16,6 @@ public class UserController : Controller
     }
 
     //  Create API to get all users.
-    [EnableCors("_myAllowSpecificOrigins")]
     [HttpGet("getAllUsers")]
     public async Task<List<User>> GetAllUsers()
     {
@@ -27,7 +23,6 @@ public class UserController : Controller
     }
 
     // Create API to add user.
-    [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("addUser")]
     public async Task<IActionResult> AddUser(User user)
     {

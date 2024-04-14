@@ -11,8 +11,6 @@ function App() {
   const Trainers = lazy(() => import('./pages/Trainers/Trainers'))
   const Products = lazy(() => import("./pages/Products/Products"));
   // const EditTrainers = lazy(() => import('./components/TrainersCrud/EditTrainer'))
-  const Products = lazy(() => import("./pages/Products/Products"));
-
   return (
     <div>
       <Suspense>
