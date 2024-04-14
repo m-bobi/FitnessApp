@@ -24,7 +24,7 @@ public class UserController : Controller
 
     // Create API to add user.
     [HttpPost("addUser")]
-    public async Task<IActionResult> AddUser(User user)
+    public async Task<IActionResult> AddUser([FromBody] User user)
     {
         if (user is null)
         {
@@ -67,8 +67,8 @@ public class UserController : Controller
     }
 
     // Create API to update an existing user.
-    [HttpPut("updateUser")]
-    public async Task<IActionResult> UpdateUser(User user)
+    [HttpPut("updateUser/{id}")]
+    public async Task<IActionResult> UpdateUser([FromBody]User user)
     {
         if (user is null || user.UserId == 0)
         {
