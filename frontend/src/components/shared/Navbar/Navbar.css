@@ -1,7 +1,7 @@
 .navbar{
     padding: 2% 4%;
     width: 100%;
-    background-color:transparent;
+    background-color: transparent;
     height: 80px;
     display: flex;
     justify-content: space-between;
@@ -17,7 +17,7 @@
     justify-content: center;
     align-items: center;
     background-color: black;
-    width: 60%;
+    width: max(100px,10vw);
 }
 
 .logoHolder{
@@ -33,6 +33,7 @@
     align-items: center;
     gap: max(30px,2vw);
 }
+
 
 .searchIcon{
     filter: invert(1);

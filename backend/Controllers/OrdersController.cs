@@ -1,5 +1,6 @@
 using backend.DbContext;
 using backend.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +42,7 @@ public class OrdersController : Controller
     }
 
     // Create API to add an order.
+    [EnableCors("_myAllowSpecificOrigins")]
     [HttpPost("addOrder")]
     public async Task<IActionResult> AddOrder([FromBody] Orders order)
     {
@@ -67,6 +69,7 @@ public class OrdersController : Controller
     }
 
     // Create API to delete an order by ID.
+    [EnableCors("_myAllowSpecificOrigins")]
     [HttpDelete("deleteOrder/{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
     {

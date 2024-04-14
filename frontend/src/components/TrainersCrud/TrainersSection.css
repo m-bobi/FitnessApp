@@ -1,0 +1,143 @@
+
+
+.trainersSection{
+    padding: 4%;
+}
+
+.createButton{
+    background-color: var(--mainColor) !important;
+    width: max(100px,10vw);
+}
+
+.trainersSection{
+    display: flex;
+    flex-direction: column;
+    gap: max(30px,2vw);
+}
+
+.allTrainersHeading{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.allTrainersHeading p{
+    font-size:max(30px,2.2vw);
+}
+
+.allTrainers{
+    display: flex;
+    flex-direction: column;
+    gap: max(30px,2vw);
+}
+
+.allTrainersCards{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: max(30px,2vw);
+}
+
+.trainerCard{
+    width: 28% !important;
+    padding: 2% !important;
+}
+
+@media screen and (max-width:1302px) {
+    .trainerCard{
+        width: 30% !important;
+    }
+}
+
+@media screen and (max-width:1240px) {
+    .trainerCard{
+        width: 31% !important;
+    }
+}
+
+@media screen and (max-width:1180px) {
+    .trainerCard{
+        width: 40% !important;
+    }
+}
+
+@media screen and (max-width:1036px) {
+    .trainerCard{
+        width: 43% !important;
+    }
+}
+
+@media screen and (max-width:970px) {
+    .trainerCard{
+        width: 47% !important;
+    }
+}
+
+@media screen and (max-width:812px) {
+   
+
+    .allTrainersCards{
+        gap: 12px !important;
+    }
+    .trainerCard{
+        width: 49% !important;
+    }
+}
+
+@media screen and (max-width:680px) {
+    .allTrainersCards{
+        gap: 25px !important;
+    }
+    .trainerCard{
+        width: 73% !important;
+    }
+}
+
+@media screen and (max-width:560px) {
+    .trainerCard{
+        width: 80% !important;
+    }
+}
+
+@media screen and (max-width:460px) {
+    .trainerCard{
+        width: 90% !important;
+    }
+}
+
+@media screen and (max-width:420px) {
+    .trainerCard{
+        width: 100% !important;
+    }
+}
+
+.middleContentTrainerCard{
+    display: flex;
+    flex-direction: column;
+    gap: max(10px,1vw);
+}
+
+.trainerType{
+    color: darkgray;
+}
+.editModal{
+    background-color: #ffffff;
+    width: 30%;
+    padding: 2%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: max(10px,2vw);
+}
+
+.updateButton{
+    color: #ffffff;
+}
+
+.editInputs{
+    color: darkgray;
+}
+
+.editInputs:focus {
+    border-color: #6b7280; 
+  }

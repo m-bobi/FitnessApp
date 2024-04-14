@@ -12,8 +12,20 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+
     [Migration("20240411095741_productAdd")]
     partial class productAdd
+
+    [Migration("20240404162847_init")]
+    partial class init
+
+    [Migration("20240407160421_stillTesting")]
+    partial class stillTesting
+    [Migration("20240411095741_productAdd")]
+    partial class productAdd
+    [Migration("20240411095741_productAdd")]
+    partial class productAdd
+
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
