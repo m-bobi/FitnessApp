@@ -10,6 +10,7 @@ function App() {
   const Orders = lazy(() => import('./pages/Orders/Orders'))
   const Trainers = lazy(() => import('./pages/Trainers/Trainers'))
   const Products = lazy(() => import("./pages/Products/Products"));
+  const Offers = lazy(() => import("./pages/Offers/Offers"));
   // const EditTrainers = lazy(() => import('./components/TrainersCrud/EditTrainer'))
   return (
     <div>
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="/orders" element={<Orders />} />
             <Route exact path="/products" element={<Products/>} />
             <Route exact path="/trainers" element={<Trainers />} />
+            <Route exact path="/offers" element={<Offers />} />
             {/* <Route exact path="/editTrainer/:id" element={<EditTrainers />} /> */}
             <Route exact path="/dashboard" element={<Dashboard  />}  />
 

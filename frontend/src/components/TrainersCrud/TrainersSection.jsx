@@ -73,33 +73,6 @@ const TrainersSection = () => {
     }
   };
 
-  // const addTrainer = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("trainerName", trainerName);
-  //     formData.append("trainerEmail", trainerEmail);
-  //     formData.append("trainerAddress", trainerAddress);
-  //     formData.append("trainerType", trainerType);
-  //     formData.append("trainerImage", trainerImage); // Append file object
-  
-  //     const response = await axios.post("http://localhost:5259/addTrainer", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-  
-  //     console.log("success", response.data);
-  //     setTrainerName("");
-  //     setTrainerType("");
-  //     setTrainerEmail("");
-  //     setTrainerImage(null); // Reset file object
-  //     setTrainerAddress("");
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
   const [trainers, setTrainers] = useState([]);
 
   const fetchTrainers = async () => {
