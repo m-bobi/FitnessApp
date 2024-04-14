@@ -59,12 +59,7 @@ public class OrdersController : Controller
     }
 
 
-
-
-
-
     // Create API to get a specific order by ID.
-    [EnableCors("_myAllowSpecificOrigins")]
     [HttpGet("getOrder/{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
@@ -72,8 +67,6 @@ public class OrdersController : Controller
         if (order == null) return NotFound();
         return Ok(order);
     }
-
-
 
     // Create API to delete an order by ID.
     [EnableCors("_myAllowSpecificOrigins")]
