@@ -81,7 +81,6 @@ public class TrainersController : Controller
 
     // Create API to delete an order by ID.
     [HttpDelete("deleteTrainer/{id}")]
-    // [EnableCors("_myAllowSpecificOrigins")]
     public async Task<IActionResult> DeleteTrainer(int id)
     {
         var trainer = await _dbContext.Trainers.FindAsync(id);
