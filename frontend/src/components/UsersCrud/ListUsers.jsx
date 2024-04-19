@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { CiTrash } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
 import axios from "axios";
+import config from '../../config'
+
 
 const ListUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +20,7 @@ const ListUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5259/getAllUsers");
+      const response = await axios.get(`${config.apiBaseURL}getAllUsers`);
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching Trainers:", error);
@@ -33,7 +35,7 @@ const ListUsers = () => {
   const handleDelete = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await axios.delete(`http://localhost:5259/deleteUser/${userId}`);
+        await axios.delete(`${config.apiBaseURL}deleteUser/${userId}`);
         setUsers((prevUsers) => prevUsers.filter((user) => user.UserId !== userId)); // Fixed state update
       } catch (error) {
         console.error("Error deleting user:", error);
@@ -62,7 +64,7 @@ const ListUsers = () => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5259/updateUser/${selectedUser.UserId}`,
+        `${config.apiBaseURL}updateUser/${selectedUser.UserId}`,
         editedUser
       );
       setSelectedUser(null);

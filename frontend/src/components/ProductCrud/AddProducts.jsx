@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import config from '../../config'
 
 const AddProducts = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,7 @@ const AddProducts = () => {
   const addProduct = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:5259/addProduct", {
+      await axios.post(`${process.env.apiBaseUrl}addProduct`, {
         productName: productName,
         productDescription: productDescription,
         productPrice: productPrice,

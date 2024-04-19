@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import config from "../../config";
+
 
 const AddOrders = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +19,7 @@ const AddOrders = () => {
     event.preventDefault();
     try {
       axios
-        .post("http://localhost:5259/addOrder", {
+        .post(`${config.apiBaseUrl}addOrder`, {
           orderTotalAmount: orderTotalAmount,
           orderStatus: orderStatus,
           userID: userID,

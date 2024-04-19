@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import config from "../../config";
+
 
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +20,7 @@ const AddOffers = () => {
     event.preventDefault();
     try {
       axios
-        .post("http://localhost:5259/addOffer", {
+        .post(`${config.apiBaseURL}addOffer`, {
             offerType: offerType,
             offerDescription: offerDescription,
             offerEndDate: offerEndDate,
