@@ -43,6 +43,16 @@
     padding: 2% !important;
 }
 
+.editModal{
+    background-color: #ffffff;
+    width: 30%;
+    padding: 2%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: max(10px,2vw);
+}
+
 @media screen and (max-width:1302px) {
     .trainerCard{
         width: 30% !important;
@@ -59,17 +69,26 @@
     .trainerCard{
         width: 40% !important;
     }
+    .editModal{
+        width: 40%;
+    }
 }
 
 @media screen and (max-width:1036px) {
     .trainerCard{
         width: 43% !important;
     }
+    .editModal{
+        width: 45%;
+    }
 }
 
 @media screen and (max-width:970px) {
     .trainerCard{
         width: 47% !important;
+    }
+    .editModal{
+        width: 50%;
     }
 }
 
@@ -81,6 +100,9 @@
     }
     .trainerCard{
         width: 49% !important;
+    }
+    .editModal{
+        width:55%;
     }
 }
 
@@ -97,17 +119,26 @@
     .trainerCard{
         width: 80% !important;
     }
+    .editModal{
+        width:60%;
+    }
 }
 
 @media screen and (max-width:460px) {
     .trainerCard{
         width: 90% !important;
     }
+    .editModal{
+        width:70%;
+    }
 }
 
 @media screen and (max-width:420px) {
     .trainerCard{
         width: 100% !important;
+    }
+    .editModal{
+        width:85%;
     }
 }
 
@@ -120,15 +151,7 @@
 .trainerType{
     color: darkgray;
 }
-.editModal{
-    background-color: #ffffff;
-    width: 30%;
-    padding: 2%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: max(10px,2vw);
-}
+
 
 .updateButton{
     color: #ffffff;
