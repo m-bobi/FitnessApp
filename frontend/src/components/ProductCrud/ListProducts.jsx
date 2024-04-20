@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { CiTrash } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
 import axios from "axios";
+import config from "../../config";
+
 
 const ListProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,7 +23,7 @@ const ListProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5259/getAllProducts?page=${currentPage}&limit=${productsPerPage}`
+          `${config.apiBaseURL}getAllProducts?page=${currentPage}&limit=${productsPerPage}`
         );
         setProducts(response.data.product);
         setTotalPages(response.data.totalPages);
@@ -36,7 +38,7 @@ const ListProducts = () => {
 const handleDelete = async (productId) => {
   if (window.confirm("Are you sure you want to delete this product?")) {
     try {
-      await axios.delete(`http://localhost:5259/deleteProduct/${productId}`);
+      await axios.delete(`${config.apiBaseURL}deleteProduct/${productId}`);
       setProducts(
         products.filter((product) => product.productId !== productId)
       );
@@ -68,7 +70,7 @@ const handleDelete = async (productId) => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5259/updateProduct/${selectedProduct.productId}`,
+        `${config.apiBaseURL}updateProduct/${selectedProduct.productId}`,
         editedProduct
       );
       setSelectedProduct(null);

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import config from "../../config";
+
 
 const AddUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,7 +9,7 @@ const AddUsers = () => {
   const [Username, setUsername] = useState("");
   const [Password, setPassword] = useState("");
   const [Email, setEmail] = useState("");
-  const [Address, setAddress] = useState(""); 
+  const [Address, setAddress] = useState("");
   const [Mobile, setMobile] = useState("");
   const [Age, setAge] = useState("");
   const [Gender, setGender] = useState("");
@@ -31,7 +33,7 @@ const AddUsers = () => {
     };
 
     try {
-      await axios.post("http://localhost:5259/addUser", userdata);
+      await axios.post(`${config.apiBaseURL}addUser`, userdata);
       console.log("Success");
       window.alert("User has been added.");
     } catch (error) {
@@ -92,7 +94,7 @@ const AddUsers = () => {
               <div className="p-4 md:p-5">
                 <form className="space-y-4" onSubmit={addUser} method="POST">
 
-            
+
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Name

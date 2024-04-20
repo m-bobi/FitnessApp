@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./TrainersSection.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import config from "../../config";
+
 
 const TrainersSection = () => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  
+
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -30,7 +32,7 @@ const TrainersSection = () => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5259/updateTrainer/${selectedTrainer.trainerId}`,
+        `${config.apiBaseURL}updateTrainer/${selectedTrainer.trainerId}`,
         editedTrainer
       );
       setSelectedTrainer(null);
@@ -50,7 +52,7 @@ const TrainersSection = () => {
     event.preventDefault();
     try {
       axios
-        .post("http://localhost:5259/addTrainer", {
+        .post(`${config.apiBaseURL}addTrainer`, {
           trainerName: trainerName,
           trainerEmail: trainerEmail,
           trainerAddress: trainerAddress,
@@ -77,7 +79,7 @@ const TrainersSection = () => {
 
   const fetchTrainers = async () => {
     try {
-      const response = await axios.get("http://localhost:5259/getAllTrainers");
+      const response = await axios.get(`${config.apiBaseUrl}getAllTrainers`);
       setTrainers(response.data);
     } catch (error) {
       console.error("Error fetching Trainers:", error);
@@ -91,7 +93,7 @@ const TrainersSection = () => {
   const onDelete = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:5259/deleteTrainer/${id}`)
+        .delete(`${config.apiBaseURL}deleteTrainer/${id}`)
         .then(() => {
           fetchTrainers();
         });

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { CiTrash } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
 import axios from "axios";
+import config from "../../config";
+
 
 const ListOffers = () => {
-  
+
     const [currentPage, setCurrentPage] = useState();
 
   const [selectedoffer, setSelectedoffer] = useState(null);
@@ -21,7 +23,7 @@ const ListOffers = () => {
 
   const fetchOffers = async () => {
     try {
-      const response = await axios.get("http://localhost:5259/getAllOffers");
+      const response = await axios.get(`${config.apiBaseURL}getAllOffers`);
       setOffers(response.data);
     } catch (error) {
       console.error("Error fetching Trainers:", error);
@@ -35,7 +37,7 @@ const ListOffers = () => {
   const handleDelete = async (offerId) => {
     if (window.confirm("Are you sure you want to delete this offer?")) {
       try {
-        await axios.delete(`http://localhost:5259/deleteoffer/${offerId}`);
+        await axios.delete(`${config.apiBaseURL}deleteoffer/${offerId}`);
         setOffers(offers.filter((offer) => offer.offerId !== offerId));
       } catch (error) {
         console.error("Error deleting offer:", error);
@@ -64,7 +66,7 @@ const ListOffers = () => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5259/updateoffer/${selectedoffer.offerId}`,
+        `${config.apiBaseURL}updateoffer/${selectedoffer.offerId}`,
         editedoffer
       );
       setSelectedoffer(null);
@@ -130,7 +132,7 @@ const ListOffers = () => {
               <td className="px-3 py-2">{offer.offerEndDate}</td>
               <td className="px-3 py-2">{offer.offerDurationDate}</td>
               <td className="px-3 py-2">{offer.offerDiscount}</td>
-   
+
               <td className="px-3 py-2">
                 <button
                   className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"

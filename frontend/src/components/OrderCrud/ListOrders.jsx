@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { CiTrash } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
 import axios from "axios";
+import config from "../../config";
+
 
 const ListOrders = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +25,7 @@ const ListOrders = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5259/getAllOrders?page=${currentPage}&limit=${ordersPerPage}`
+          `${config.apiBaseURL}getAllOrders?page=${currentPage}&limit=${ordersPerPage}`
         );
 
         setOrders(response.data.orders);
@@ -39,7 +41,7 @@ const ListOrders = () => {
   const handleDelete = async (orderId) => {
     if (window.confirm("Are you sure you want to delete this order?")) {
       try {
-        await axios.delete(`http://localhost:5259/deleteOrder/${orderId}`);
+        await axios.delete(`${config.apiBaseURL}deleteOrder/${orderId}`);
         setOrders(orders.filter((order) => order.orderId !== orderId));
       } catch (error) {
         console.error("Error deleting order:", error);
@@ -68,7 +70,7 @@ const ListOrders = () => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5259/updateOrder/${selectedOrder.orderId}`,
+        `${config.apiBaseURL}updateOrder/${selectedOrder.orderId}`,
         editedOrder
       );
       setSelectedOrder(null);
