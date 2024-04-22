@@ -33,6 +33,10 @@
     gap: max(30px,2vw);
 }
 
+.navLinks a{
+    color: #ffffff;
+}
+
 
 .searchIcon{
     filter: invert(1);

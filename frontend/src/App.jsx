@@ -11,6 +11,8 @@ function App() {
   const Trainers = lazy(() => import('./pages/Trainers/Trainers'))
   const Products = lazy(() => import("./pages/Products/Products"));
   const Offers = lazy(() => import("./pages/Offers/Offers"));
+  const Auth = lazy(() => import("./pages/Auth/Auth"));
+  const SignUp = lazy(() => import("./components/SignUp/SignUp"));
   // const EditTrainers = lazy(() => import('./components/TrainersCrud/EditTrainer'))
   return (
     <div>
@@ -25,6 +27,8 @@ function App() {
             <Route exact path="/offers" element={<Offers />} />
             {/* <Route exact path="/editTrainer/:id" element={<EditTrainers />} /> */}
             <Route exact path="/dashboard" element={<Dashboard  />}  />
+            <Route exact path="/signIn" element={<Auth  />}  />
+            <Route exact path="/signUp" element={<SignUp  />}  />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

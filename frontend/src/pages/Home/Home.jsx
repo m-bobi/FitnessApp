@@ -4,11 +4,11 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 
 const Home = () => {
   return (
-      <main
-        className="bg-cover h-screen"
+      <div
+        className="homepage"
       >
         <Navbar/>
-      </main>
+      </div>
   );
 }
 
