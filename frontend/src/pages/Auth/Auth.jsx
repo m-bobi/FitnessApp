@@ -9,7 +9,6 @@ const Auth = () => {
     <div className='authPage'>
         <Navbar/>
         <SignIn/>
-        <SignUp/>
     </div>
   )
 }

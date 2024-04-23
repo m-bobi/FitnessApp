@@ -1,4 +1,4 @@
-.navbar{
+.navbar {
     padding: 2% 4%;
     width: 100%;
     background-color: transparent;
@@ -11,48 +11,48 @@
     left: 0;
 }
 
-.logo{
+.logo {
     content: url("../../../assets/logo.png");
     display: flex;
     justify-content: center;
     align-items: center;
-    width: max(100px,10vw);
+    width: max(80px, 4vw);
 }
 
-.logoHolder{
+.logoHolder {
     width: 20%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.navLinks {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: max(30px, 2vw);
 }
 
-.navLinks{
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    gap: max(30px,2vw);
-}
-
-.navLinks a{
-    color: #ffffff;
+.navLinks a {
+    color: #2d2727;
 }
 
 
-.searchIcon{
-    filter: invert(1);
-    width: max(30px,2vw);
-    height: max(30px,2vw);
+.searchIcon {
+    width: max(20px, 1.5vw);
+    height: max(20px, 1.5vw);
 }
 
-.navbar-scrolled{
+.navbar-scrolled {
     padding: 2% 4%;
-        width: 100%;
-        background-color: rgb(23, 22, 22);
-        height: 80px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
+    width: 100%;
+    background-color: #fbfafa;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
