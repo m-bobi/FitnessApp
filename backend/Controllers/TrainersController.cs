@@ -32,12 +32,10 @@ public class TrainersController : Controller
         {
             return BadRequest();
         }
-        else
-        {
-            await _dbContext.AddAsync(trainer);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
-        }
+
+        await _dbContext.AddAsync(trainer);
+        await _dbContext.SaveChangesAsync();
+        return Ok();
     }
 
     // [HttpPost("addTrainer")]

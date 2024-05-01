@@ -1,10 +1,9 @@
-namespace backend.Controllers;
 using backend.DbContext;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
+namespace backend.Controllers;
 
 public class OffersController : Controller
 {
@@ -31,12 +30,10 @@ public class OffersController : Controller
         {
             return BadRequest();
         }
-        else
-        {
-            await _dbContext.AddAsync(offers);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
-        }
+
+        await _dbContext.AddAsync(offers);
+        await _dbContext.SaveChangesAsync();
+        return Ok();
     }
 
     // Create API to get a specific order by ID.
