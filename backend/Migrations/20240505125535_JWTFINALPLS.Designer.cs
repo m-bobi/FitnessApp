@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.DbContext;
 
@@ -11,9 +12,11 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240505125535_JWTFINALPLS")]
+    partial class JWTFINALPLS
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -492,7 +495,7 @@ namespace backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int?>("Age")
+                    b.Property<int>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -510,6 +513,7 @@ namespace backend.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
@@ -574,8 +578,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "d9370711-3e3c-474d-a9cb-de0fcc3c1bdc",
-                            CreatedAt = new DateTime(2024, 5, 5, 13, 1, 38, 555, DateTimeKind.Utc).AddTicks(7662),
+                            ConcurrencyStamp = "11c25e26-4dab-41e1-a789-ac512a66833d",
+                            CreatedAt = new DateTime(2024, 5, 5, 12, 55, 34, 519, DateTimeKind.Utc).AddTicks(4032),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -584,10 +588,10 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOMkWQzMabvDbCTBPj8c2MHQfV1s6fcGMG8KJWlw3yoVGLEEWSRW7+e7fVIZ8ZKYHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPAH/mNvjostnWae0IhcE0qqrhQfZ+9NgTmHrVjFL1BeVqexaGQRvDoWwpQYcXj8LQ==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "ac90d241-2477-45de-8973-b36f434dd0ec",
+                            SecurityStamp = "3dac73b2-2e0e-49f4-94d9-9a361a1afa74",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

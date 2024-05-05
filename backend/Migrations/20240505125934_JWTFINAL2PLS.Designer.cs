@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240501183804_startingAgain0")]
-    partial class startingAgain0
+    [Migration("20240505125934_JWTFINAL2PLS")]
+    partial class JWTFINAL2PLS
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -305,6 +305,28 @@ namespace backend.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("backend.Models.Page", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Author")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pages");
+                });
+
             modelBuilder.Entity("backend.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
@@ -401,23 +423,6 @@ namespace backend.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("backend.Models.Roles", b =>
-                {
-                    b.Property<int?>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("RoleId"));
-
-                    b.Property<string>("RoleType")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("backend.Models.Sponsors", b =>
                 {
                     b.Property<int?>("SponsorId")
@@ -487,7 +492,6 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
@@ -509,7 +513,6 @@ namespace backend.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
@@ -519,7 +522,6 @@ namespace backend.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Mobile")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
@@ -544,6 +546,9 @@ namespace backend.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
@@ -564,6 +569,31 @@ namespace backend.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
+                            AccessFailedCount = 0,
+                            Address = "admin street",
+                            Age = 20,
+                            ConcurrencyStamp = "79e59841-7397-4321-a323-245e9d45aed3",
+                            CreatedAt = new DateTime(2024, 5, 5, 12, 59, 33, 763, DateTimeKind.Utc).AddTicks(8694),
+                            Email = "root@email.com",
+                            EmailConfirmed = false,
+                            Gender = "Male",
+                            LockoutEnabled = false,
+                            Mobile = "044234234",
+                            Name = "Admin",
+                            NormalizedEmail = "ROOT@EMAIL.COM",
+                            NormalizedUserName = "ROOT@EMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO1XcB04Fp+p0rKtKO9gY3OvkA+hX1jOHgj9hmYxAyZ+GQufQSPmt28vNgmxJVF3nw==",
+                            PhoneNumberConfirmed = false,
+                            Role = 0,
+                            SecurityStamp = "493c1983-f372-414e-89c8-39452a88b832",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("backend.Models.WorkoutPlans", b =>

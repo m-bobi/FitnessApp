@@ -1,15 +1,16 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 using backend.Enums;
-using Microsoft.AspNetCore.Identity;
 
 namespace backend.Models;
 
-public class User : IdentityUser
+public class RegisterModel
 {
     [Required]
-    [StringLength(20, ErrorMessage = "The name should be less than 20 characters.")]
+    public string? Email { get; set; }
+
+    [Required] public string? Username { get; set; }
+
+    [Required] [StringLength(20, ErrorMessage = "The name should be less than 20 characters.")]
     public string? Name { get; init; }
 
     [StringLength(20, ErrorMessage = "The address should be less than 20 characters.")]
@@ -21,10 +22,10 @@ public class User : IdentityUser
 
     public int? Age { get; init; }
 
-    public string? Gender { get; init; }
-
-    [Column(TypeName = "datetime")]
-    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     
+    [Required]
+    public string Password { get; set; }
+    
+    public string? Gender { get; init; }
     public Roles Role { get; set; }
-}
+} 

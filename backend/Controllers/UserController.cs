@@ -1,5 +1,5 @@
 using backend.DbContext;
-using backend.DTO;
+using backend.Enums;
 using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -23,55 +23,73 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    [Route("api/login")]
-    public async Task<IActionResult> Login([FromBody] LoginModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
-        }
-
-        var user = await _userManager.FindByNameAsync(model.Username);
-
-        if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
-        {
-            return BadRequest("Invalid username or password");
-        }
-
-        // Validate the token (replace with your token validation logic)
-        var isValidToken = _tokenService.ValidateToken(model.Token); // Implement token validation logic
-
-        if (isValidToken)
-        {
-            // Login successful, return additional user data or other response
-            return Ok(user); // Or return other relevant data about the logged-in user
-        }
-
-        return BadRequest("Invalid token");
-    }
-
-    [HttpPost]
     [Route("api/register")]
-    public async Task<IActionResult> Register([FromBody] RegisterModel model)
+    public async Task<IActionResult> Register(RegisterModel request)
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
+            return BadRequest(ModelState);
         }
-
-        var user = new User { UserName = model.Username, Email = model.Email, Name = model.Name };
-        var result = await _userManager.CreateAsync(user, model.Password);
+        
+        var result = await _userManager.CreateAsync(
+            new User { UserName = request.Username, Email = request.Email, Role = Roles.User },
+            request.Password!
+        );
 
         if (result.Succeeded)
         {
-            // User created successfully
-            var token = await _tokenService.GenerateToken(user); // This generates a JWT token
-            return Ok(new { token = token }); // Return the token in the response
+            request.Password = "";
+            return CreatedAtAction(nameof(Register), new { email = request.Email, role = request.Role }, request);
         }
 
-        return BadRequest(result.Errors.Select(e => e.Description));
-    }
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(error.Code, error.Description);
+        }
 
+        return BadRequest(ModelState);
+    }
+    
+    
+    [HttpPost]
+    [Route("api/login")]
+    public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var managedUser = await _userManager.FindByEmailAsync(request.Email!);
+        if (managedUser == null)
+        {
+            return BadRequest("Bad credentials");
+        }
+
+        var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, request.Password!);
+        if (!isPasswordValid)
+        {
+            return BadRequest("Bad credentials");
+        }
+
+        var userInDb = _dbContext.Users.FirstOrDefault(u => u.Email == request.Email);
+        
+        if (userInDb is null)
+        {
+            return Unauthorized();
+        }
+        
+        var accessToken = _tokenService.CreateToken(userInDb);
+        await _dbContext.SaveChangesAsync();
+        
+        return Ok(new AuthResponse
+        {
+            Username = userInDb.UserName,
+            Email = userInDb.Email,
+            Token = accessToken,
+        });
+    }
+    
     [HttpGet("getAllUsers")]
     [Authorize] // Add authorization for this endpoint
     public async Task<List<User>> GetAllUsers()

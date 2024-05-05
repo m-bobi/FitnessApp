@@ -2,81 +2,82 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using backend.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Services;
 
 public class TokenService
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SigningCredentials _credentials;
+    private const int ExpirationMinutes = 30;
+    private readonly ILogger<TokenService> _logger;
     private readonly IConfiguration _configuration;
 
-    public TokenService(UserManager<User> userManager, IConfiguration configuration)
+    public TokenService(ILogger<TokenService> logger,  IConfiguration configuration)
     {
-        _userManager = userManager;
+        _logger = logger;
         _configuration = configuration;
-
-        var secret = configuration["Jwt:Secret"];
-        _credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-            SecurityAlgorithms.HmacSha256);
     }
 
-    public async Task<string> GenerateToken(User user)
+    public string CreateToken(User user)
     {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName)
-        };
-
-        var roles = await _userManager.GetRolesAsync(user);
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = _credentials
-        };
-
+        var expiration = DateTime.UtcNow.AddMinutes(ExpirationMinutes);
+        var token = CreateJwtToken(
+            CreateClaims(user),
+            CreateSigningCredentials(),
+            expiration
+        );
         var tokenHandler = new JwtSecurityTokenHandler();
-        var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(securityToken);
+        
+        _logger.LogInformation("JWT Token created");
+        
+        return tokenHandler.WriteToken(token);
     }
 
-    public async Task<bool> ValidateToken(string token)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
+    private JwtSecurityToken CreateJwtToken(List<Claim> claims, SigningCredentials credentials,
+        DateTime expiration) =>
+        new(
+            _configuration["JwtTokenSettings:ValidIssuer"],
+            _configuration["JwtTokenSettings:ValidAudience"],
+            claims,
+            expires: expiration,
+            signingCredentials: credentials
+        );
 
+    private List<Claim> CreateClaims(User user)
+    {
+        var jwtSub = _configuration["JwtTokenSettings:JwtRegisteredClaimNamesSub"];
+        
         try
         {
-            var tokenValidationParameters = new TokenValidationParameters
+            var claims = new List<Claim>
             {
-                ValidateIssuerSigningKey = true, // Verify the signing key
-                IssuerSigningKey = _credentials.Key,
-                ValidateIssuer = true, // Validate the issuer (optional)
-                ValidateAudience = true, // Validate the audience (optional)
-                ValidateLifetime = true, // Validate expiration time
-                ClockSkew = TimeSpan.Zero // Set clock skew to zero for strict time validation (optional)
+                new Claim(JwtRegisteredClaimNames.Sub, jwtSub),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
-
-            // Try to parse and validate the token
-            var securityToken = tokenHandler.ReadToken(token);
-            var principal = await tokenHandler.ValidateTokenAsync(securityToken, tokenValidationParameters);
-
-            // Check if the user associated with the token exists (optional)
-            var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
-            return user != null; // Check if user exists
-
+            
+            return claims;
         }
-        catch (SecurityTokenException ex)
+        catch (Exception e)
         {
-            // Handle security token exceptions (e.g., invalid signature, expired token)
-            Console.WriteLine($"Security Token Exception: {ex.Message}");
-            return false;
+            Console.WriteLine(e);
+            throw;
         }
+    }
+
+    private SigningCredentials CreateSigningCredentials()
+    {
+        var symmetricSecurityKey = _configuration["JwtTokenSettings:SymmetricSecurityKey"];
+        
+        return new SigningCredentials(
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(symmetricSecurityKey)
+            ),
+            SecurityAlgorithms.HmacSha256
+        );
     }
 }
