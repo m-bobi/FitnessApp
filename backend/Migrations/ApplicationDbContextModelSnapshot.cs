@@ -574,8 +574,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "d9370711-3e3c-474d-a9cb-de0fcc3c1bdc",
-                            CreatedAt = new DateTime(2024, 5, 5, 13, 1, 38, 555, DateTimeKind.Utc).AddTicks(7662),
+                            ConcurrencyStamp = "e4e35a04-f699-4d05-b647-3e51491502f2",
+                            CreatedAt = new DateTime(2024, 5, 6, 17, 58, 1, 812, DateTimeKind.Utc).AddTicks(6057),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -584,10 +584,10 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOMkWQzMabvDbCTBPj8c2MHQfV1s6fcGMG8KJWlw3yoVGLEEWSRW7+e7fVIZ8ZKYHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPtnKdbBQl+RHSLz1MVMdZntPmMelEpBu/3gk2zgzy+m07O746+0X2GYH3SHBRsYVA==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "ac90d241-2477-45de-8973-b36f434dd0ec",
+                            SecurityStamp = "b746f3d2-d3e9-4817-bfb1-9e9b0d79d3a2",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

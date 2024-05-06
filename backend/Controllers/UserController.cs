@@ -1,4 +1,5 @@
 using backend.DbContext;
+using backend.DTO;
 using backend.Enums;
 using backend.Models;
 using backend.Services;
@@ -22,34 +23,94 @@ public class UserController : Controller
         _dbContext = dbContext;
     }
 
-    [HttpPost]
-    [Route("api/register")]
-    public async Task<IActionResult> Register(RegisterModel request)
+    // [HttpPost]
+    // [Route("api/register")]
+    // public async Task<IActionResult> Register(RegisterModel request)
+    // {
+    //     if (!ModelState.IsValid)
+    //     {
+    //         return BadRequest(ModelState);
+    //     }
+    //     
+    //     var result = await _userManager.CreateAsync(
+    //         new User { UserName = request.Username, Email = request.Email, Role = Roles.User },
+    //         request.Password!
+    //     );
+    //
+    //     if (result.Succeeded)
+    //     {
+    //         request.Password = "";
+    //         return CreatedAtAction(nameof(Register), new { email = request.Email, role = request.Role }, request);
+    //     }
+    //
+    //     foreach (var error in result.Errors)
+    //     {
+    //         ModelState.AddModelError(error.Code, error.Description);
+    //     }
+    //
+    //     return BadRequest(ModelState);
+    // }
+    
+    // [HttpPost]
+    // [Route("api/register")]
+    // public async Task<IActionResult> Register([FromBody] User user)
+    // {
+    //     if (user is null)
+    //     {
+    //         return BadRequest();
+    //     }
+    //
+    //     await _dbContext.AddAsync(user);
+    //     await _dbContext.SaveChangesAsync();
+    //     return Ok();
+    // }
+    //
+    
+    [HttpPost("register")]
+    public async Task <ActionResult<LoginModel>> Register(RegisterModel registerDto)
     {
-        if (!ModelState.IsValid)
+        if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
         {
-            return BadRequest(ModelState);
+            ModelState.AddModelError("email", "Email ekziston");
+            return ValidationProblem();
         }
-        
-        var result = await _userManager.CreateAsync(
-            new User { UserName = request.Username, Email = request.Email, Role = Roles.User },
-            request.Password!
-        );
+
+        if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
+        {
+            ModelState.AddModelError("username", "Username ekziston");
+            return ValidationProblem();
+        }
+
+        var user = new User
+        {
+            Name = registerDto.Name,
+            Email = registerDto.Email,
+            UserName = registerDto.Username,
+        };
+
+        var result = await _userManager.CreateAsync(user, registerDto.Password);
 
         if (result.Succeeded)
         {
-            request.Password = "";
-            return CreatedAtAction(nameof(Register), new { email = request.Email, role = request.Role }, request);
+            return CreateUserObject(user);
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(error.Code, error.Description);
-        }
-
-        return BadRequest(ModelState);
+        return BadRequest("Problem gjate regjistrimit te perdoruesit!");
     }
     
+    private LoginModel CreateUserObject (User user)
+    {
+        return new LoginModel
+        {
+            Id = user.Id,
+            DisplayName = user.Name,
+            Email = user.Email,
+            Token = _tokenService.CreateToken(user),
+            Image = null,
+            Username = user.UserName,
+            Role = Enums.Roles.User
+        };
+    }
     
     [HttpPost]
     [Route("api/login")]
