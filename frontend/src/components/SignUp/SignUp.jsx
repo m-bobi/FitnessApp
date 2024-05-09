@@ -3,7 +3,7 @@ import Navbar from '../shared/Navbar/Navbar'
 import './SignUp.css'
 import { Link } from 'react-router-dom'
 
-const SignUp = () => {
+const SignUp = () => {z
   return (
     <div>
       <Navbar />

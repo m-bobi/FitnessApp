@@ -16,7 +16,7 @@ public class User : IdentityUser
     public string? Address { get; set; }
 
     [RegularExpression(@"^\+?\d{1,3}[- ]?\d{3,14}$", ErrorMessage = "Invalid phone number format")]
-    public string? Mobile { get; init; }
+    public string? PhoneNumber { get; init; }
 
 
     public int? Age { get; init; }

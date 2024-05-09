@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240505125934_JWTFINAL2PLS")]
-    partial class JWTFINAL2PLS
+    [Migration("20240509114705_cleaningCodev2")]
+    partial class cleaningCodev2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -305,28 +305,6 @@ namespace backend.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("backend.Models.Page", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Author")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pages");
-                });
-
             modelBuilder.Entity("backend.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
@@ -495,7 +473,7 @@ namespace backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -520,9 +498,6 @@ namespace backend.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Mobile")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -577,20 +552,20 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "79e59841-7397-4321-a323-245e9d45aed3",
-                            CreatedAt = new DateTime(2024, 5, 5, 12, 59, 33, 763, DateTimeKind.Utc).AddTicks(8694),
+                            ConcurrencyStamp = "806b3b0c-deb8-45cb-920c-c913402a4bbd",
+                            CreatedAt = new DateTime(2024, 5, 9, 11, 47, 4, 934, DateTimeKind.Utc).AddTicks(6972),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
                             LockoutEnabled = false,
-                            Mobile = "044234234",
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO1XcB04Fp+p0rKtKO9gY3OvkA+hX1jOHgj9hmYxAyZ+GQufQSPmt28vNgmxJVF3nw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG09cEIXXO2TCssR977e2M9fXl40PEsVlSMV14nph1ZkCcGyMZY+oLY5A8lSSwb8qg==",
+                            PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
-                            Role = 0,
-                            SecurityStamp = "493c1983-f372-414e-89c8-39452a88b832",
+                            Role = 1,
+                            SecurityStamp = "498a60f5-cff8-4b02-82c6-f7e3bdb92175",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

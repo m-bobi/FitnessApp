@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using backend.DbContext;
 using backend.DTO;
 using backend.Enums;
@@ -9,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
-
+[ApiVersion( 1.0 )]
+[Route("api/[controller]" )]
 public class UserController : Controller
 {
     private readonly UserManager<User> _userManager;
@@ -22,62 +24,19 @@ public class UserController : Controller
         _tokenService = tokenService;
         _dbContext = dbContext;
     }
-
-    // [HttpPost]
-    // [Route("api/register")]
-    // public async Task<IActionResult> Register(RegisterModel request)
-    // {
-    //     if (!ModelState.IsValid)
-    //     {
-    //         return BadRequest(ModelState);
-    //     }
-    //     
-    //     var result = await _userManager.CreateAsync(
-    //         new User { UserName = request.Username, Email = request.Email, Role = Roles.User },
-    //         request.Password!
-    //     );
-    //
-    //     if (result.Succeeded)
-    //     {
-    //         request.Password = "";
-    //         return CreatedAtAction(nameof(Register), new { email = request.Email, role = request.Role }, request);
-    //     }
-    //
-    //     foreach (var error in result.Errors)
-    //     {
-    //         ModelState.AddModelError(error.Code, error.Description);
-    //     }
-    //
-    //     return BadRequest(ModelState);
-    // }
-    
-    // [HttpPost]
-    // [Route("api/register")]
-    // public async Task<IActionResult> Register([FromBody] User user)
-    // {
-    //     if (user is null)
-    //     {
-    //         return BadRequest();
-    //     }
-    //
-    //     await _dbContext.AddAsync(user);
-    //     await _dbContext.SaveChangesAsync();
-    //     return Ok();
-    // }
-    //
     
     [HttpPost("register")]
-    public async Task <ActionResult<LoginModel>> Register(RegisterModel registerDto)
+    public async Task <ActionResult<UserDto>> Register(RegisterModel registerDto)
     {
         if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
         {
-            ModelState.AddModelError("email", "Email ekziston");
+            ModelState.AddModelError("email", "Email already exists!");
             return ValidationProblem();
         }
 
         if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
         {
-            ModelState.AddModelError("username", "Username ekziston");
+            ModelState.AddModelError("username", "Username already exists!");
             return ValidationProblem();
         }
 
@@ -85,6 +44,7 @@ public class UserController : Controller
         {
             Name = registerDto.Name,
             Email = registerDto.Email,
+            Role = registerDto.Role,
             UserName = registerDto.Username,
         };
 
@@ -95,25 +55,10 @@ public class UserController : Controller
             return CreateUserObject(user);
         }
 
-        return BadRequest("Problem gjate regjistrimit te perdoruesit!");
+        return BadRequest("We encountered an error while creating a user. Please, try again later!");
     }
     
-    private LoginModel CreateUserObject (User user)
-    {
-        return new LoginModel
-        {
-            Id = user.Id,
-            DisplayName = user.Name,
-            Email = user.Email,
-            Token = _tokenService.CreateToken(user),
-            Image = null,
-            Username = user.UserName,
-            Role = Enums.Roles.User
-        };
-    }
-    
-    [HttpPost]
-    [Route("api/login")]
+    [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request)
     {
         if (!ModelState.IsValid)
@@ -152,7 +97,7 @@ public class UserController : Controller
     }
     
     [HttpGet("getAllUsers")]
-    [Authorize] // Add authorization for this endpoint
+    [Authorize(Roles = "Manaxher, Trainer")]
     public async Task<List<User>> GetAllUsers()
     {
         return await _dbContext.Users.ToListAsync();
@@ -160,6 +105,7 @@ public class UserController : Controller
 
     // Create API to add user.
     [HttpPost("addUser")]
+    [Authorize(Roles = "Manaxher")]
     public async Task<IActionResult> AddUser([FromBody] User user)
     {
         if (user is null)
@@ -174,6 +120,7 @@ public class UserController : Controller
 
     // Create API to get a specific user by ID.
     [HttpGet("getUser/{id}")]
+    [Authorize(Roles = "Manaxher, Trainer")]
     public async Task<IActionResult> GetUserById(int id)
     {
         var user = await _dbContext.Users.FindAsync(id);
@@ -187,7 +134,8 @@ public class UserController : Controller
 
     // Create API to delete a user by ID.
     [HttpDelete("deleteUser/{id}")]
-    public async Task<IActionResult> DeleteUser(int id)
+    [Authorize(Roles = "Manaxher")]
+    public async Task<IActionResult> DeleteUser(string id)
     {
         var user = await _dbContext.Users.FindAsync(id);
         if (user == null)
@@ -202,6 +150,7 @@ public class UserController : Controller
 
     // Create API to update an existing user.
     [HttpPut("updateUser/{id}")]
+    [Authorize(Roles = "Manaxher, Trainer")]
     public async Task<IActionResult> UpdateUser([FromBody]User user)
     {
         if (user is null)
@@ -217,11 +166,25 @@ public class UserController : Controller
 
         if (user.Id != existingUser.Id)
         {
-            return BadRequest("User ID mismatch");
+            return BadRequest("User ID mismatch.");
         }
 
         _dbContext.Entry(existingUser).CurrentValues.SetValues(user);
         await _dbContext.SaveChangesAsync();
-        return Ok("User updated successfully");
+        return Ok("User updated successfully!");
+    }
+    
+    // Create user object
+    private UserDto CreateUserObject (User user)
+    {
+        return new UserDto
+        {
+            Id = user.Id,
+            Username = user.UserName,
+            Email = user.Email,
+            Token = _tokenService.CreateToken(user),
+            Image = null,
+            Role = Enums.Roles.User
+        };
     }
 }

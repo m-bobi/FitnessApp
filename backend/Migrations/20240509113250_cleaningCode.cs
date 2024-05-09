@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class JWTFINALPLS : Migration
+    public partial class cleaningCode : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,8 +46,8 @@ namespace backend.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Mobile = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<string>(type: "longtext", nullable: false)
+                    Age = table.Column<int>(type: "int", nullable: true),
+                    Gender = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
@@ -183,25 +183,6 @@ namespace backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Pages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Body = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Author = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pages", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -482,7 +463,7 @@ namespace backend.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Age", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "Mobile", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", 20, "11c25e26-4dab-41e1-a789-ac512a66833d", new DateTime(2024, 5, 5, 12, 55, 34, 519, DateTimeKind.Utc).AddTicks(4032), "root@email.com", false, "Male", false, null, "044234234", "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAEPAH/mNvjostnWae0IhcE0qqrhQfZ+9NgTmHrVjFL1BeVqexaGQRvDoWwpQYcXj8LQ==", null, false, 0, "3dac73b2-2e0e-49f4-94d9-9a361a1afa74", false, "admin" });
+                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", 20, "d20e58d9-1ee6-4ca3-85c0-644d0339f2ac", new DateTime(2024, 5, 9, 11, 32, 49, 141, DateTimeKind.Utc).AddTicks(8713), "root@email.com", false, "Male", false, null, "044234234", "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAECRBdnWM/bvQLKWRfNEUZ4DsvtEZw2W0JigHETkwfZ2TIv0RjxTmCvZVbo79BoAOgQ==", null, false, 1, "617d2343-1b84-42b8-90cf-f3eb8671a6cd", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -557,9 +538,6 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "Pages");
 
             migrationBuilder.DropTable(
                 name: "Payments");

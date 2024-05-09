@@ -302,28 +302,6 @@ namespace backend.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("backend.Models.Page", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Author")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pages");
-                });
-
             modelBuilder.Entity("backend.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
@@ -518,9 +496,6 @@ namespace backend.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Mobile")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -574,20 +549,20 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "e4e35a04-f699-4d05-b647-3e51491502f2",
-                            CreatedAt = new DateTime(2024, 5, 6, 17, 58, 1, 812, DateTimeKind.Utc).AddTicks(6057),
+                            ConcurrencyStamp = "806b3b0c-deb8-45cb-920c-c913402a4bbd",
+                            CreatedAt = new DateTime(2024, 5, 9, 11, 47, 4, 934, DateTimeKind.Utc).AddTicks(6972),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
                             LockoutEnabled = false,
-                            Mobile = "044234234",
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPtnKdbBQl+RHSLz1MVMdZntPmMelEpBu/3gk2zgzy+m07O746+0X2GYH3SHBRsYVA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG09cEIXXO2TCssR977e2M9fXl40PEsVlSMV14nph1ZkCcGyMZY+oLY5A8lSSwb8qg==",
+                            PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
-                            Role = 0,
-                            SecurityStamp = "b746f3d2-d3e9-4817-bfb1-9e9b0d79d3a2",
+                            Role = 1,
+                            SecurityStamp = "498a60f5-cff8-4b02-82c6-f7e3bdb92175",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

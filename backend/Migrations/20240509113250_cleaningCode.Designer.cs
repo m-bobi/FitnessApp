@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240505130139_JWTFINALLLPLS")]
-    partial class JWTFINALLLPLS
+    [Migration("20240509113250_cleaningCode")]
+    partial class cleaningCode
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -305,28 +305,6 @@ namespace backend.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("backend.Models.Page", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Author")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pages");
-                });
-
             modelBuilder.Entity("backend.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
@@ -577,8 +555,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "d9370711-3e3c-474d-a9cb-de0fcc3c1bdc",
-                            CreatedAt = new DateTime(2024, 5, 5, 13, 1, 38, 555, DateTimeKind.Utc).AddTicks(7662),
+                            ConcurrencyStamp = "d20e58d9-1ee6-4ca3-85c0-644d0339f2ac",
+                            CreatedAt = new DateTime(2024, 5, 9, 11, 32, 49, 141, DateTimeKind.Utc).AddTicks(8713),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -587,10 +565,10 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOMkWQzMabvDbCTBPj8c2MHQfV1s6fcGMG8KJWlw3yoVGLEEWSRW7+e7fVIZ8ZKYHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECRBdnWM/bvQLKWRfNEUZ4DsvtEZw2W0JigHETkwfZ2TIv0RjxTmCvZVbo79BoAOgQ==",
                             PhoneNumberConfirmed = false,
-                            Role = 0,
-                            SecurityStamp = "ac90d241-2477-45de-8973-b36f434dd0ec",
+                            Role = 1,
+                            SecurityStamp = "617d2343-1b84-42b8-90cf-f3eb8671a6cd",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
