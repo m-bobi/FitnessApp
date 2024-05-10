@@ -1,72 +1,115 @@
-import React from 'react'
-import Navbar from '../shared/Navbar/Navbar'
-import './SignUp.css'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import Navbar from '../shared/Navbar/Navbar';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import config from "../../config";
 
-const SignUp = () => {z
+const SignUp = () => {
+  const [formData, setFormData] = useState({
+    Name: '',
+    Email: '',
+    Password: '',
+    confirmPassword: '',
+    gender: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${config.apiBaseURL}api/User/register`, formData);
+      if (response.status === 200) {
+        // Registration successful
+        // Redirect to login page or display success message
+      } else {
+        // Registration failed
+        // Handle error, maybe display error message
+      }
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+  };
+
   return (
     <div>
       <Navbar />
-      <div class="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
-        <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-          <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-            <div class="mt-12 flex flex-col items-center">
-              <h1 class="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
-              <div class="w-full flex-1 mt-8">
-                <div class="flex flex-col items-center"></div>
-
-                <div class="mx-auto max-w-xs">
+      <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
+        <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+          <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+            <div className="mt-12 flex flex-col items-center">
+              <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
+              <form onSubmit={handleSubmit} className="w-full flex-1 mt-8">
+                <div className="flex flex-col items-center">
                   <input
-                    class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                    type="name"
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="text"
+                    name="name"
                     placeholder="Name"
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                   <input
-                    class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="email"
+                    name="email"
                     placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
                   />
 
                   <input
-                    class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="password"
+                    name="password"
                     placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
                   />
 
                   <input
-                    class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="password"
+                    name="confirmPassword"
                     placeholder="Confirm Password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
                   />
 
                   <select
-                    class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                    type=""
-                    placeholder="Gender"
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
                   >
-                    <option value="" selected>
+                    <option value="" disabled selected>
                       Select Gender
                     </option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
-                    <option value="Boxing">Other</option>
+                    <option value="Other">Other</option>
                   </select>
-                  <button class="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                  <button
+                    type="submit"
+                    className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                  >
                     <svg
-                      class="w-6 h-6 -ml-2"
+                      className="w-6 h-6 -ml-2"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                       <circle cx="8.5" cy="7" r="4" />
                       <path d="M20 8v6M23 11h-6" />
                     </svg>
-                    <span class="ml-3">Sign Up</span>
+                    <span className="ml-3">Sign Up</span>
                   </button>
-                  <p class="mt-6 text-xs text-gray-600 text-center">
+                  <p className="mt-6 text-xs text-gray-600 text-center">
                     I agree to terms and service
                   </p>
                   <div className="my-12 border-b text-center">
@@ -78,16 +121,13 @@ const SignUp = () => {z
                     </div>
                   </div>
                 </div>
-              </div>
+              </form>
             </div>
-          </div>
-          <div class="flex-1 bg-gray-300 text-center hidden lg:flex justify-center p-5 signupParent">
-            <div class="m-12 xl:m-16 w-full signUp"></div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default SignUp
+export default SignUp;
