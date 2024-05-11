@@ -26,20 +26,20 @@ public class UserController : Controller
     }
     
     [HttpPost("register")]
-    public async Task <ActionResult<UserDto>> Register(RegisterModel registerDto)
+    public async Task <ActionResult<UserDto>> Register([FromBody] RegisterModel registerDto)
     {
         if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
         {
             ModelState.AddModelError("email", "Email already exists!");
             return ValidationProblem();
         }
-
+        
         if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
         {
             ModelState.AddModelError("username", "Username already exists!");
             return ValidationProblem();
         }
-
+        
         var user = new User
         {
             Name = registerDto.Name,
@@ -47,15 +47,17 @@ public class UserController : Controller
             Role = registerDto.Role,
             UserName = registerDto.Username,
         };
-
+        
         var result = await _userManager.CreateAsync(user, registerDto.Password);
-
+        
         if (result.Succeeded)
         {
             return CreateUserObject(user);
         }
-
+        
         return BadRequest("We encountered an error while creating a user. Please, try again later!");
+        
+            
     }
     
     [HttpPost("login")]
