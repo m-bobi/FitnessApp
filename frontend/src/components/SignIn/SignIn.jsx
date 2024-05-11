@@ -1,8 +1,35 @@
 import React, { useState } from 'react'
 import "./SignIn.css"
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState('');
+     const [password, setPassword] = useState('');
+  
+  
+  
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post("http://localhost:5259/api/User/login", {
+        email: email,
+        password : password,
+      });
+      console.log("Success");
+      window.alert("User has been loged in.");
+      navigate("/");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
   return (
     <div>
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
@@ -49,11 +76,20 @@ const SignIn = () => {
                     <div className="mx-auto max-w-xs">
                         <input
                             className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                            type="email" placeholder="Email" />
+                            type="email" placeholder="Email"
+                            onChange={(event) => {
+                                setEmail(event.target.value);
+                              }}
+                             />
                         <input
                             className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                            type="password" placeholder="Password" />
+                            type="password" placeholder="Password" 
+                            onChange={(event) => {
+                                setPassword(event.target.value);
+                              }}
+                            />
                         <button
+                        onClick={handleSubmit}
                             className="mt-5 tracking-wide font-semibold bg-sign text-gray-100 w-full py-4 rounded-lg hover:bg-red-400 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                             <svg className="w-6 h-6 -ml-2" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">

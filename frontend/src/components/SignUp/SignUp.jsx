@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../shared/Navbar/Navbar';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import config from '../../config'
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   // const [formData, setFormData] = useState({
   //   email: '',
@@ -14,6 +14,8 @@ const SignUp = () => {
   //   password: '',
   //   gender: ''
   // });
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
 const [username, setUsername] = useState('');
@@ -42,6 +44,7 @@ const handleSubmit = async (event) => {
     });
     console.log("Success");
     window.alert("User has been registered.");
+    navigate("/signIn");
   } catch (error) {
     console.error("Error:", error);
   }
