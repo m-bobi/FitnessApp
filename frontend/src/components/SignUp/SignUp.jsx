@@ -3,6 +3,8 @@ import Navbar from '../shared/Navbar/Navbar';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import  { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const SignUp = () => {
   // const [formData, setFormData] = useState({
   //   email: '',
@@ -26,6 +28,9 @@ const [age, setAge] = useState(0);
 const [password, setPassword] = useState('');
 const [gender, setGender] = useState('');
 
+const [confirmPassword, setConfirmPassword] = useState('');
+
+
 
 
 
@@ -43,7 +48,8 @@ const handleSubmit = async (event) => {
       gender : gender
     });
     console.log("Success");
-    window.alert("User has been registered.");
+    // window.alert("User has been registered.");
+    toast.success('User has been registered.');
     navigate("/signIn");
   } catch (error) {
     console.error("Error:", error);
@@ -54,6 +60,17 @@ const handleSubmit = async (event) => {
     <div>
       <Navbar />
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
+      <ToastContainer 
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      />
         <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
@@ -139,6 +156,9 @@ const handleSubmit = async (event) => {
                     type="password"
                     name="confirmPassword"
                     placeholder="Confirm Password"
+                    onChange={(event) => {
+                      setConfirmPassword(event.target.value);
+                    }}
                   />
 
 
