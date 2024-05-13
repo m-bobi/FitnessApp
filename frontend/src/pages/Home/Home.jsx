@@ -1,14 +1,16 @@
 import React from 'react'
 import Navbar from '../../components/shared/Navbar/Navbar'
+import {Helmet} from "react-helmet"
 
 
 const Home = () => {
   return (
-      <main
-        className="bg-cover h-screen"
-      >
+      <div className="homepage h-[32rem]">
+    <Helmet>
+      <title>Ascend | Home</title>
+    </Helmet>
         <Navbar/>
-      </main>
+      </div>
   );
 }
 

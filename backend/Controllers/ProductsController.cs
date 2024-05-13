@@ -48,12 +48,10 @@ public class ProductsController : Controller
         {
             return BadRequest();
         }
-        else
-        {
-            await _dbContext.AddAsync(product);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
-        }
+
+        await _dbContext.AddAsync(product);
+        await _dbContext.SaveChangesAsync();
+        return Ok();
     }
 
 

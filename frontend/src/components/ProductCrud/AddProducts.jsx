@@ -19,7 +19,7 @@ const AddProducts = () => {
   const addProduct = async (event) => {
     event.preventDefault();
     try {
-      await axios.post(`${config.apiBaseUrl}addProduct`, {
+      await axios.post(`${config.apiBaseURL}addProduct`, {
         productName: productName,
         productDescription: productDescription,
         productPrice: productPrice,

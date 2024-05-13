@@ -48,12 +48,10 @@ public class OrdersController : Controller
         {
             return BadRequest();
         }
-        else
-        {
-            await _dbContext.AddAsync(order);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
-        }
+
+        await _dbContext.AddAsync(order);
+        await _dbContext.SaveChangesAsync();
+        return Ok();
     }
 
 
