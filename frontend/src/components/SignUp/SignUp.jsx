@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import  { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { Helmet } from 'react-helmet';
 
 const SignUp = () => {
 const navigate = useNavigate();
@@ -35,8 +35,7 @@ const handleSubmit = async (event) => {
       password: password,
       gender: gender,
     });
-    console.log("Success");
-    toast.success("User has been registered.");
+    toast.success("You've successfully registered!");
     setTimeout(() => {
       navigate("/signIn");
     }, 3000);
@@ -49,6 +48,11 @@ const handleSubmit = async (event) => {
 
   return (
     <div class="fix">
+      <Helmet>
+        <title>
+          Ascend | Sign Up
+        </title>
+      </Helmet>
       <Navbar />
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
       <ToastContainer
