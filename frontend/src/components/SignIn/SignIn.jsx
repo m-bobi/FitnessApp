@@ -37,7 +37,7 @@ const SignIn = () => {
       </Helmet>
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
         <ToastContainer
-          position="top-right"
+          position="bottom-right"
           autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}

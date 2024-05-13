@@ -56,7 +56,8 @@ const handleSubmit = async (event) => {
       <Navbar />
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
       <ToastContainer
-      position="top-right"
+      position="bottom-right"
+      padding="5%"
       autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
