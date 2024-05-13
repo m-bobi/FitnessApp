@@ -1,26 +1,17 @@
 import React, { useState } from 'react';
 import Navbar from '../shared/Navbar/Navbar';
 import './SignUp.css';
+import config from "../../config"
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import  { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
 const SignUp = () => {
-  // const [formData, setFormData] = useState({
-  //   email: '',
-  //   username: '',
-  //   name: '',
-  //   address: '',
-  //   mobile : '',
-  //   age: 0,
-  //   password: '',
-  //   gender: ''
-  // });
-
-  const navigate = useNavigate();
-
-  const [email, setEmail] = useState('');
+const navigate = useNavigate();
+const [email, setEmail] = useState('');
 const [username, setUsername] = useState('');
 const [name, setName] = useState('');
 const [address, setAddress] = useState('');
@@ -31,37 +22,36 @@ const [gender, setGender] = useState('');
 
 const [confirmPassword, setConfirmPassword] = useState('');
 
-
-
-
-
 const handleSubmit = async (event) => {
   event.preventDefault();
   try {
-    await axios.post("http://localhost:5259/api/User/register", {
+    await axios.post(`${config.apiBaseURL}api/User/register`, {
       email: email,
       username: username,
       name: name,
       address: address,
       mobile: mobile,
       age: age,
-      password : password,
-      gender : gender
+      password: password,
+      gender: gender,
     });
     console.log("Success");
-    // window.alert("User has been registered.");
-    toast.success('User has been registered.');
-    navigate("/signIn");
+    toast.success("User has been registered.");
+    setTimeout(() => {
+      navigate("/signIn");
+    }, 3000);
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
+
+
   return (
     <div class="fix">
       <Navbar />
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
-      <ToastContainer 
+      <ToastContainer
       position="top-right"
       autoClose={3000}
       hideProgressBar={false}
@@ -72,14 +62,14 @@ const handleSubmit = async (event) => {
       draggable
       pauseOnHover
       />
-      
+
         <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
               <form onSubmit={handleSubmit} className="w-full flex-1 mt-8">
                 <div className="flex flex-col items-center">
-                
+
                 <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="email"
@@ -110,7 +100,7 @@ const handleSubmit = async (event) => {
                       setName(event.target.value);
                     }}
                   />
-                
+
                 <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="text"
@@ -141,7 +131,7 @@ const handleSubmit = async (event) => {
                     }}
                   />
 
-               
+
 
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
@@ -180,7 +170,7 @@ const handleSubmit = async (event) => {
                     <option value="Other">Other</option>
                   </select>
 
-            
+
                   <button
                     onClick={handleSubmit}
                     type="submit"
@@ -215,15 +205,15 @@ const handleSubmit = async (event) => {
               </form>
             </div>
           </div>
-          <div class="flex-1 bg-gray-300 text-center hidden lg:flex justify-center p-5 signupParent">
+          <div class="flex-1 bg-gray-300 text-center hidden lg:flex justify-center p-3 pt-20 pb-20">
             <div class="m-12 xl:m-16 w-full signUp"></div>
             </div>
         </div>
         </div>
-          
-            
+
+
       </div>
-      
+
     // </div>
   );
 };
