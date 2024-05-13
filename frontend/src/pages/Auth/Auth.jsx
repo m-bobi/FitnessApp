@@ -4,10 +4,12 @@ import SignUp from '../../components/SignUp/SignUp'
 import Navbar from '../../components/shared/Navbar/Navbar'
 import './Auth.css';
 
-const Auth = () => {
+const Auth = ({isLoggedIn}) => {
   return (
     <div className='authPage'>
-        <Navbar/>
+        <Navbar
+          isLoggedIn={isLoggedIn}
+        />
         <SignIn/>
     </div>
   )

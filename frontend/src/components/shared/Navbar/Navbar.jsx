@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { IoIosSearch } from "react-icons/io";
 
 
-const Navbar = () => {
+const Navbar = ({isLoggedIn}) => {
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -74,14 +74,25 @@ const Navbar = () => {
       </div>
 
       <div class="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-10">
-        <Link class="inline-flex rounded-full shadow" to="/signIn">
-          <div
-            href="#"
-            class="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50 "
-          >
-            Sign in
-          </div>
-        </Link>
+      {isLoggedIn ? (
+          <Link className="inline-flex rounded-full shadow" to="/signIn">
+            <div
+              href="#"
+              className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50"
+            >
+              You are logged in
+            </div>
+          </Link>
+          ) : (
+            <Link className="inline-flex rounded-full shadow" to="/signIn">
+              <div
+                href="#"
+                className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50"
+              >
+                Log in
+              </div>
+            </Link>
+          )}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Auth from "../../pages/Auth/Auth";
 import config from "../../config";
 
 const SignIn = () => {
@@ -13,6 +14,7 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,6 +23,7 @@ const SignIn = () => {
         email: email,
         password: password,
       });
+      // setIsLoggedIn(true);
       toast.success("You've successfully logged in! Redirecting..");
       setTimeout(() => {
         navigate("/");
@@ -38,7 +41,7 @@ const SignIn = () => {
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
         <ToastContainer
           position="bottom-right"
-          autoClose={2000}
+          autoClose={1500}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
