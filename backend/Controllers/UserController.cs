@@ -176,6 +176,18 @@ public class UserController : Controller
         return Ok("User updated successfully!");
     }
     
+    
+    [AllowAnonymous]
+    [HttpGet("checkEmail")]
+    public async Task<IActionResult> CheckEmail(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        bool usedEmail = user != null;
+        
+        return Ok(usedEmail);
+    }
+    
     // Create user object
     private UserDto CreateUserObject (User user)
     {
