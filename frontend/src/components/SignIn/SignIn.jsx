@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Auth from "../../pages/Auth/Auth";
+import {jwtDecode} from "jwt-decode";
 import config from "../../config";
 
 const SignIn = () => {
@@ -19,15 +20,27 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post(`${config.apiBaseURL}api/User/login`, {
+      const response = await axios.post(`${config.apiBaseURL}api/User/login`, {
         email: email,
         password: password,
       });
+
+         if (response.status === 200) {
+      const { token } = response.data;
+
+      localStorage.setItem("token", token);
+
+      const decodedToken = jwtDecode(token);
+
+      localStorage.setItem("id", decodedToken.id);
+
+
       // setIsLoggedIn(true);
       toast.success("You've successfully logged in! Redirecting..");
       setTimeout(() => {
         navigate("/");
       }, 2000);
+    }
     } catch (error) {
       console.error("Error:", error);
     }
