@@ -2,11 +2,28 @@ import React, { useEffect, useState } from 'react'
 import  './Navbar.css';
 import { Link } from 'react-router-dom';
 import { IoIosSearch } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 
 
-const Navbar = ({isLoggedIn}) => {
+const Navbar = () => {
+
+  const navigate = useNavigate();
 
   const [scrolled, setScrolled] = useState(false);
+
+  const token = localStorage.getItem("token");
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+  }
+  
+  
+  
+  
+  
+
 
   useEffect(() => {
     // Function to handle scroll event
@@ -28,12 +45,13 @@ const Navbar = ({isLoggedIn}) => {
     };
   }, []);
 
+
+
   return (
     <div className={scrolled ? "navbar-scrolled" : "navbar"}>
       <Link to="/" className="logoHolder">
         <div className="logo"></div>
       </Link>
-
       <div className="navLinks ">
         <Link
           to="/UserCRUD"
@@ -73,26 +91,43 @@ const Navbar = ({isLoggedIn}) => {
       <div className="nav-auth">
       </div>
 
-      <div class="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-10">
-      {isLoggedIn ? (
-          <Link className="inline-flex rounded-full shadow" to="/signIn">
-            <div
-              href="#"
-              className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50"
-            >
-              You are logged in
-            </div>
-          </Link>
-          ) : (
-            <Link className="inline-flex rounded-full shadow" to="/signIn">
+      <div class="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-10 auth">
+          {token && 
+            (
+              <Link className="inline-flex rounded-full shadow"
+              onClick={handleSignOut}
+              >
               <div
                 href="#"
                 className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50"
               >
-                Log in
+                Log Out
               </div>
             </Link>
-          )}
+            )
+          }
+
+          {!token && 
+            (
+              <Link className="inline-flex rounded-full shadow" to="/signIn">
+              <div
+                href="#"
+                className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50"
+              >
+                Log In
+              </div>
+            </Link>
+            )
+          }
+
+        <Link className="inline-flex rounded-full shadow" to="/signUp">
+              <div
+                href="#"
+                className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50"
+              >
+                Sign Up
+              </div>
+            </Link>
       </div>
     </div>
   );

@@ -6,16 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Auth from "../../pages/Auth/Auth";
 import {jwtDecode} from "jwt-decode";
 import config from "../../config";
+import Navbar from "../shared/Navbar/Navbar";
 
 const SignIn = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,9 +33,7 @@ const SignIn = () => {
       const decodedToken = jwtDecode(token);
 
       localStorage.setItem("id", decodedToken.id);
-
-
-      // setIsLoggedIn(true);
+      localStorage.setItem("role", decodedToken.role);
       toast.success("You've successfully logged in! Redirecting..");
       setTimeout(() => {
         navigate("/");
@@ -48,6 +46,7 @@ const SignIn = () => {
 
   return (
     <div class="fix">
+      <Navbar />
       <Helmet>
         <title>Ascend | Sign In</title>
       </Helmet>
