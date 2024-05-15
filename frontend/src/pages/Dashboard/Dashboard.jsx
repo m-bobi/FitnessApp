@@ -5,8 +5,6 @@ const Dashboard = () => {
   return (
     <div>
       <DashboardNavigation />
-
-      <h1 className='flex justify-center'>Dashboard</h1>
     </div>
   );
 }
