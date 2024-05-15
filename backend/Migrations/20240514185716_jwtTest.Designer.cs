@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.DbContext;
 
@@ -11,9 +12,11 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240514185716_jwtTest")]
+    partial class jwtTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -541,31 +544,6 @@ namespace backend.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
-                            AccessFailedCount = 0,
-                            Address = "admin street",
-                            Age = 20,
-                            ConcurrencyStamp = "2482d7f4-ac5c-4fde-9b0e-4361aa3a4849",
-                            CreatedAt = new DateTime(2024, 5, 14, 19, 50, 33, 7, DateTimeKind.Utc).AddTicks(1904),
-                            Email = "root@email.com",
-                            EmailConfirmed = false,
-                            Gender = "Male",
-                            LockoutEnabled = false,
-                            Name = "Admin",
-                            NormalizedEmail = "ROOT@EMAIL.COM",
-                            NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEORKZe9f3vUQQus4uuBEy/vtSLAs9Od1aHJkhuUMJplXQuWwAry9BHIQ2XCi/2u7KQ==",
-                            PhoneNumber = "044234234",
-                            PhoneNumberConfirmed = false,
-                            Role = 1,
-                            SecurityStamp = "ba4e8fc3-0ff0-4149-920e-655fe5608ee6",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("backend.Models.WorkoutPlans", b =>
