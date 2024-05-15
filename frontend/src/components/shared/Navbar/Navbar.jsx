@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { IoIosSearch } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
-
+import { GoSignOut } from "react-icons/go";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
 
@@ -20,7 +21,7 @@ const Navbar = () => {
   }
   
   
-  
+
   
   
 
@@ -97,12 +98,17 @@ const Navbar = () => {
               <Link className="inline-flex rounded-full shadow"
               onClick={handleSignOut}
               >
-              <div
-                href="#"
-                className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50"
+             <GoSignOut className='signoutIcon' />
+            </Link>
+            )
+          }
+
+          {token && 
+            (
+              <Link className="inline-flex rounded-full shadow"
+              
               >
-                Log Out
-              </div>
+              <FaRegUserCircle className='userIcon'/>
             </Link>
             )
           }

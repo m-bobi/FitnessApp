@@ -15,7 +15,6 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -43,7 +42,7 @@ const SignIn = () => {
       console.error("Error:", error);
     }
   };
-
+ 
   return (
     <div class="fix">
       <Navbar />

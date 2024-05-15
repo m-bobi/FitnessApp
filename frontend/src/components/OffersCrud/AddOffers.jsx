@@ -44,7 +44,7 @@ const AddOffers = () => {
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
-        className="mt-6 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900 fixed top-4 right-4 z-50"
+        className="mt-6 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900 ml-10 z-50"
         type="button"
         onClick={toggleModal}
       >

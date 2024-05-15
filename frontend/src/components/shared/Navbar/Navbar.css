@@ -59,5 +59,9 @@
 
 .auth{
     display: flex;
-    gap: 14px;
+    gap: 20px;
+}
+
+.signoutIcon,.userIcon{
+    font-size: 30px;
 }
