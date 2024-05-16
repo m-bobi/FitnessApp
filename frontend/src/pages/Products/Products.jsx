@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardNavigation from "../../components/shared/Navbar/DashboardNavigation";
+import DashboardNavigation from "../../components/shared/Navbar/AdminDashboard";
 import ListProducts from "../../components/ProductCrud/ListProducts";
 import AddProduct from "../../components/ProductCrud/AddProducts";
 

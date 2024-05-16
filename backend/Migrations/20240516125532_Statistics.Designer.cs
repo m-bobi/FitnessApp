@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240511185748_newMigration")]
-    partial class newMigration
+    [Migration("20240516125532_Statistics")]
+    partial class Statistics
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -294,11 +294,8 @@ namespace backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<float>("OrderTotalAmount")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("OrderTotalAmount")
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("OrderId");
 
@@ -409,6 +406,9 @@ namespace backend.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("SponsorId"));
 
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<string>("SponsorCompanyName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -416,6 +416,9 @@ namespace backend.Migrations
                     b.Property<string>("SponsorType")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("SponsorshipDate")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("SponsorId");
 
@@ -544,6 +547,31 @@ namespace backend.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
+                            AccessFailedCount = 0,
+                            Address = "admin street",
+                            Age = 20,
+                            ConcurrencyStamp = "68d5e794-151d-4620-94df-e5180c72ec2c",
+                            CreatedAt = new DateTime(2024, 5, 16, 12, 55, 32, 46, DateTimeKind.Utc).AddTicks(6198),
+                            Email = "root@email.com",
+                            EmailConfirmed = false,
+                            Gender = "Male",
+                            LockoutEnabled = false,
+                            Name = "Admin",
+                            NormalizedEmail = "ROOT@EMAIL.COM",
+                            NormalizedUserName = "ROOT@EMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAENKAnSWhsdvDi9jR4785lF7v96lj0lEHsAUHF4z52YIV+mkx0Sdt9K7EzXR09x7PMA==",
+                            PhoneNumber = "044234234",
+                            PhoneNumberConfirmed = false,
+                            Role = 1,
+                            SecurityStamp = "ab66badb-6ff2-4507-9b7c-048503079455",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("backend.Models.WorkoutPlans", b =>

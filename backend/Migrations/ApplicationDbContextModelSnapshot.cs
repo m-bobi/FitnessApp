@@ -291,11 +291,8 @@ namespace backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<float>("OrderTotalAmount")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("OrderTotalAmount")
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("OrderId");
 
@@ -406,6 +403,9 @@ namespace backend.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("SponsorId"));
 
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<string>("SponsorCompanyName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -413,6 +413,9 @@ namespace backend.Migrations
                     b.Property<string>("SponsorType")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("SponsorshipDate")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("SponsorId");
 
@@ -549,8 +552,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "2482d7f4-ac5c-4fde-9b0e-4361aa3a4849",
-                            CreatedAt = new DateTime(2024, 5, 14, 19, 50, 33, 7, DateTimeKind.Utc).AddTicks(1904),
+                            ConcurrencyStamp = "68d5e794-151d-4620-94df-e5180c72ec2c",
+                            CreatedAt = new DateTime(2024, 5, 16, 12, 55, 32, 46, DateTimeKind.Utc).AddTicks(6198),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -558,11 +561,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEORKZe9f3vUQQus4uuBEy/vtSLAs9Od1aHJkhuUMJplXQuWwAry9BHIQ2XCi/2u7KQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENKAnSWhsdvDi9jR4785lF7v96lj0lEHsAUHF4z52YIV+mkx0Sdt9K7EzXR09x7PMA==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "ba4e8fc3-0ff0-4149-920e-655fe5608ee6",
+                            SecurityStamp = "ab66badb-6ff2-4507-9b7c-048503079455",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

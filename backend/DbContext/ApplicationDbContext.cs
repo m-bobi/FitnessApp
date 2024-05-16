@@ -59,7 +59,7 @@ namespace backend.DbContext
                     PasswordHash = hasher.HashPassword(null, adminPassword),
                     Email = adminEmail,
                     NormalizedEmail = adminEmail.ToUpper(),
-                    Role = Enums.Roles.Manaxher
+                    Role = Enums.Roles.Manager
                 }
             );
         }

@@ -41,6 +41,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 builder.Services.AddScoped<TokenService, TokenService>();
 
@@ -114,6 +115,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("_myAllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -124,6 +126,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors("_myAllowSpecificOrigins");
 
 app.Run();

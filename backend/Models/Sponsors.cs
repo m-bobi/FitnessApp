@@ -14,6 +14,7 @@ public class Sponsors
     [Required]
     public string? SponsorType { get; set; }
     
-    [ForeignKey("ManagerId")]
-    public int? ManagerId { get; }
+    public decimal? Amount { get; set; }
+    
+    public DateTime SponsorshipDate { get; set; }
 }

@@ -2,36 +2,36 @@ import React, { useState } from "react";
 import axios from "axios";
 import config from "../../config";
 
-
 const AddOrders = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [orderTotalAmount, setOrderTotalAmount] = useState("");
+  const [orderStatus, setOrderStatus] = useState("");
+  const [userName, setUserName] = useState("");
+  const [orderDate, setDateTime] = useState("");
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
-  const [orderTotalAmount, setOrderTotalAmount] = useState("");
-  const [orderStatus, setOrderStatus] = useState("");
-  const [userID, setUserID] = useState("");
-  const [orderDate, setDateTime] = useState("");
-
-  const addOrder = (event) => {
+  const addOrder = async (event) => {
     event.preventDefault();
     try {
-      axios
-        .post(`${config.apiBaseUrl}addOrder`, {
+      await axios.post(
+        `${config.apiBaseUrl}api/Orders/addOrder`,
+        {
           orderTotalAmount: orderTotalAmount,
           orderStatus: orderStatus,
-          userID: userID,
+          userName: userName,
           orderDate: orderDate,
-        })
-        .then(() => {
-          console.log("success");
-          window.alert("Order has been added.");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("success");
+      window.alert("Order has been added.");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -121,16 +121,16 @@ const AddOrders = () => {
 
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      User ID
+                     Username
                     </label>
                     <input
                       type="text"
-                      name="UserID"
+                      name="UserName"
                       placeholder="Enter user"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={(event) => {
-                        setUserID(event.target.value);
+                        setUserName(event.target.value);
                       }}
                     />
                   </div>
