@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import  { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 const SignUp = () => {
 const navigate = useNavigate();
@@ -20,39 +20,102 @@ const [age, setAge] = useState(0);
 const [password, setPassword] = useState('');
 const [gender, setGender] = useState('');
 
+
+
 const [confirmPassword, setConfirmPassword] = useState('');
 
-const handleSubmit = async (event) => {
+
+const [image, setImage] = useState(null);
+
+
+
+// const handleSubmit = async (event) => {
+//   event.preventDefault();
+//   try {
+//     const formData = new FormData();
+//     formData.append('image', image);
+//     const imageResponse = await axios.post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formData);
+   
+//     await axios.post(`${config.apiBaseURL}api/User/register`, {
+//       email: email,
+//       username: username,
+//       name: name,
+//       address: address,
+//       mobile: mobile,
+//       image : imageResponse.data.imageUrl,
+//       age: age,
+//       password: password,
+//       gender: gender,
+//     });
+    
+//     toast.success("You've successfully registered!");
+//     setTimeout(() => {
+//       navigate("/signIn");
+//     }, 3000);
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// };
+
+async function handleSubmit(event) {
   event.preventDefault();
-  try {
-    await axios.post(`${config.apiBaseURL}api/User/register`, {
-      email: email,
-      username: username,
-      name: name,
-      address: address,
-      mobile: mobile,
-      age: age,
-      password: password,
-      gender: gender,
-    });
-    toast.success("You've successfully registered!");
-    setTimeout(() => {
-      navigate("/signIn");
-    }, 3000);
-  } catch (error) {
-    console.error("Error:", error);
+  if (image) {
+    const formData = new FormData();
+    formData.append('image', image);
+
+    try {
+      await axios.post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formData)
+        .then(async (response) => {
+          await axios
+            .post(`${config.apiBaseURL}api/User/register`, {
+                    email: email,
+                    username: username,
+                    name: name,
+                    address: address,
+                    mobile: mobile,
+                    image: response.data,
+                   age: age,
+                   password: password,
+                    gender: gender,
+            })
+  
+        });
+            toast.success("You've successfully registered!");
+          setTimeout(() => {
+            navigate("/signIn");
+          }, 3000);
+    } catch (error) {
+      console.error(error);
+    }
+
+  } else {
+    await axios
+      .post(`${config.apiBaseURL}api/User/register`, {
+        email: email,
+        username: username,
+        name: name,
+        address: address,
+        mobile: mobile,
+        image: "UserWithoutImage.png",
+       age: age,
+       password: password,
+        gender: gender,
+      })
   }
-};
+}
 
 
 
   return (
     <div class="fix">
-      <Helmet>
-        <title>
-          Ascend | Sign Up
-        </title>
-      </Helmet>
+     <HelmetProvider>
+  <div>
+    <Helmet>  
+    <title>Ascend | Sign Up</title>
+    </Helmet>
+ 
+  </div>
+</HelmetProvider>
       <Navbar />
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
       <ToastContainer
@@ -123,6 +186,16 @@ const handleSubmit = async (event) => {
                     placeholder="Mobile"
                     onChange={(event) => {
                       setMobile(event.target.value);
+                    }}
+                  />
+
+                  <input
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    type="file"
+                    name="image"
+                    placeholder="Image"
+                    onChange={(event) => {
+                      setImage(event.target.files[0]);
                     }}
                   />
 
@@ -214,6 +287,8 @@ const handleSubmit = async (event) => {
             <div class="m-12 xl:m-16 w-full signUp"></div>
             </div>
         </div>
+
+      
         </div>
 
 

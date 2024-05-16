@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240516125532_Statistics")]
-    partial class Statistics
+    [Migration("20240516150511_stats")]
+    partial class stats
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -555,8 +555,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "68d5e794-151d-4620-94df-e5180c72ec2c",
-                            CreatedAt = new DateTime(2024, 5, 16, 12, 55, 32, 46, DateTimeKind.Utc).AddTicks(6198),
+                            ConcurrencyStamp = "18ff995b-2522-43d9-aee9-dcc9eb4afebd",
+                            CreatedAt = new DateTime(2024, 5, 16, 15, 5, 10, 728, DateTimeKind.Utc).AddTicks(3110),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -564,11 +564,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENKAnSWhsdvDi9jR4785lF7v96lj0lEHsAUHF4z52YIV+mkx0Sdt9K7EzXR09x7PMA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPfS180qoQ2guuWeOuaFqAU0f0uv3UKRfpYlSTLRjh7D3XYMSpyBvD97mehdgY9ZLA==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "ab66badb-6ff2-4507-9b7c-048503079455",
+                            SecurityStamp = "9cbaa372-6515-48d2-b170-62dd04007e73",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

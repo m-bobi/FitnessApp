@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Statistics : Migration
+    public partial class stats : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -462,7 +462,7 @@ namespace backend.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Age", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", 20, "68d5e794-151d-4620-94df-e5180c72ec2c", new DateTime(2024, 5, 16, 12, 55, 32, 46, DateTimeKind.Utc).AddTicks(6198), "root@email.com", false, "Male", false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAENKAnSWhsdvDi9jR4785lF7v96lj0lEHsAUHF4z52YIV+mkx0Sdt9K7EzXR09x7PMA==", "044234234", false, 1, "ab66badb-6ff2-4507-9b7c-048503079455", false, "admin" });
+                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", 20, "18ff995b-2522-43d9-aee9-dcc9eb4afebd", new DateTime(2024, 5, 16, 15, 5, 10, 728, DateTimeKind.Utc).AddTicks(3110), "root@email.com", false, "Male", false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAEPfS180qoQ2guuWeOuaFqAU0f0uv3UKRfpYlSTLRjh7D3XYMSpyBvD97mehdgY9ZLA==", "044234234", false, 1, "9cbaa372-6515-48d2-b170-62dd04007e73", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
