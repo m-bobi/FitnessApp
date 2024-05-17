@@ -13,6 +13,7 @@ import axios from "axios";
 import ListOrders from "../../OrderCrud/ListOrders";
 import AddOrders from "../../OrderCrud/AddOrders";
 
+
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
     newSignups: 0,
@@ -24,6 +25,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [role, setRole] = useState("");
+  const [userImage, setUserImage] = useState('');
 
   const [isDark, setIsDark] = useState(() => {
     if (window.localStorage.getItem("dark")) {
@@ -47,7 +49,24 @@ const AdminDashboard = () => {
 
       setUserName(name);
       setRole(role);
+
+      axios.get("http://localhost:5259/api/User/getAllUsers")
+        .then(response => {
+          console.log(response.data)
+          const userWithSameName = response.data.find(user => user.name === name);
+          if (userWithSameName) {
+            // If found, set the user's image to state
+            setUserImage(userWithSameName.image);
+          }
+        })
+        .catch(error => {
+          // Handle error
+          console.error('Error fetching users data:', error);
+        });
+
+
     }
+
 
 
     const fetchStatistics = async () => {
@@ -119,7 +138,7 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-blue-800 dark:bg-gray-800 border-none">
             <img
               className="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
-              src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg"
+              src={`/img/users/${userImage}`}
             />
             <div>
               <span className="hidden md:block text-lg">{userName}</span>

@@ -19,7 +19,7 @@ public class RegisterModel
     [RegularExpression(@"^\+?\d{1,3}[- ]?\d{3,14}$", ErrorMessage = "Invalid phone number format")]
     public string? Mobile { get; init; }
 
-
+    public string Image { get; set; }
     public int? Age { get; init; }
 
     

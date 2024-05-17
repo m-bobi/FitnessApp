@@ -45,6 +45,7 @@ public class UserController : Controller
             Name = registerDto.Name,
             Email = registerDto.Email,
             Role = registerDto.Role,
+            Image = registerDto.Image,
             UserName = registerDto.Username,
         };
 
@@ -99,7 +100,7 @@ public class UserController : Controller
     }
 
     [HttpGet("getAllUsers")]
-    [Authorize(Roles = "Manager, Trainer")]
+    // [Authorize(Roles = "Manager, Trainer")]
     public async Task<List<User>> GetAllUsers()
     {
         return await _dbContext.Users.ToListAsync();
@@ -197,7 +198,7 @@ public class UserController : Controller
             Username = user.UserName,
             Email = user.Email,
             Token = _tokenService.CreateToken(user),
-            Image = null,
+            // Image = null,
             Role = Enums.Roles.User
         };
     }

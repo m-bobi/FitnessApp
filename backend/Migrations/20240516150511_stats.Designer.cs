@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.DbContext;
 
@@ -11,9 +12,11 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240516150511_stats")]
+    partial class stats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,13 +297,7 @@ namespace backend.Migrations
                     b.Property<decimal>("OrderTotalAmount")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("OrderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -499,9 +496,6 @@ namespace backend.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("longtext");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -561,8 +555,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "18c2ad89-0f35-492e-bb2d-1cac3ec8519d",
-                            CreatedAt = new DateTime(2024, 5, 16, 17, 58, 1, 441, DateTimeKind.Utc).AddTicks(8988),
+                            ConcurrencyStamp = "18ff995b-2522-43d9-aee9-dcc9eb4afebd",
+                            CreatedAt = new DateTime(2024, 5, 16, 15, 5, 10, 728, DateTimeKind.Utc).AddTicks(3110),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -570,11 +564,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBpufRGTUQS2llR9lUvsVUxtHoYsYyA8YtqpVXsyU8xQsRy+fX2oYnc8Ct3EGEjV/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPfS180qoQ2guuWeOuaFqAU0f0uv3UKRfpYlSTLRjh7D3XYMSpyBvD97mehdgY9ZLA==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "9f0a8bce-c076-4c10-a64b-5118ba25fd90",
+                            SecurityStamp = "9cbaa372-6515-48d2-b170-62dd04007e73",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -679,17 +673,6 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("backend.Models.Orders", b =>
-                {
-                    b.HasOne("backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
