@@ -21,15 +21,20 @@ public class UploadImagesController : Controller
     
     
     
-    [HttpPost]
-    [Route("addUserImage")]
+    [HttpPost("addUserImage")]
     public async Task<IActionResult> AddUserImage(IFormFile image)
     {
         if (image == null || image.Length == 0)
         {
-            return BadRequest("Ju lutem vendosni foton");
+            return BadRequest("Please upload a picture!");
         }
 
+        var allowedExtensions = new[] { ".png", ".jpg", ".jpeg", ".webp" };
+        var fileExtension = Path.GetExtension(image.FileName).ToLower();
+        if (!allowedExtensions.Contains(fileExtension))
+        {
+            return BadRequest("Only .png, .jpg, .jpeg, and .webp file formats are allowed.");
+        }
 
         var folder = Path.Combine("..", "frontend", "public", "img", "users", image.FileName);
 
@@ -40,15 +45,6 @@ public class UploadImagesController : Controller
 
         return Ok(image.FileName);
     }
-
-
-    // private string GenerateUnicImageName(string emriFotos)
-    // {
-    //     string emriUnikIFotos = Guid.NewGuid().ToString("N") + Path.GetExtension(emriFotos);
-    //
-    //     return emriUnikIFotos;
-    // }
-
 
 }
 
