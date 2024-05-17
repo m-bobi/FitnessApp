@@ -294,7 +294,13 @@ namespace backend.Migrations
                     b.Property<decimal>("OrderTotalAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("OrderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -552,8 +558,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "68d5e794-151d-4620-94df-e5180c72ec2c",
-                            CreatedAt = new DateTime(2024, 5, 16, 12, 55, 32, 46, DateTimeKind.Utc).AddTicks(6198),
+                            ConcurrencyStamp = "0a7c3dcf-dba2-429f-acd2-e45718532880",
+                            CreatedAt = new DateTime(2024, 5, 16, 20, 54, 7, 274, DateTimeKind.Utc).AddTicks(2521),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -561,11 +567,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENKAnSWhsdvDi9jR4785lF7v96lj0lEHsAUHF4z52YIV+mkx0Sdt9K7EzXR09x7PMA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENLtgztK2gngKj0qnbaIjhqSrphPiw8z/BkMBAm5kFfdmQ9Vik6gaaVKcldUbV97pw==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "ab66badb-6ff2-4507-9b7c-048503079455",
+                            SecurityStamp = "6a5aeca0-4de6-4774-bc11-09437f1d57cd",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -670,6 +676,17 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("backend.Models.Orders", b =>
+                {
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

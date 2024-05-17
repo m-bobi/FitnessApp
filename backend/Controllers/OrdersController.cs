@@ -27,17 +27,28 @@ public class OrdersController : Controller
             var totalOrders = await _dbContext.Orders.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalOrders / limit);
 
+            // Include User data to get the username
             var orders = await _dbContext.Orders
+                .Include(o => o.User)
                 .OrderByDescending(o => o.OrderId)
                 .Skip((page - 1) * limit)
                 .Take(limit)
                 .ToListAsync();
 
-            return Ok(new { orders, totalPages });
+            var ordersWithUsername = orders.Select(order => new
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                OrderTotalAmount = order.OrderTotalAmount,
+                OrderStatus = order.OrderStatus,
+                UserId = order.UserId,
+                UserName = order.User.UserName
+            });
+
+            return Ok(new { orders, ordersWithUsername, totalPages });
         }
         catch (Exception ex)
         {
-            // Error Logging
             Console.WriteLine("Error fetching orders: " + ex.Message);
             return StatusCode(500, "Internal server error");
         }
