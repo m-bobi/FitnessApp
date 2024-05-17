@@ -208,7 +208,7 @@ public class UserController : Controller
             Username = user.UserName,
             Email = user.Email,
             Token = _tokenService.CreateToken(user),
-            // Image = null,
+            // Image = null, qetu duhet mu bo uncomment edhe me ja qu image te userit qysh e kena ma nalt
             Role = Enums.Roles.User
         };
     }
