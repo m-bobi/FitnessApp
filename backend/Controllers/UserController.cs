@@ -100,7 +100,7 @@ public class UserController : Controller
     }
 
     [HttpGet("getAllUsers")]
-    // [Authorize(Roles = "Manager, Trainer")]
+    [Authorize(Roles = "Manager, Trainer")]
     public async Task<List<User>> GetAllUsers()
     {
         return await _dbContext.Users.ToListAsync();
@@ -177,6 +177,16 @@ public class UserController : Controller
         return Ok("User updated successfully!");
     }
 
+     [HttpGet("getUserByUsername/{username}")]
+        public async Task<ActionResult<User>> GetUserByUsername(string username)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
 
     [AllowAnonymous]
     [HttpGet("checkEmail")]

@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import { GoSignOut } from "react-icons/go";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-import AddUsers from "../../UsersCrud/AddUsers";
-import ListUsers from "../../UsersCrud/ListUsers";
-import AddOffers from "../../OffersCrud/AddOffers";
-import ListOffers from "../../OffersCrud/ListOffers";
 import { jwtDecode } from "jwt-decode";
 import config from "../../../config";
 import axios from "axios";
@@ -40,34 +36,35 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
-      const name = decodedToken[
-        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-      ];
-      const role = decodedToken[
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-      ];
+      const name =
+        decodedToken[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+        ];
+      const role =
+        decodedToken[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
 
       setUserName(name);
       setRole(role);
 
-      axios.get("http://localhost:5259/api/User/getAllUsers")
-        .then(response => {
-          console.log(response.data)
-          const userWithSameName = response.data.find(user => user.name === name);
+      axios
+        .get("http://localhost:5259/api/User/getAllUsers")
+        .then((response) => {
+          console.log(response.data);
+          const userWithSameName = response.data.find(
+            (user) => user.name === name
+          );
           if (userWithSameName) {
             // If found, set the user's image to state
             setUserImage(userWithSameName.image);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle error
-          console.error('Error fetching users data:', error);
+          console.error("Error fetching users data:", error);
         });
-
-
     }
-
-
 
     const fetchStatistics = async () => {
       try {
@@ -136,10 +133,13 @@ const AdminDashboard = () => {
       <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white dashboard">
         <div className="fixed w-full flex items-center justify-between h-14 text-white z-10">
           <div className="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-blue-800 dark:bg-gray-800 border-none">
-            <img
-              className="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
-              src={`/img/users/${userImage}`}
-            />
+            {userImage && (
+              <img
+                src={userImage}
+                className="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
+                alt="User"
+              />
+            )}
             <div>
               <span className="hidden md:block text-lg">{userName}</span>
               <span className="hidden md:block text-sm">{role}</span>
@@ -664,7 +664,7 @@ const AdminDashboard = () => {
           <div className="p-40">
             <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
               Orders
-              <AddOrders/>
+              <AddOrders />
             </h1>
             <ListOrders />
           </div>

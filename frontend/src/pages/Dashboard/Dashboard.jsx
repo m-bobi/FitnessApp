@@ -1,10 +1,10 @@
 import React from 'react'
-import DashboardNavigation from '../../components/shared/Navbar/AdminDashboard'
+import AdminDashboard from '../../components/shared/Navbar/AdminDashboard'
 
 const Dashboard = () => {
   return (
     <div>
-      <DashboardNavigation />
+      <AdminDashboard />
     </div>
   );
 }
