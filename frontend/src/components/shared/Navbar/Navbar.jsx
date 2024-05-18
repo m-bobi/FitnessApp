@@ -14,12 +14,26 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [userImage, setUserImage] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [isManager, setIsManager] = useState(false);
+
   const token = localStorage.getItem("token");
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("role");
   };
+
+
+  const role = localStorage.getItem("role");
+
+  useEffect(() => {
+    if (role === 'Manager') {
+        setIsManager(true);
+    } else {
+        setIsManager(false);
+    }
+}, [role]);
 
   useEffect(() => {
     if (token) {
@@ -81,12 +95,22 @@ const Navbar = () => {
         >
           Products
         </Link>
-        <Link
+        {
+          isManager && (
+           <Link
           to="/dashboard"
           className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
         >
           Dashboard
-        </Link>
+        </Link> 
+          )
+        }
+        {/* <Link
+          to="/dashboard"
+          className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
+        >
+          Dashboard
+        </Link> */}
       </div>
       <Link className="search">
         <IoIosSearch className="searchIcon" />

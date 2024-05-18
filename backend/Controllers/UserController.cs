@@ -191,6 +191,14 @@ public class UserController : Controller
             }
             return Ok(user);
         }
+        
+        
+        [HttpGet("check-role")]
+        public IActionResult CheckRole()
+        {
+            var role = User.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+            return Ok(new { isManager = role == "Manager" });
+        }
 
     [AllowAnonymous]
     [HttpGet("checkEmail")]

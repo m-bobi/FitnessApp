@@ -5,6 +5,9 @@ import Aos from 'aos';
 import "aos/dist/aos.css";
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import Unauthorized from './components/Auth/Unauthorized';
+
 
 function App() {
 
@@ -24,8 +27,9 @@ function App() {
   }, [])
   return (
     <div>
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <Router>
+      
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/UserCRUD" element={<User />} />
@@ -34,7 +38,12 @@ function App() {
             <Route exact path="/trainers" element={<Trainers />} />
             <Route exact path="/offers" element={<Offers />} />
             {/* <Route exact path="/editTrainer/:id" element={<EditTrainers />} /> */}
-            <Route exact path="/dashboard" element={<Dashboard  />}  />
+            {/* <Route exact path="/dashboard" element={<Dashboard  />}  /> */}
+            <Route  element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
+
+           
             <Route exact path="/signin" element={<SignIn  />}  />
             <Route exact path="/signup" element={<SignUp  />}  />
 

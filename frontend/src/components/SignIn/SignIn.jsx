@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import {jwtDecode} from "jwt-decode";
 import config from "../../config";
 import Navbar from "../shared/Navbar/Navbar";
-import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -46,6 +45,8 @@ const SignIn = () => {
         console.error("User role not found in token.");
       }
       toast.success("You've successfully logged in! Redirecting..");
+
+    
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -58,14 +59,9 @@ const SignIn = () => {
   return (
     <div class="fix">
       <Navbar />
-      <HelmetProvider>
-  <div>
-    <Helmet>
-    <title>Ascend | Sign In</title>
-    </Helmet>
+ 
 
-  </div>
-</HelmetProvider>
+ 
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
         <ToastContainer
           position="bottom-right"

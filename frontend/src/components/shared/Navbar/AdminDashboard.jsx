@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GoSignOut } from "react-icons/go";
-import { Helmet } from "react-helmet";
+// import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import config from "../../../config";
@@ -93,6 +93,7 @@ const AdminDashboard = () => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("role");
   };
 
   const StatisticCard = ({ title, value, icon }) => (
@@ -125,9 +126,9 @@ const AdminDashboard = () => {
 
   return (
     <div className={isDark ? "dark" : ""}>
-      <Helmet>
+      {/* <Helmet>
         <title>Ascend | Dashboard</title>
-      </Helmet>
+      </Helmet> */}
       <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white dashboard">
         <div className="fixed w-full flex items-center justify-between h-14 text-white z-10">
           <div className="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-blue-800 dark:bg-gray-800 border-none">
