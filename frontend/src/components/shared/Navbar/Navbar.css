@@ -1,9 +1,10 @@
 .navbar {
     padding: 2% 4%;
     width: 100%;
-    background-color: transparent;
+    background-color: #010101;
     height: 80px;
     display: flex;
+    z-index: 999;
     justify-content: space-between;
     align-items: center;
     position: fixed;
@@ -34,7 +35,7 @@
 }
 
 .navLinks a {
-    color: #2d2727;
+    color: #ffffff;
 }
 
 .searchIcon {
@@ -42,19 +43,7 @@
     height: max(20px, 1.5vw);
 }
 
-.navbar-scrolled {
-    padding: 2% 4%;
-    width: 100%;
-    background-color: #fbfafa;
-    height: 80px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
+
 
 .auth {
     display: flex;

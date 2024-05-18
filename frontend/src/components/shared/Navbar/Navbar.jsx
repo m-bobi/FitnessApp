@@ -52,7 +52,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className={scrolled ? "navbar-scrolled" : "navbar"}>
+    <div className="navbar">
       <Link to="/" className="logoHolder">
         <div className="logo"></div>
       </Link>
