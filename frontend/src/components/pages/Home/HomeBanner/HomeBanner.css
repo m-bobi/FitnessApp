@@ -1,108 +1,124 @@
-.homeBanner{
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../../../../assets/bannerHome.webp");
-    height: max(700px,25vw);
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-top: max(80px,4vw);
-    padding: 10% 4% 4% 10%;
- }
-
- .homeBanner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-
-    background: inherit;
-    z-index: -1; /* Place behind the content */
-    background-attachment: fixed; /* Apply parallax effect */
-    background-size: cover; /* Maintain background size */
-    transform: translateZ(0); /* Ensure GPU acceleration for smoother performance */
+.homeBanner {
+   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url("../../../../assets/bannerHome.webp");
+   height: max(700px, 25vw);
+   background-repeat: no-repeat;
+   background-size: cover;
+   margin-top: max(80px, 4vw);
+   padding: 10% 4% 4% 10%;
 }
 
-/* Additional styles for text if needed */
+.homeBanner::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+
+   background: inherit;
+   background-attachment: fixed;
+   background-size: cover;
+   transform: translateZ(0);
+}
+
 .homeBanner h1 {
-    color: white; /* Text color */
-    position: relative; /* Position relative to the container */
-    z-index: 1; /* Ensure text appears above the pseudo-element */
-    /* Your other styles */
+   color: #f5f5f5;
+   position: relative;
 }
 
- .homeBanner p{
-    color: #ffffff;
- }
+.homeBanner p {
+   color: #f5f5f5;
+}
 
- .homeBannerContainer{
-    display: flex;
-    flex-direction: column;
-    gap: max(15px,1vw);
- }
+.homeBannerContainer {
+   display: flex;
+   flex-direction: column;
+   gap: max(15px, 1vw);
+}
 
- .middleText{
-    width: 40%;
- }
- .middleText p{
-    font-size: max(40px,3.5vw);
- }
- .firstText{
-    color: #EE4E4E !important;
- }
+.middleText {
+   width: 40%;
+}
 
- .bottomText{
-    width: 30%;
- }
- .bottomText p{
-    color: lightgray;
-    font-size: max(16px,1vw);
- }
+.middleText p {
+   font-size: max(40px, 3.5vw);
+   font-weight: 800;
+   font-style: italic;
+}
 
- @media screen and (max-width:1425px) {
-    .middleText{
-        width: 45%;
-     }
- }
+.firstText {
+   color: #EE4E4E !important;
+   font-size: max(18px, 1vw);
+}
 
- @media screen and (max-width:1425px) {
-    .middleText{
-        width: 45%;
-     }
-     .bottomText{
-        width: 33%;
-     }
- }
+.bottomText {
+   width: 30%;
+}
 
- 
- @media screen and (max-width:1125px) {
-    .middleText{
-        width: 50%;
-     }
-     .bottomText{
-        width: 36%;
-     }
- }
+.bottomText p {
+   color: gray;
+   letter-spacing: 0.09rem;
+   font-size: max(12px, 1vw);
+}
 
- @media screen and (max-width:950px) {
-    .middleText{
-        width: 60%;
-     }
-     .bottomText{
-        width: 42%;
-     }
- }
- @media screen and (max-width:820px) {
-    .homeBannerContainer{
-        align-items: center;
-        justify-content: center;
-    }
+.buttonS {
+   border: 2px solid white;
+}
 
-    .middleText{
-        width: 100%;
-        text-align: center;
-     }
-     .bottomText{
-        width: 100%;
-        text-align: center;
-     }
- }
+.buttonS:hover {
+   background-color: #dfdede;
+
+}
+
+@media screen and (max-width:1425px) {
+   .middleText {
+      width: 45%;
+   }
+}
+
+@media screen and (max-width:1425px) {
+   .middleText {
+      width: 45%;
+   }
+
+   .bottomText {
+      width: 33%;
+   }
+}
+
+
+@media screen and (max-width:1125px) {
+   .middleText {
+      width: 50%;
+   }
+
+   .bottomText {
+      width: 36%;
+   }
+}
+
+@media screen and (max-width:950px) {
+   .middleText {
+      width: 60%;
+   }
+
+   .bottomText {
+      width: 42%;
+   }
+}
+
+@media screen and (max-width:820px) {
+   .homeBannerContainer {
+      align-items: center;
+      justify-content: center;
+   }
+
+   .middleText {
+      width: 100%;
+      text-align: center;
+   }
+
+   .bottomText {
+      width: 100%;
+      text-align: center;
+   }
+}

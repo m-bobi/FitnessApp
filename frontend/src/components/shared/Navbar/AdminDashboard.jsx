@@ -52,17 +52,14 @@ const AdminDashboard = () => {
       setRole(role);
 
       axios
-        .get(`http://localhost:5259/api/User/getUser/${userId}`)
+        .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
         .then((response) => {
-          console.log(response.data)
           if (response.data && response.data.image) {
             setUserImage(`/img/users/${response.data.image}`);
-            console.log(userImage);
           }
 
         })
         .catch((error) => {
-          // Handle error
           console.error("Error fetching users data:", error);
         });
     }

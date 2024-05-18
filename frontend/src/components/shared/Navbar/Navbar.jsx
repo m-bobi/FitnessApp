@@ -52,7 +52,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="navbar">
+    <div className={scrolled ? "navbar-scrolled" : "navbar"}>
       <Link to="/" className="logoHolder">
         <div className="logo"></div>
       </Link>
@@ -116,7 +116,7 @@ const Navbar = () => {
                 onClick={handleSignOut}
                 onMouseLeave={() => setIsDropdownVisible(false)}
               >
-                <GoSignOut/> Log Out
+                <GoSignOut /> Log Out
               </Link>
             </div>
           )}
