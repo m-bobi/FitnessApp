@@ -44,21 +44,22 @@ const AdminDashboard = () => {
         decodedToken[
           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         ];
+        
+        const userId = localStorage.getItem("id");
+
 
       setUserName(name);
       setRole(role);
 
       axios
-        .get("http://localhost:5259/api/User/getAllUsers")
+        .get(`http://localhost:5259/api/User/getUser/${userId}`)
         .then((response) => {
-          console.log(response.data);
-          const userWithSameName = response.data.find(
-            (user) => user.name === name
-          );
-          if (userWithSameName) {
-            // If found, set the user's image to state
-            setUserImage(userWithSameName.image);
+          console.log(response.data)
+          if (response.data && response.data.image) {
+            setUserImage(`/img/users/${response.data.image}`);
+            console.log(userImage);
           }
+         
         })
         .catch((error) => {
           // Handle error

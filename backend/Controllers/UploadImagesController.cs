@@ -36,7 +36,9 @@ public class UploadImagesController : Controller
             return BadRequest("Only .png, .jpg, .jpeg, and .webp file formats are allowed.");
         }
 
-        var folder = Path.Combine("..", "frontend", "public", "img", "users", image.FileName); // qetu qekjo image.FileName duhet mu kon random ose hashed
+        var unicNameOfImage = GenerateUnicNameOfImage(image.FileName);
+        
+        var folder = Path.Combine("..", "frontend", "public", "img", "users", unicNameOfImage); // qetu qekjo image.FileName duhet mu kon random ose hashed
 
         using (var stream = new FileStream(folder, FileMode.Create))
         {
@@ -46,6 +48,12 @@ public class UploadImagesController : Controller
         return Ok(image.FileName);
     }
 
+    private string GenerateUnicNameOfImage(string imageName)
+    {
+        string unicNameOfImage = Guid.NewGuid().ToString("N") + Path.GetExtension(imageName);
+
+        return unicNameOfImage;
+    }
 }
 
 

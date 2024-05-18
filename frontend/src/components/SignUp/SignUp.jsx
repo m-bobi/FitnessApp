@@ -24,57 +24,56 @@ const SignUp = () => {
     image: null
   });
 
-  async function handleSubmit(event) {
-    event.preventDefault();
 
-    const { email, username, name, address, mobile, age, password, confirmPassword, gender, image } = formData;
 
-    if (!email || !username || !name ||  !address || !mobile ||  !age || !password  ||!confirmPassword || !gender) {
-        toast.error("Please fill in all fields.");
-        return;
-    }
+function handleSubmit(event) {
+  event.preventDefault();
 
-    if (password !== confirmPassword) {
-        toast.error("Passwords do not match.");
-        return;
-    }
+  const { email, username, name, address, mobile, age, password, confirmPassword, gender, image } = formData;
 
-    if (password.length < 6) {
-        toast.error("Password must be at least 6 characters long.");
-        return;
-    }
+  if (!email || !username || !name || !address || !mobile || !age || !password || !confirmPassword || !gender) {
+      toast.error("Please fill in all fields.");
+      return;
+  }
 
-    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-    const fileExtension = image.name.split(".").pop().toLowerCase();
+  if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+  }
 
-    if (!allowedExtensions.includes(fileExtension)) {
-        toast.error("Only .png, .jpg, .jpeg, and .webp file formats are allowed.");
-        return;
-    }
-    console.log("test")
-    try {
-        const formDataObj = new FormData();
-        formDataObj.append("image", image);
+  if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+  }
 
-        // qetu me i bo me .then qysh jon kon n'fillim
+  const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+  const fileExtension = image.name.split(".").pop().toLowerCase();
 
-        const imageResponse = await axios.post(
-           `${config.apiBaseURL}api/UploadImages/addUserImage`,
-            formDataObj
-        );
+  if (!allowedExtensions.includes(fileExtension)) {
+      toast.error("Only .png, .jpg, .jpeg, and .webp file formats are allowed.");
+      return;
+  }
 
-        await axios.post(`${config.apiBaseURL}api/User/register`, {
-            ...formData,
-            image: imageResponse.data
-        });
+  console.log("test");
 
-        toast.success("You've successfully registered!");
-    } catch (error) {
-        console.error(error);
-        toast.error("An error occurred while registering. Please try again later.");
-    }
+  const formDataObj = new FormData();
+  formDataObj.append("image", image);
+
+  axios.post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
+      .then(imageResponse => {
+          return axios.post(`${config.apiBaseURL}api/User/register`, {
+              ...formData,
+              image: imageResponse.data
+          });
+      })
+      .then(() => {
+          toast.success("You've successfully registered!");
+      })
+      .catch(error => {
+          console.error(error);
+          toast.error("An error occurred while registering. Please try again later.");
+      });
 }
-
 
   return (
     <div class="fix">

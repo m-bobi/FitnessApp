@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import { GoSignOut } from "react-icons/go";
 import { FaRegUserCircle } from "react-icons/fa";
+import axios from "axios";
 
 const Navbar = () => {
 
   const navigate = useNavigate();
 
   const [scrolled, setScrolled] = useState(false);
+  const [userImage, setUserImage] = useState('');
 
   const token = localStorage.getItem("token");
 
@@ -22,7 +24,25 @@ const Navbar = () => {
   
   
 
-  
+  useEffect(() => {
+    if (token) {
+        const userId = localStorage.getItem("id");
+      axios
+        .get(`http://localhost:5259/api/User/getUser/${userId}`)
+        .then((response) => {
+          console.log(response.data)
+          if (response.data && response.data.image) {
+            setUserImage(response.data.image);
+            console.log(userImage);
+          }
+         
+        })
+        .catch((error) => {
+          // Handle error
+          console.error("Error fetching users data:", error);
+        });
+    }
+  })
   
 
 
@@ -103,12 +123,14 @@ const Navbar = () => {
             )
           }
 
-          {token && 
+          {token &&  userImage &&
             (
               <Link className="inline-flex rounded-full shadow"
               
               >
-              <FaRegUserCircle className='userIcon'/>
+              <img 
+              src={`${process.env.PUBLIC_URL}/img/users/${userImage}`}
+              alt="User" />
             </Link>
             )
           }

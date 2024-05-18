@@ -46,6 +46,10 @@ public class UserController : Controller
             Email = registerDto.Email,
             Role = registerDto.Role,
             Image = registerDto.Image,
+            Age = registerDto.Age,
+            Address = registerDto.Address,
+            PhoneNumber = registerDto.Mobile ,
+            Gender = registerDto.Gender,
             UserName = registerDto.Username,
         };
 
@@ -123,8 +127,8 @@ public class UserController : Controller
 
     // Create API to get a specific user by ID.
     [HttpGet("getUser/{id}")]
-    [Authorize(Roles = "Manager, Trainer")]
-    public async Task<IActionResult> GetUserById(int id)
+    // [Authorize(Roles = "Manager, Trainer")]
+    public async Task<IActionResult> GetUserById(String id)
     {
         var user = await _dbContext.Users.FindAsync(id);
         if (user == null)
