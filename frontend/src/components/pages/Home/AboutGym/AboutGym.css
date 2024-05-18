@@ -1,0 +1,30 @@
+.aboutGym{
+    padding: 4%;
+    background: url("../../../../assets/about-1.webp");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 50%;
+    background-size: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aboutGym-leftSide{
+    width: 40%;
+    border: 1px solid red;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.aboutGym-rightSide{
+    width: 60%;
+    border: 1px solid red;
+}
+.aboutGym-rightSide .firstText{
+    font-weight: 500;
+    font-size: max(20px,1.2vw);
+}
+.aboutGym-leftSide-img{
+    content: url("../../../../assets/home2-1.jpg");
+}

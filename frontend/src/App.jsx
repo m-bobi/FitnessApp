@@ -1,6 +1,8 @@
 import React, { useState, useEffect, lazy ,Suspense} from 'react';
 import Home from './pages/Home/Home';
 import './index.css'
+import Aos from 'aos';
+import "aos/dist/aos.css";
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
 
@@ -13,7 +15,13 @@ function App() {
   const Offers = lazy(() => import("./pages/Offers/Offers"));
   const SignIn = lazy(() => import("./components/SignIn/SignIn"));
   const SignUp = lazy(() => import("./components/SignUp/SignUp"));
-  // const EditTrainers = lazy(() => import('./components/TrainersCrud/EditTrainer'))
+
+  useEffect(() => {
+    Aos.init({
+      duration:1200,
+      once: true
+    })
+  }, [])
   return (
     <div>
       <Suspense>

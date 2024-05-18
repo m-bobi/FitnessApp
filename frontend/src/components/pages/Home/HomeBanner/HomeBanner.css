@@ -1,0 +1,108 @@
+.homeBanner{
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../../../../assets/bannerHome.webp");
+    height: max(700px,25vw);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: max(80px,4vw);
+    padding: 10% 4% 4% 10%;
+ }
+
+ .homeBanner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    background: inherit;
+    z-index: -1; /* Place behind the content */
+    background-attachment: fixed; /* Apply parallax effect */
+    background-size: cover; /* Maintain background size */
+    transform: translateZ(0); /* Ensure GPU acceleration for smoother performance */
+}
+
+/* Additional styles for text if needed */
+.homeBanner h1 {
+    color: white; /* Text color */
+    position: relative; /* Position relative to the container */
+    z-index: 1; /* Ensure text appears above the pseudo-element */
+    /* Your other styles */
+}
+
+ .homeBanner p{
+    color: #ffffff;
+ }
+
+ .homeBannerContainer{
+    display: flex;
+    flex-direction: column;
+    gap: max(15px,1vw);
+ }
+
+ .middleText{
+    width: 40%;
+ }
+ .middleText p{
+    font-size: max(40px,3.5vw);
+ }
+ .firstText{
+    color: #EE4E4E !important;
+ }
+
+ .bottomText{
+    width: 30%;
+ }
+ .bottomText p{
+    color: lightgray;
+    font-size: max(16px,1vw);
+ }
+
+ @media screen and (max-width:1425px) {
+    .middleText{
+        width: 45%;
+     }
+ }
+
+ @media screen and (max-width:1425px) {
+    .middleText{
+        width: 45%;
+     }
+     .bottomText{
+        width: 33%;
+     }
+ }
+
+ 
+ @media screen and (max-width:1125px) {
+    .middleText{
+        width: 50%;
+     }
+     .bottomText{
+        width: 36%;
+     }
+ }
+
+ @media screen and (max-width:950px) {
+    .middleText{
+        width: 60%;
+     }
+     .bottomText{
+        width: 42%;
+     }
+ }
+ @media screen and (max-width:820px) {
+    .homeBannerContainer{
+        align-items: center;
+        justify-content: center;
+    }
+
+    .middleText{
+        width: 100%;
+        text-align: center;
+     }
+     .bottomText{
+        width: 100%;
+        text-align: center;
+     }
+ }
