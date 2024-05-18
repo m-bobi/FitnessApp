@@ -14,7 +14,7 @@ const AboutGym = () => {
 
         </div>
 
-        <div className='aboutGym-rightSide'>
+        <div className='aboutGym-rightSide' data-aos="fade-left">
              <p className='firstText'>ABOUT ASCEND</p>
              <div className='aboutRightHeading-holder'>
                 <p>We Can Give A Shape Of Your Body Here!</p>
