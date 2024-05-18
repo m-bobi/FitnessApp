@@ -37,7 +37,6 @@
     color: #2d2727;
 }
 
-
 .searchIcon {
     width: max(20px, 1.5vw);
     height: max(20px, 1.5vw);
@@ -57,11 +56,41 @@
     left: 0;
 }
 
-.auth{
+.auth {
     display: flex;
     gap: 20px;
 }
 
-.signoutIcon,.userIcon{
-    font-size: 30px;
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 0.5rem;
+    width: 10rem;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+    z-index: 10;
+}
+
+.dropdown-menu a {
+    display: flex;
+    gap: 2rem;
+    flex-direction: row;
+    padding: 0.25rem 1rem;
+    border-radius: 2rem;
+    color: #f56565;
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.dropdown-menu:hover, a:hover {
+    background-color: #f7fafc;
+}
+
+.signout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

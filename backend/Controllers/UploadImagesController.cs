@@ -37,21 +37,20 @@ public class UploadImagesController : Controller
         }
 
         var unicNameOfImage = GenerateUnicNameOfImage(image.FileName);
-        
-        var folder = Path.Combine("..", "frontend", "public", "img", "users", unicNameOfImage); // qetu qekjo image.FileName duhet mu kon random ose hashed
+    
+        var folder = Path.Combine("..", "frontend", "public", "img", "users", unicNameOfImage); 
 
         using (var stream = new FileStream(folder, FileMode.Create))
         {
             await image.CopyToAsync(stream);
         }
 
-        return Ok(image.FileName);
+        return Ok(unicNameOfImage);
     }
 
     private string GenerateUnicNameOfImage(string imageName)
     {
         string unicNameOfImage = Guid.NewGuid().ToString("N") + Path.GetExtension(imageName);
-
         return unicNameOfImage;
     }
 }

@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-
 const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -21,59 +20,84 @@ const SignUp = () => {
     password: "",
     gender: "",
     confirmPassword: "",
-    image: null
+    image: null,
   });
 
+  function handleSubmit(event) {
+    event.preventDefault();
 
+    const {
+      email,
+      username,
+      name,
+      address,
+      mobile,
+      age,
+      password,
+      confirmPassword,
+      gender,
+      image,
+    } = formData;
 
-function handleSubmit(event) {
-  event.preventDefault();
-
-  const { email, username, name, address, mobile, age, password, confirmPassword, gender, image } = formData;
-
-  if (!email || !username || !name || !address || !mobile || !age || !password || !confirmPassword || !gender) {
+    if (
+      !email ||
+      !username ||
+      !name ||
+      !address ||
+      !mobile ||
+      !age ||
+      !password ||
+      !confirmPassword ||
+      !gender
+    ) {
       toast.error("Please fill in all fields.");
       return;
-  }
+    }
 
-  if (password !== confirmPassword) {
+    if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;
-  }
+    }
 
-  if (password.length < 6) {
+    if (password.length < 6) {
       toast.error("Password must be at least 6 characters long.");
       return;
-  }
+    }
 
-  const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-  const fileExtension = image.name.split(".").pop().toLowerCase();
+    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+    const fileExtension = image.name.split(".").pop().toLowerCase();
 
-  if (!allowedExtensions.includes(fileExtension)) {
-      toast.error("Only .png, .jpg, .jpeg, and .webp file formats are allowed.");
+    if (!allowedExtensions.includes(fileExtension)) {
+      toast.error(
+        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+      );
       return;
-  }
+    }
 
-  console.log("test");
+    console.log("test");
 
-  const formDataObj = new FormData();
-  formDataObj.append("image", image);
+    const formDataObj = new FormData();
+    formDataObj.append("image", image);
 
-  axios.post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
-      .then(imageResponse => {
-          return axios.post(`${config.apiBaseURL}api/User/register`, {
-              ...formData,
-              image: imageResponse.data
-          });
+    axios
+      .post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
+      .then((imageResponse) => {
+        return axios.post(`${config.apiBaseURL}api/User/register`, {
+          ...formData,
+          image: imageResponse.data,
+        });
       })
       .then(() => {
-          toast.success("You've successfully registered!");
+        toast.success("You've successfully registered!");
+        navigate("/signin");
       })
-      .catch(error => {
-          console.error(error);
-          toast.error("An error occurred while registering. Please try again later.");
+      .catch((error) => {
+        console.error(error);
+        toast.error(
+          "An error occurred while registering. Please try again later."
+        );
       });
-}
+  }
 
   return (
     <div class="fix">
@@ -231,7 +255,7 @@ function handleSubmit(event) {
                   <div className="my-12 border-b text-center">
                     <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                       Or{" "}
-                      <Link to="/signIn" className="text-blue-800">
+                      <Link to="/signin" className="text-blue-800">
                         sign in
                       </Link>
                     </div>
@@ -239,10 +263,7 @@ function handleSubmit(event) {
                 </div>
               </form>
 
-
-
               {/* LEAVE OUTSIDE FORM UNTIL WE FIX ISSUE WITH SIGNUP */}
-
 
               <button
                 onClick={handleSubmit}
