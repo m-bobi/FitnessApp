@@ -33,13 +33,13 @@ const SignIn = () => {
 
       const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
       const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-      
+
       if (userId) {
         localStorage.setItem("id", userId);
       } else {
         console.error("User ID not found in token.");
       }
-      
+
       if (userRole) {
         localStorage.setItem("role", userRole);
       } else {
@@ -54,16 +54,16 @@ const SignIn = () => {
       console.error("Error:", error);
     }
   };
- 
+
   return (
     <div class="fix">
       <Navbar />
       <HelmetProvider>
   <div>
-    <Helmet>  
+    <Helmet>
     <title>Ascend | Sign In</title>
     </Helmet>
- 
+
   </div>
 </HelmetProvider>
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
@@ -154,7 +154,7 @@ const SignIn = () => {
                   <div className="my-12 border-b text-center">
                     <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                       If you dont have an account{" "}
-                      <Link to="/signUp" className="text-blue-800">
+                      <Link to="/signup" className="text-blue-800">
                         click here
                       </Link>
                     </div>

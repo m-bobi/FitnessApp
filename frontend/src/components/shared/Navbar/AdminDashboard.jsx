@@ -44,7 +44,7 @@ const AdminDashboard = () => {
         decodedToken[
           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         ];
-        
+
         const userId = localStorage.getItem("id");
 
 
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
             setUserImage(`/img/users/${response.data.image}`);
             console.log(userImage);
           }
-         
+
         })
         .catch((error) => {
           // Handle error
@@ -280,7 +280,7 @@ const AdminDashboard = () => {
               {token && (
                 <Link
                   className="inline-flex rounded-full shadow"
-                  to="/signIn"
+                  to="/signin"
                   onClick={handleSignOut}
                 >
                   <span className="inline-flex justify-center items-center ml-4">
