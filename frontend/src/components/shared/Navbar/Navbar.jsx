@@ -21,19 +21,11 @@ const Navbar = () => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
-    localStorage.removeItem("role");
   };
 
 
-  const role = localStorage.getItem("role");
 
-  useEffect(() => {
-    if (role === 'Manager') {
-        setIsManager(true);
-    } else {
-        setIsManager(false);
-    }
-}, [role]);
+
 
   useEffect(() => {
     if (token) {
@@ -43,6 +35,11 @@ const Navbar = () => {
         .then((response) => {
           if (response.data && response.data.image) {
             setUserImage(response.data.image);
+            
+          }
+          if(response.data && response.data.role){
+            if(response.data.role === 'Manager')
+            setIsManager(true)
           }
         })
         .catch((error) => {

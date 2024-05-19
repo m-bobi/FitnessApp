@@ -31,7 +31,7 @@ const SignIn = () => {
       const decodedToken = jwtDecode(token);
 
       const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-      const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      // const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
       if (userId) {
         localStorage.setItem("id", userId);
@@ -39,11 +39,7 @@ const SignIn = () => {
         console.error("User ID not found in token.");
       }
 
-      if (userRole) {
-        localStorage.setItem("role", userRole);
-      } else {
-        console.error("User role not found in token.");
-      }
+    
       toast.success("You've successfully logged in! Redirecting..");
 
     

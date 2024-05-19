@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import AdminDashboard from '../../components/shared/Navbar/AdminDashboard'
+import axios from 'axios';
+import Unauthorized from "../../components/Auth/Unauthorized"
 
 const Dashboard = () => {
   const role = localStorage.getItem("role");
   const [isManager, setIsManager] = useState(false);
+  const token = localStorage.getItem("token")
 
   useEffect(() => {
-    if (role === 'Manager') {
-        setIsManager(true);
-    } else {
-        setIsManager(false);
+    if (token) {
+      const userId = localStorage.getItem("id");
+      axios
+        .get(`http://localhost:5259/api/User/getUser/${userId}`)
+        .then((response) => {
+          if(response.data && response.data.role){
+            if(response.data.role === 'Manager')
+            setIsManager(true)
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching users data:", error);
+        });
     }
-}, [role]);
+  });
   return (
     <div>
-      {
-        isManager ? (
-      <AdminDashboard />  
-        ) : (
-          <div>You are not allowed here!!!</div>
-        )
-      }
+     
+     {
+       isManager ? (
+        <AdminDashboard />  
+      ) : (
+        <Unauthorized/>
+      )
+     }
       
+    
     </div>
   );
 }

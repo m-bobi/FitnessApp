@@ -93,7 +93,6 @@ const AdminDashboard = () => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
-    localStorage.removeItem("role");
   };
 
   const StatisticCard = ({ title, value, icon }) => (
