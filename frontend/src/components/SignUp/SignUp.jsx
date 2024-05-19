@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import InputField from "../Inputs/Input";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -74,8 +75,6 @@ const SignUp = () => {
       return;
     }
 
-    console.log("test");
-
     const formDataObj = new FormData();
     formDataObj.append("image", image);
 
@@ -101,9 +100,16 @@ const SignUp = () => {
       });
   }
 
-  return (
-    <div class="fix">
+  const handleChange = (event) => {
+    const { name, value, files } = event.target;
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
 
+  return (
+    <div className="fix">
       <Navbar />
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
         <ToastContainer
@@ -119,131 +125,82 @@ const SignUp = () => {
           pauseOnHover
         />
 
-        {/* INPUT MU KON COMPONENT */}
-
         <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
               <form className="w-full flex-1 mt-8" onSubmit={handleSubmit}>
                 <div className="flex flex-col items-center">
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="email"
                     name="email"
                     placeholder="Email"
                     value={formData.email}
-                    onChange={(event) =>
-                      setFormData({ ...formData, email: event.target.value })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="text"
                     name="username"
                     placeholder="Username"
                     value={formData.username}
-                    onChange={(event) =>
-                      setFormData({ ...formData, username: event.target.value })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="text"
                     name="name"
                     placeholder="Name"
                     value={formData.name}
-                    onChange={(event) =>
-                      setFormData({ ...formData, name: event.target.value })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="text"
                     name="address"
-                    placeholder="Adress"
+                    placeholder="Address"
                     value={formData.address}
-                    onChange={(event) =>
-                      setFormData({ ...formData, address: event.target.value })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="text"
                     name="mobile"
                     placeholder="Mobile"
                     value={formData.mobile}
-                    onChange={(event) =>
-                      setFormData({ ...formData, mobile: event.target.value })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="file"
                     name="image"
-                    accept=".png,.jpg,.jpeg,.webp"
                     placeholder="Image"
-                    onChange={(event) =>
-                      setFormData({ ...formData, image: event.target.files[0] })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="text"
                     name="age"
                     placeholder="Age"
                     value={formData.age}
-                    onChange={(event) =>
-                      setFormData({ ...formData, age: event.target.value })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="password"
                     name="password"
                     placeholder="Password"
                     value={formData.password}
-                    onChange={(event) =>
-                      setFormData({ ...formData, password: event.target.value })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="password"
                     name="confirmPassword"
                     placeholder="Confirm Password"
                     value={formData.confirmPassword}
-                    onChange={(event) =>
-                      setFormData({
-                        ...formData,
-                        confirmPassword: event.target.value,
-                      })
-                    }
+                    onChange={handleChange}
                   />
-
-                  <select
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
+                    type="select"
                     name="gender"
+                    placeholder="Select Gender"
                     value={formData.gender}
-                    onChange={(event) =>
-                      setFormData({ ...formData, gender: event.target.value })
-                    }
-                  >
-                    <option value="" disabled>
-                      Select Gender
-                    </option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
+                    onChange={handleChange}
+                    options={["Male", "Female", "Other"]}
+                  />
 
                   <p className="mt-6 text-xs text-gray-600 text-center">
                     I agree to terms and service
@@ -258,8 +215,6 @@ const SignUp = () => {
                   </div>
                 </div>
               </form>
-
-              {/* LEAVE OUTSIDE FORM UNTIL WE FIX ISSUE WITH SIGNUP */}
 
               <button
                 onClick={handleSubmit}
@@ -282,8 +237,8 @@ const SignUp = () => {
               </button>
             </div>
           </div>
-          <div class="flex-1 bg-gray-300 text-center hidden lg:flex justify-center p-3 pt-20 pb-20">
-            <div class="m-12 xl:m-16 w-full signUp"></div>
+          <div className="flex-1 bg-gray-300 text-center hidden lg:flex justify-center p-3 pt-20 pb-20">
+            <div className="m-12 xl:m-16 w-full signUp"></div>
           </div>
         </div>
       </div>
