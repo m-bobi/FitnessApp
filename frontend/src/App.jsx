@@ -43,6 +43,7 @@ function App() {
            
             <Route exact path="/signin" element={<SignIn  />}  />
             <Route exact path="/signup" element={<SignUp  />}  />
+            <Route exact path="*" element={<Unauthorized  />}  />
 
           </Routes>
         </Router>

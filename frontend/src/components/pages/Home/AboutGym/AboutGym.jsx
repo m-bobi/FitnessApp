@@ -39,6 +39,22 @@ const AboutGym = () => {
                     </p>
                     <FaCirclePlus className='plusIcon'/>
                   </div>
+                  <h2 className='textIcon'>TRAINED PEOPLE</h2>
+                </div>
+                <div className='numbers-rising-left'>
+                    <div className='weightlifter-icon2'></div>
+                    <div className='number'>
+                  <p className='countNum'> 
+                        {
+                            counterOn && (
+                                <CountUp start={0} end={800} duration={2} delay={0}/>
+                            )
+                        }
+                        
+                    </p>
+                    <FaCirclePlus className='plusIcon'/>
+                  </div>
+                  <h2 className='textIcon'>HEALTHY LIFE</h2>
                 </div>
                 <div className='numbers-rising-right'>
                 <div className='dumbell-icon'></div>
@@ -53,6 +69,7 @@ const AboutGym = () => {
                     </p>
                     <FaCirclePlus className='plusIcon'/>
                   </div>
+                  <h2 className='textIcon'>MODERN EQUIPMENT</h2>
                 </div>
                 </div>
             </ScrollTrigger>

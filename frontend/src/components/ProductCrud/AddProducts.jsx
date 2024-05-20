@@ -1,46 +1,116 @@
 import React, { useState } from "react";
 import axios from "axios";
 import config from '../../config'
+import { ToastContainer, toast } from "react-toastify";
 
 const AddProducts = () => {
+
+
+  const [formData, setFormData] = useState({
+    productName: "",
+    productDescription: "",
+    productPrice: "",
+    productCategory: "",
+    productStock: "",
+    productImage: null,
+  });
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const {
+      productName,
+      productDescription,
+      productPrice,
+      productCategory,
+      productStock,
+      productImage,
+    } = formData;
+
+ 
+
+
+    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+    const fileExtension = productImage.name.split(".").pop().toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      toast.error(
+        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+      );
+      return;
+    }
+
+    const formDataObj = new FormData();
+    formDataObj.append("image", productImage);
+
+    axios
+      .post(`${config.apiBaseURL}api/UploadImages/addProductImage`, formDataObj)
+      .then((imageResponse) => {
+        return axios.post(`${config.apiBaseURL}addProduct`, {
+          ...formData,
+          productImage: imageResponse.data,
+        });
+      })
+      .then(() => {
+        toast.success("You've successfully added a product!");
+      
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(
+          "An error occurred while adding. Please try again later."
+        );
+      });
+  }
+
+  
+  const handleChange = (event) => {
+    const { name, value, files } = event.target;
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
-  const [productName, setProductName] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [productPrice, setProductPrice] = useState("");
-  const [productCategory, setProductCategory] = useState("");
-  const [productImage, setProductImage] = useState(""); // Updated to store file
-  const [productStock, setProductStock] = useState("");
+  // const [productName, setProductName] = useState("");
+  // const [productDescription, setProductDescription] = useState("");
+  // const [productPrice, setProductPrice] = useState("");
+  // const [productCategory, setProductCategory] = useState("");
+  // const [productImage, setProductImage] = useState(""); // Updated to store file
+  // const [productStock, setProductStock] = useState("");
 
-  const addProduct = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.post(`${config.apiBaseURL}addProduct`, {
-        productName: productName,
-        productDescription: productDescription,
-        productPrice: productPrice,
-        productCategory: productCategory,
-        productImage: productImage,
-        productStock: productStock
-      });
-      console.log("Success");
-      window.alert("Product has been added.");
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  // const addProduct = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     await axios.post(`${config.apiBaseURL}addProduct`, {
+  //       productName: productName,
+  //       productDescription: productDescription,
+  //       productPrice: productPrice,
+  //       productCategory: productCategory,
+  //       productImage: productImage,
+  //       productStock: productStock
+  //     });
+  //     console.log("Success");
+  //     window.alert("Product has been added.");
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   return (
     <div className="relative">
+    
       {/* Modal Trigger Button */}
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
-        className="mt-6 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900 fixed top-4 right-4 z-50"
+        className="mt-6 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-900  z-50"
         type="button"
         onClick={toggleModal}
       >
@@ -85,20 +155,17 @@ const AddProducts = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" onSubmit={addProduct} method="POST">
+                <form className="space-y-4" >
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Product Name
                     </label>
                     <input
                       type="text"
-                      name="ProductName"
+                      name="productName"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter Product name"
-                      onChange={(event) => {
-                        setProductName(event.target.value);
-                      }}
-                      required
+                      onChange={handleChange}
                     />
                   </div>
                   <div>
@@ -107,13 +174,11 @@ const AddProducts = () => {
                     </label>
                     <input
                       type="text"
-                      name="ProductDescription"
+                      name="productDescription"
                       placeholder="Enter Product status"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {
-                        setProductDescription(event.target.value);
-                      }}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -123,13 +188,11 @@ const AddProducts = () => {
                     </label>
                     <input
                       type="number"
-                      name="ProductPrice"
+                      name="productPrice"
                       placeholder="Enter product price"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {
-                        setProductPrice(event.target.value);
-                      }}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -139,13 +202,11 @@ const AddProducts = () => {
                     </label>
                     <input
                       type="text"
-                      name="ProductCategory"
+                      name="productCategory"
                       placeholder="Enter product category"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {
-                        setProductCategory(event.target.value);
-                      }}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -155,13 +216,11 @@ const AddProducts = () => {
                     </label>
                     <input
                       type="number"
-                      name="ProductStock"
+                      name="productStock"
                       placeholder="Enter product stock"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
-                      onChange={(event) => {
-                        setProductStock(event.target.value);
-                      }}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -170,18 +229,16 @@ const AddProducts = () => {
                       Product Image
                     </label>
                     <input
-                      type="text"
-                      name="ProductImage"
+                      type="file"
+                      name="productImage"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      onChange={(event) => {
-                        setProductImage(event.target.value);
-                      }}
-                      value={productImage}
+                      onChange={handleChange}
                     />
                   </div>
 
                   <button
-                    type="submit"
+                   
+                   onClick={handleSubmit}
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Add Product

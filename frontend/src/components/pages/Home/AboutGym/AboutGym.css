@@ -65,10 +65,10 @@
 
 .number-rising{
     display: flex;
-    justify-content: flex-start;
-    padding-left: 10%;
+    justify-content: start;
     align-items: center;
-    gap: 100px;
+    gap: max(40px,4vw);
+    
 }
 
 .weightlifter-icon{
@@ -133,3 +133,29 @@
     font-size: max(30px,2vw);
     font-weight: 500;
 }
+
+.weightlifter-icon2{
+    content: url("../../../../assets/icons/treadmill.png");
+    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    cursor: pointer;
+}
+
+.weightlifter-icon2:hover, .weightlifter-icon2:focus, .weightlifter-icon2:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+  .textIcon{
+    color: #EE4E4E;
+    font-weight: bold;
+    font-size: max(20px,1.2vw);
+  }

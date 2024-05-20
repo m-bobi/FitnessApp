@@ -1,0 +1,257 @@
+.bannerDown{
+    background: url("../../../../assets/background\ \(1\).webp");
+    background-size: cover;
+    background-position-y: 40%;
+    padding: 4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: max(20px,2vw);
+    width: 100%;
+}
+.bannerDown h1{
+    font-size: max(25px,2vw);
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+.bannerDown h1:hover{
+    color: #EE4E4E;
+}
+.bannerCardsUp{
+    display: flex;
+    flex-wrap: wrap;
+    gap: max(24px,3vw);
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    border: 1px solid ridge;
+}
+.bannerCard{
+    width: 22%;
+    padding: 2%;
+    height: max(350px,20vw);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: max(10px,1vw);
+    position: relative;
+    transition: all 0.3s ease;
+    /* border: 1px solid red; */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.bannerCard p{
+    color: #ffffff;
+}
+.bcDes{
+    text-align: center;
+}
+.bannerCardUp{
+    display: flex;
+    flex-direction: column;
+    gap: max(12px,1.2vw);
+    align-items: flex-start;
+}
+.bannerCardDown{
+    display: flex;
+    flex-direction: column;
+    gap: max(8px,1vw);
+}
+.bannerCard p{
+    font: max(14px,0.8vw);
+}
+.bannerCtitle{
+    font-size: max(20px,1.6vw) !important;
+}
+.bcDes{
+    font: max(13px,0.75vw);
+}
+.bannerDownButton{
+    width: max(150px,5vw) !important;
+    height: max(40px,2.5vw);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #EE4E4E !important;
+    border: 2px solid  #EE4E4E !important;
+}
+.bannerDownButton a{
+    color: #EE4E4E !important;
+}
+
+.card1{
+    background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../../../../assets/cyclingClass.jpg");
+    background-size: cover;
+}
+.card2{
+    background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../../../../assets/meditationClass.webp");
+    background-size: cover;
+    background-position-x:100%;
+}
+.card3{
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),url("../../../../assets/powerLiftingClass.jpg");
+    background-size: cover;
+    background-position-x:20%;
+}
+.card4{
+    background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../../../../assets/workoutClass.jpg");
+    background-size: cover;
+    background-position-x:40%;
+}
+
+.bannerCard {
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+  }
+  .bannerCard:hover, .bannerCard:focus, .bannerCard:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+    transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+  }
+
+
+
+
+
+.bannerDownButton a{
+    font: max(13px,0.75vw) ;
+    color: #FE570B;
+}
+.bannerDownButton{
+    border: 1px solid #FE570B;
+    border-radius: max(8px,0.5vw);
+    width: max(120px,7vw);
+}
+
+
+
+@media(max-width:1220px){
+    .bannerCard{
+        width: 30%;
+    }
+}
+
+@media(max-width:940px){
+    .bannerCard{
+        width: 30%;
+    }
+}
+@media(max-width:865px){
+    .bannerCard{
+        width: 70%;
+    }
+    .bannerCardsUp{
+        justify-content: space-around;
+    }
+}
+@media(max-width:575px){
+    .bannerCard{
+        width: 70%;
+    }
+    .bannerCardsUp{
+        justify-content: space-around;
+    }
+}
+@media(max-width:550px){
+    .bannerCard{
+        width: 85%;
+    }
+    .bannerCardsUp{
+        justify-content: space-around;
+    }
+}
+@media(max-width:440px){
+    .bannerCard{
+        width: 100%;
+    }
+    .bannerCardsUp{
+        justify-content: space-around;
+    }
+}
+
+
+
+
+@media(max-width:1110px){
+    .bannerMiddleHeader{
+        width: 80%;
+    }
+    .bannerMiddleMiddle{
+        width: 95%;
+    }
+}
+
+@media(max-width:950px){
+    .bannerUp{
+        flex-direction: column;
+        gap: max(20px,2vw);
+    }
+    .leftBg{
+        width: 33%;
+    }
+    .bannerMiddle{
+        width: 100%;
+    }
+    .rightBg{
+        width: 30%;
+    }
+}
+@media(max-width:680px){
+    .bannerUp{
+        flex-direction: column;
+        gap: max(20px,2vw);
+    }
+    .leftBg{
+        width: 38%;
+    }
+    .bannerMiddle{
+        width: 100%;
+    }
+    .rightBg{
+        width: 38%;
+    }
+}
+@media(max-width:550px){
+    .bannerUp{
+        flex-direction: column;
+        gap: max(20px,2vw);
+    }
+    .leftBg{
+        width: 43%;
+    }
+    .bannerMiddle{
+        width: 100%;
+    }
+    .rightBg{
+        width: 43%;
+    }
+    .bannerMiddleHeader{
+        width: 100%;
+        padding: 2%;
+    }
+}
+@media(max-width:475px){
+    .bannerUp{
+        flex-direction: column;
+        gap: max(20px,2vw);
+    }
+    .leftBg{
+        width: 50%;
+    }
+    .bannerMiddle{
+        width: 100%;
+    }
+    .rightBg{
+        width: 50%;
+    }
+    .bannerMiddleHeader{
+        width: 100%;
+        padding: 2%;
+    }
+}

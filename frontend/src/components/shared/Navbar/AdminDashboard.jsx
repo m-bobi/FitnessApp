@@ -8,6 +8,8 @@ import config from "../../../config";
 import axios from "axios";
 import ListOrders from "../../OrderCrud/ListOrders";
 import AddOrders from "../../OrderCrud/AddOrders";
+import AddProducts from "../../ProductCrud/AddProducts"
+import ListProducts from "../../ProductCrud/ListProducts"
 
 
 const AdminDashboard = () => {
@@ -659,6 +661,14 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
+          <div className="p-40">
+            <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
+              Products
+              <AddProducts />
+            </h1>
+            <ListProducts />
+          </div>
+
           <div className="p-40">
             <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
               Orders

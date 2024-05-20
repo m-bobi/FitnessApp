@@ -39,6 +39,12 @@ public class ProductsController : Controller
             return StatusCode(500, "Internal server error");
         }
     }
+    
+    [HttpGet("getAllofProducts")]
+    public async Task<List<Products>> GetAllofProducts()
+    {
+        return await _dbContext.Products.ToListAsync();
+    }
 
     // Create API to add an Product.
     [HttpPost("addProduct")]

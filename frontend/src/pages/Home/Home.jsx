@@ -4,6 +4,7 @@ import Navbar from '../../components/shared/Navbar/Navbar'
 import TrainersBanner from '../../components/TrainersCrud/TrainersBanner';
 import HomeBanner from '../../components/pages/Home/HomeBanner/HomeBanner';
 import AboutGym from '../../components/pages/Home/AboutGym/AboutGym';
+import OurFeaturedClass from '../../components/pages/Home/OurFeaturedClass/OurFeaturedClass';
 
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
         <Navbar/>
         <HomeBanner/>
         <AboutGym/>
+        <OurFeaturedClass/>
       </div>
   );
 }

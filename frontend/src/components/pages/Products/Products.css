@@ -1,10 +1,15 @@
 .productBanner {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url("../../../../assets/bannerHome.webp");
-    height: max(700px, 25vw);
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../../assets/productsGeneral.webp");
+    /* height: max(300px, 25vw); */
     background-repeat: no-repeat;
     background-size: cover;
     margin-top: max(80px, 4vw);
     padding: 10% 4% 4% 10%;
+ }
+
+ .productBanner .firstText{
+      font-weight: 600;
+      font-size: max(30px,2vw);
  }
  
  .homeBanner::before {
@@ -19,6 +24,12 @@
     background-size: cover;
     transform: translateZ(0);
  }
+
+ .productContainer{
+   padding: 4%;
+ }
+
+ 
  
  .productBanner h1 {
     color: #f5f5f5;
