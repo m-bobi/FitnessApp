@@ -1,18 +1,14 @@
 import React from "react";
-import DashboardNavigation from "../../components/shared/Navbar/AdminDashboard";
-import ListProducts from "../../components/ProductCrud/ListProducts";
-import AddProduct from "../../components/ProductCrud/AddProducts";
+import Navbar from '../../components/shared/Navbar/Navbar'
+import Products from "../../components/pages/Home/Products/Products";
 
-const Products = () => {
+const Product = () => {
   return (
-    <div className="flex">
-      <DashboardNavigation />
-      <div className="flex-1 ml-64 p-8">
-        <ListProducts />
-        <AddProduct />
+    <div className="homepage">
+      <Navbar/>
+        <Products />
       </div>
-    </div>
   );
 };
 
-export default Products;
+export default Product;
