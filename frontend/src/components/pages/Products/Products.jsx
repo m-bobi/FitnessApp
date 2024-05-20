@@ -32,7 +32,7 @@ const Products = () => {
 
     <div className='productContainer'>
     {
-      products ? (
+      products && products.length > 0 ? (
         products.map((p) => {
           return(
             <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -73,7 +73,7 @@ const Products = () => {
           )
         })
       ) : (
-        <div>No products for the moment</div>
+        <div>No products for the moment! Sorry</div>
       )
     }
     </div>

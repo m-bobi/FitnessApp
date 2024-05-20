@@ -19,13 +19,35 @@
     align-items: center;
     width: max(80px, 4vw);
 }
-
+.searchbar-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
 .logoHolder {
     display: flex;
     justify-content: start;
     align-items: center;
 }
-
+.searchBar{
+    width: max(250px,8vw);
+    height: max(40px,2.5vw);
+    background-color: transparent;
+    border: 1px solid #ffffff !important;
+    border-radius: max(10px,1vw);
+    padding-left: 5%;
+    outline: none;
+}
+.searchBar::placeholder{
+    color: #ffffff;
+}
+.searchBar:focus{
+    color: #ffffff;
+}
+.searchBar::-moz-focus-outer{
+    color: #ffffff;
+}
 .navLinks {
     display: flex;
     justify-content: center;
@@ -93,4 +115,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.hamburgerMenu{
+    filter: invert(1);
+    font-size: 40px;
+    display: none;
+}
+
+@media screen and (max-width:1350px) {
+    .search{
+        display: none;
+    }
+}
+@media screen and (max-width:890px) {
+    .search{
+        display: none;
+    }
+    .navLinks{
+        display: none;
+    }
+    .auth{
+        display: none;
+    }
+    .hamburgerMenu{
+        display: block;
+    }
 }

@@ -8,9 +8,15 @@ import { GoSignOut } from "react-icons/go";
 import { FaRegUserCircle } from "react-icons/fa";
 import axios from "axios";
 import config from "../../../config";
+import { IoMdMenu } from "react-icons/io";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [showSearchBar, setShowSearchBar] = useState(false);
+
+  const toggleSearchBar = () => {
+    setShowSearchBar(!showSearchBar);
+  };
 
   const [scrolled, setScrolled] = useState(false);
   const [userImage, setUserImage] = useState("");
@@ -22,6 +28,7 @@ const Navbar = () => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -103,13 +110,26 @@ const Navbar = () => {
           Dashboard
         </Link> */}
       </div>
-      <Link className="search invert">
-        <IoIosSearch className="searchIcon" />
-      </Link>
+  
+    
+
+    
 
       <div className="nav-auth"></div>
 
       <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-10 auth">
+      <div className="searchbar-icon">
+      <Link className="search invert" onClick={toggleSearchBar}>
+        <IoIosSearch className="searchIcon" />
+      </Link>
+      {showSearchBar && (
+        <input
+          type="text"
+          className="searchBar"
+          placeholder="Search..."
+        />
+      )}
+      </div>
         {token && userImage && (
           <div
             className="relative inline-flex items-center justify-center rounded-full shadow overflow-hidden cursor-pointer"
@@ -146,20 +166,19 @@ const Navbar = () => {
         </div>
         {!token && (
           <Link className="inline-flex rounded-full shadow" to="/signin">
-            <div className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50">
-              Log In
-            </div>
+           <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Log in</button>
           </Link>
         )}
 
         {!token && (
           <Link className="inline-flex rounded-full shadow" to="/signup">
-            <div className="inline-flex items-center px-4 py-2 text-base text-gray-900 bg-white border border-transparent rounded-full cursor-pointer font-base hover:bg-gray-50">
-              Sign Up
-            </div>
+            <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Sign Up</button>
           </Link>
         )}
       </div>
+     <Link>
+     <IoMdMenu className="hamburgerMenu" />
+     </Link>
     </div>
   );
 };
