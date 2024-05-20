@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AdminDashboard from '../../components/shared/Navbar/AdminDashboard'
 import axios from 'axios';
 import Unauthorized from "../../components/Auth/Unauthorized"
+import config from '../../config';
 
 const Dashboard = () => {
   const [isManager, setIsManager] = useState(false);
@@ -11,7 +12,7 @@ const Dashboard = () => {
     if (token) {
       const userId = localStorage.getItem("id");
       axios
-        .get(`http://localhost:5259/api/User/getUser/${userId}`)
+        .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
         .then((response) => {
           if(response.data && response.data.role){
             if(response.data.role === 'Manager')
@@ -25,16 +26,16 @@ const Dashboard = () => {
   });
   return (
     <div>
-     
+
      {
        isManager ? (
-        <AdminDashboard />  
+        <AdminDashboard />
       ) : (
         <Unauthorized/>
       )
      }
-      
-    
+
+
     </div>
   );
 }

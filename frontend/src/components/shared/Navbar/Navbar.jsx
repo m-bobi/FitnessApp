@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { GoSignOut } from "react-icons/go";
 import { FaRegUserCircle } from "react-icons/fa";
 import axios from "axios";
+import config from "../../../config";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -23,19 +24,14 @@ const Navbar = () => {
     localStorage.removeItem("id");
   };
 
-
-
-
-
   useEffect(() => {
     if (token) {
       const userId = localStorage.getItem("id");
       axios
-        .get(`http://localhost:5259/api/User/getUser/${userId}`)
+        .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
         .then((response) => {
           if (response.data && response.data.image) {
             setUserImage(response.data.image);
-            
           }
           if(response.data && response.data.role){
             if(response.data.role === 'Manager')
@@ -92,16 +88,14 @@ const Navbar = () => {
         >
           Products
         </Link>
-        {
-          isManager && (
-           <Link
-          to="/dashboard"
-          className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
-        >
-          Dashboard
-        </Link> 
-          )
-        }
+        {isManager && (
+          <Link
+            to="/dashboard"
+            className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
+          >
+            Dashboard
+          </Link>
+        )}
         {/* <Link
           to="/dashboard"
           className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
@@ -109,7 +103,7 @@ const Navbar = () => {
           Dashboard
         </Link> */}
       </div>
-      <Link className="search">
+      <Link className="search invert">
         <IoIosSearch className="searchIcon" />
       </Link>
 
@@ -126,6 +120,14 @@ const Navbar = () => {
               alt="User"
               className="w-16 h-16 object-cover"
             />
+          </div>
+        )}
+        {token && !userImage && (
+          <div
+            className="relative invert text-3xl inline-flex items-center justify-center rounded-full shadow overflow-hidden cursor-pointer"
+            onMouseEnter={() => setIsDropdownVisible(true)}
+          >
+            <FaRegUserCircle/>
           </div>
         )}
         <div>

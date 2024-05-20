@@ -1,3 +1,4 @@
+// SignIn.js
 import React, { useState } from "react";
 import "./SignIn.css";
 import { Link } from "react-router-dom";
@@ -8,56 +9,66 @@ import "react-toastify/dist/ReactToastify.css";
 import {jwtDecode} from "jwt-decode";
 import config from "../../config";
 import Navbar from "../shared/Navbar/Navbar";
+import InputField from "../Inputs/Input";
 
 const SignIn = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(`${config.apiBaseURL}api/User/login`, {
-        email: email,
-        password: password,
+        email: formData.email,
+        password: formData.password,
       });
 
-         if (response.status === 200) {
-      const { token } = response.data;
+      if (response.status === 200) {
+        const { token } = response.data;
 
-      localStorage.setItem("token", token);
+        localStorage.setItem("token", token);
 
-      const decodedToken = jwtDecode(token);
+        const decodedToken = jwtDecode(token);
 
-      const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-      // const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+        const userId =
+          decodedToken[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+          ];
 
-      if (userId) {
-        localStorage.setItem("id", userId);
-      } else {
-        console.error("User ID not found in token.");
+        if (userId) {
+          localStorage.setItem("id", userId);
+        } else {
+          console.error("User ID not found in token.");
+        }
+
+        toast.success("You've successfully logged in! Redirecting..");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       }
-
-    
-      toast.success("You've successfully logged in! Redirecting..");
-
-    
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
-    }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("An error occurred while logging in. Please try again.");
     }
   };
 
   return (
-    <div class="fix">
+    <div className="fix">
       <Navbar />
- 
 
- 
       <div className="min-h-screen bg-gray-dark text-gray-900 flex justify-center items-center">
         <ToastContainer
           position="bottom-right"
@@ -109,21 +120,19 @@ const SignIn = () => {
                 </div>
 
                 <div className="mx-auto max-w-xs">
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                  <InputField
                     type="email"
+                    name="email"
                     placeholder="Email"
-                    onChange={(event) => {
-                      setEmail(event.target.value);
-                    }}
+                    value={formData.email}
+                    onChange={handleChange}
                   />
-                  <input
-                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  <InputField
                     type="password"
+                    name="password"
                     placeholder="Password"
-                    onChange={(event) => {
-                      setPassword(event.target.value);
-                    }}
+                    value={formData.password}
+                    onChange={handleChange}
                   />
                   <button
                     onClick={handleSubmit}
@@ -133,9 +142,9 @@ const SignIn = () => {
                       className="w-6 h-6 -ml-2"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                       <circle cx="8.5" cy="7" r="4" />
@@ -145,7 +154,7 @@ const SignIn = () => {
                   </button>
                   <div className="my-12 border-b text-center">
                     <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                      If you dont have an account{" "}
+                      If you don't have an account{" "}
                       <Link to="/signup" className="text-blue-800">
                         click here
                       </Link>
