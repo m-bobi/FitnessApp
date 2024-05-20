@@ -4,7 +4,6 @@ import axios from 'axios';
 import Unauthorized from "../../components/Auth/Unauthorized"
 
 const Dashboard = () => {
-  const role = localStorage.getItem("role");
   const [isManager, setIsManager] = useState(false);
   const token = localStorage.getItem("token")
 
