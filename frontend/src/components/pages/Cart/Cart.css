@@ -1,0 +1,6 @@
+.productContainer{
+    margin-top: max(80px,4vw);
+    padding: 4%;
+    display: flex;
+    flex-wrap: wrap;
+}
