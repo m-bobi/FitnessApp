@@ -9,6 +9,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import axios from "axios";
 import config from "../../../config";
 import { IoMdMenu } from "react-icons/io";
+import { LuShoppingCart } from "react-icons/lu";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -118,6 +119,9 @@ const Navbar = () => {
       <div className="nav-auth"></div>
 
       <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-10 auth">
+      <Link to="/cart">
+         <LuShoppingCart className="invert text-2xl"/>
+      </Link>
       <div className="searchbar-icon">
       <Link className="search invert" onClick={toggleSearchBar}>
         <IoIosSearch className="searchIcon" />

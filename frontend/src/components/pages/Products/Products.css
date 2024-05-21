@@ -11,7 +11,9 @@
       font-weight: 600;
       font-size: max(30px,2vw);
  }
- 
+ .cartIconProduct{
+   font-size: 18px;
+ }
  .homeBanner::before {
     content: '';
     position: absolute;
@@ -27,6 +29,9 @@
 
  .productContainer{
    padding: 4%;
+   display: flex;
+   gap: 30px;
+   flex-wrap: wrap;
  }
 
  
