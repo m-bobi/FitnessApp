@@ -1,10 +1,12 @@
+using Asp.Versioning;
 using backend.DbContext;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
-
+[ApiVersion( 1.0 )]
+[Route("api/[controller]" )]
 
 public class TrainersController : Controller
 {
