@@ -14,7 +14,7 @@ const OurFeaturedClass = () => {
                         </div>
                         <div className='bannerCardDown'>
                             <p className='bcDes'>Feel the freedom and exhilaration of cycling. Boost your endurance, burn calories, and enjoy the ride!</p>
-                          
+
                         </div>
                     </Link>
 
@@ -49,8 +49,8 @@ const OurFeaturedClass = () => {
                     </Link>
     </div>
 
-    
-    <div className='bannerDownButton'>
+
+    <div className='bannerDownButton hover:bg-white'>
         <Link>
             View All
         </Link>

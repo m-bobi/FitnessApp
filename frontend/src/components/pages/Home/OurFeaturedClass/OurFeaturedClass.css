@@ -1,8 +1,8 @@
 .bannerDown{
-    background: url("../../../../assets/background\ \(1\).webp");
+    background: url("../../../../assets/background1.webp");
     background-size: cover;
     background-position-y: 40%;
-    padding: 4%;
+    padding: 12%;
     display: flex;
     flex-direction: column;
     justify-content: center;
