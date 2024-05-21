@@ -107,7 +107,7 @@ const ListOffers = () => {
       <table className="table-auto w-full rounded-lg shadow-md">
         <thead>
           <tr className="bg-gray-100 text-gray-600 text-left">
-            <th className="px-3 py-2 font-medium tracking-wider">offer ID</th>
+            <th className="px-3 py-2 font-medium tracking-wider">Offer ID</th>
             <th className="px-3 py-2 font-medium tracking-wider">
               Offer Type
             </th>

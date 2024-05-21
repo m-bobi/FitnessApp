@@ -1,23 +1,26 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.Models;
-
-// We use these packages to tell what metadata we use
-
-public class Orders
+namespace backend.Models
 {
-    [Key]
-    public int OrderId { get; set; }
+    public class Orders
+    {
+        [Key]
+        public int OrderId { get; set; }
 
-    [Column(TypeName = "datetime")] public DateTime OrderDate { get; set; } = DateTime.Now;
-    
-    public float OrderTotalAmount { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime OrderDate { get; set; } = DateTime.Now;
 
-    [StringLength(20)] [Required]
-    public string OrderStatus { get; set; }
-    
-    [ForeignKey("UserId")]
-    public int? UserId { get; set; }
-    
+        public decimal OrderTotalAmount { get; set; }
+
+        [StringLength(20)]
+        [Required]
+        public string OrderStatus { get; set; }
+
+        [ForeignKey("User")]
+        public String UserId { get; set; }
+
+        public User User { get; set; }
+    }
 }

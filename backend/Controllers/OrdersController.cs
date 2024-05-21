@@ -1,10 +1,12 @@
 using backend.DbContext;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
-
+[ApiController]
+[Route("api/[controller]")]
 public class OrdersController : Controller
 {
     private readonly ApplicationDbContext _dbContext;
@@ -17,6 +19,7 @@ public class OrdersController : Controller
 
 // Create API to get all orders with pagination.
     [HttpGet("getAllOrders")]
+    [Authorize(Roles = "Manager")]
     public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10)
     {
         try
@@ -24,17 +27,28 @@ public class OrdersController : Controller
             var totalOrders = await _dbContext.Orders.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalOrders / limit);
 
+            // Include User data to get the username
             var orders = await _dbContext.Orders
+                .Include(o => o.User)
                 .OrderByDescending(o => o.OrderId)
                 .Skip((page - 1) * limit)
                 .Take(limit)
                 .ToListAsync();
 
-            return Ok(new { orders, totalPages });
+            var ordersWithUsername = orders.Select(order => new
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                OrderTotalAmount = order.OrderTotalAmount,
+                OrderStatus = order.OrderStatus,
+                UserId = order.UserId,
+                UserName = order.User.UserName
+            });
+
+            return Ok(new { orders, ordersWithUsername, totalPages });
         }
         catch (Exception ex)
         {
-            // Error Logging
             Console.WriteLine("Error fetching orders: " + ex.Message);
             return StatusCode(500, "Internal server error");
         }
@@ -42,6 +56,7 @@ public class OrdersController : Controller
 
     // Create API to add an order.
     [HttpPost("addOrder")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> AddOrder([FromBody] Orders order)
     {
         if (order is null)
@@ -57,6 +72,7 @@ public class OrdersController : Controller
 
     // Create API to get a specific order by ID.
     [HttpGet("getOrder/{id}")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> GetOrderById(int id)
     {
         var order = await _dbContext.Orders.FindAsync(id);
@@ -66,6 +82,7 @@ public class OrdersController : Controller
 
     // Create API to delete an order by ID.
     [HttpDelete("deleteOrder/{id}")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> DeleteOrder(int id)
     {
         var order = await _dbContext.Orders.FindAsync(id);
@@ -78,6 +95,7 @@ public class OrdersController : Controller
 
     // Create API to update an existing order.
     [HttpPut("updateOrder/{id}")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> UpdateOrder([FromBody] Orders order)
     {
         if (order is null || order.OrderId == 0) return BadRequest("Invalid order data");

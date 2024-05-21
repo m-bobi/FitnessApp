@@ -1,0 +1,162 @@
+.aboutGym{
+    background: url("../../../../assets/about-1.webp");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 50%;
+    background-size: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding-top: 8%;
+    padding-bottom: 8%;
+}
+
+.aboutGym-leftSide{
+    width: 40%;
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+}
+.redBadge{
+    width: 200px;
+    height: 40px;
+    background-color: #EE4E4E;
+    rotate: 90deg;
+    position: absolute;
+    top: 48%;
+    left: 0;
+}
+
+.aboutGym-rightSide{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: max(20px,1.5vw);
+}
+.aboutGym-rightSide .firstText{
+    font-weight: 400;
+    font-size: max(16px,1vw);
+}
+.aboutGym-leftSide-img{
+    content: url("../../../../assets/home2-1.webp");
+}
+
+.aboutRightHeading-holder{
+    width: 75%;
+}
+.aboutRightHeading-holder p{
+    font-weight: 600;
+    font-size: max(32px,2.5vw);
+    line-height: 1.2;
+}
+
+.about-middle-text{
+    width: 60%;
+}
+.about-middle-text p{
+    font-size: max(16.5px,0.9vw);
+    color: darkgrey;
+}
+
+.plusIcon{
+    font-size: 20px;
+}
+
+.number-rising{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: max(40px,4vw);
+
+}
+
+.weightlifter-icon{
+    content: url("../../../../assets/icons/weightlifting.png");
+    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    cursor: pointer;
+}
+
+.weightlifter-icon:hover, .weightlifter-icon:focus, .weightlifter-icon:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+.number{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dumbell-icon{
+    content: url("../../../../assets/icons/dumbbell.png");
+    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    cursor: pointer;
+}
+.dumbell-icon:hover, .dumbell-icon:focus, .dumbell-icon:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+.numbers-rising-left{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.numbers-rising-right{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.countNum{
+    font-size: max(30px,2vw);
+    font-weight: 500;
+}
+
+.weightlifter-icon2{
+    content: url("../../../../assets/icons/treadmill.png");
+    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    cursor: pointer;
+}
+
+.weightlifter-icon2:hover, .weightlifter-icon2:focus, .weightlifter-icon2:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+  .textIcon{
+    color: #EE4E4E;
+    font-weight: bold;
+    font-size: max(20px,1.2vw);
+  }

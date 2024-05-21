@@ -1,7 +1,7 @@
 import React from 'react'
 import ListOrders from '../../components/OrderCrud/ListOrders';
 import AddOrders from '../../components/OrderCrud/AddOrders';
-import DashboardNavigation from '../../components/shared/Navbar/DashboardNavigation';
+import DashboardNavigation from '../../components/shared/Navbar/AdminDashboard';
 
 
 const Orders = () => {

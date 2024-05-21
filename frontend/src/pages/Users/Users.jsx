@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardNavigation from "../../components/shared/Navbar/DashboardNavigation";
+import DashboardNavigation from "../../components/shared/Navbar/AdminDashboard";
 import ListUsers from "../../components/UsersCrud/ListUsers";
 import AddUser from "../../components/UsersCrud/AddUsers";
 
