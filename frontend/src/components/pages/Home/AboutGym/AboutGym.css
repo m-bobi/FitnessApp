@@ -1,5 +1,4 @@
 .aboutGym{
-    padding: 4%;
     background: url("../../../../assets/about-1.webp");
     background-repeat: no-repeat;
     background-position-x: 100%;
@@ -9,6 +8,8 @@
     align-items: center;
     justify-content: center;
     gap: 30px;
+    padding-top: 8%;
+    padding-bottom: 8%;
 }
 
 .aboutGym-leftSide{
@@ -39,7 +40,7 @@
     font-size: max(16px,1vw);
 }
 .aboutGym-leftSide-img{
-    content: url("../../../../assets/home2-1.jpg");
+    content: url("../../../../assets/home2-1.webp");
 }
 
 .aboutRightHeading-holder{
@@ -68,7 +69,7 @@
     justify-content: start;
     align-items: center;
     gap: max(40px,4vw);
-    
+
 }
 
 .weightlifter-icon{

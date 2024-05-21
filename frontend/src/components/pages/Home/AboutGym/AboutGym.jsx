@@ -17,7 +17,7 @@ const AboutGym = () => {
         <div className='aboutGym-rightSide' data-aos="fade-left">
              <p className='firstText'>ABOUT ASCEND</p>
              <div className='aboutRightHeading-holder'>
-                <p>We Can Give A Shape Of Your Body Here!</p>
+                <p>Get your dream body shape with us!</p>
              </div>
 
              <div className='about-middle-text'>
@@ -29,13 +29,13 @@ const AboutGym = () => {
                 <div className='numbers-rising-left'>
                     <div className='weightlifter-icon'></div>
                     <div className='number'>
-                  <p className='countNum'> 
+                  <p className='countNum'>
                         {
                             counterOn && (
                                 <CountUp start={0} end={1500} duration={2} delay={0}/>
                             )
                         }
-                        
+
                     </p>
                     <FaCirclePlus className='plusIcon'/>
                   </div>
@@ -44,13 +44,13 @@ const AboutGym = () => {
                 <div className='numbers-rising-left'>
                     <div className='weightlifter-icon2'></div>
                     <div className='number'>
-                  <p className='countNum'> 
+                  <p className='countNum'>
                         {
                             counterOn && (
                                 <CountUp start={0} end={800} duration={2} delay={0}/>
                             )
                         }
-                        
+
                     </p>
                     <FaCirclePlus className='plusIcon'/>
                   </div>
@@ -59,13 +59,13 @@ const AboutGym = () => {
                 <div className='numbers-rising-right'>
                 <div className='dumbell-icon'></div>
                   <div className='number'>
-                  <p className='countNum'> 
+                  <p className='countNum'>
                         {
                             counterOn && (
                                 <CountUp start={0} end={1100} duration={2} delay={0}/>
                             )
                         }
-                        
+
                     </p>
                     <FaCirclePlus className='plusIcon'/>
                   </div>
@@ -73,7 +73,7 @@ const AboutGym = () => {
                 </div>
                 </div>
             </ScrollTrigger>
-            
+
         </div>
 
     </div>
