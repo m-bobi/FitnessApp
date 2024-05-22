@@ -10,6 +10,8 @@ import ListOrders from "../../OrderCrud/ListOrders";
 import AddOrders from "../../OrderCrud/AddOrders";
 import AddProducts from "../../ProductCrud/AddProducts"
 import ListProducts from "../../ProductCrud/ListProducts"
+import AddClass from "../../ClassesCrud/AddClass";
+import ListClass from "../../ClassesCrud/ListClass";
 
 
 const AdminDashboard = () => {
@@ -661,7 +663,7 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="p-40">
+          <div className="p-10">
             <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
               Products
               <AddProducts />
@@ -669,12 +671,20 @@ const AdminDashboard = () => {
             <ListProducts />
           </div>
 
-          <div className="p-40">
+          <div className="p-10">
             <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
               Orders
               <AddOrders />
             </h1>
             <ListOrders />
+          </div>
+
+          <div className="p-10">
+            <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
+              Classes
+              <AddClass />
+            </h1>
+            <ListClass />
           </div>
           <div className="mt-8 mx-4">
             <div className="grid grid-cols-1 md:grid-cols-2">

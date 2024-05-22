@@ -1,58 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import './Products.css';
-import axios from 'axios';
-import config from '../../../config';
 import { Link } from 'react-router-dom';
-import { FaCartPlus } from "react-icons/fa";
-const Products = () => {
-  const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
-  const token = localStorage.getItem("token");
+import "./Cart.css"
+const Cart = () => {
+    const [cart, setCart] = useState([]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          `${config.apiBaseURL}getAllofProducts`
-        );
-        setProducts(response.data);
-        
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
+
+
+
+
+    useEffect(() => {
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      setCart(storedCart);
+    }, []); 
+  
+    const handleDeleteCard = (id) => {
+      const updatedSavedCards = cart.filter((card) => card.productId !== id);
+      localStorage.setItem('cart', JSON.stringify(updatedSavedCards));
+  
+      setTimeout(() => {
+        setCart(updatedSavedCards);
+      }, 100);
     };
 
-    fetchProducts();
-  }, );
-
-
-
-
-  const addToCart = (product) => {
-   const savedProducts = JSON.parse(localStorage.getItem('cart')) || [];
-      const newProduct = product;
-
-
-  if (!savedProducts.some((product) => product.productId === newProduct.productId)) {
-    savedProducts.push(newProduct);
-    localStorage.setItem('cart', JSON.stringify(savedProducts));
-
-
-  }
-  };
-
   return (
-    <>
-    <div className="productBanner">
-      <div className="homeBannerContainer" data-aos="fade-right">
-        <p className="firstText">Our Products</p>
-      </div>
-    </div>
-
     <div className='productContainer'>
     {
-      products && products.length > 0 ? (
-        products.map((p) => {
+      cart && cart.length > 0 ? (
+        cart.map((p) => {
           return(
             <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <Link href="#">
@@ -75,28 +49,20 @@ const Products = () => {
                 <p>Only {p.productStock} left</p>
                 <div class="flex items-center justify-between">
                     <span class="text-3xl font-bold text-gray-900 dark:text-white">{p.productPrice}$</span>
-                  {
-                    token && (
-                      <Link 
-                      onClick={() => addToCart(p)}
-                       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex space-between items-center gap-x-5">
-                      <FaCartPlus className='cartIconProduct' />
-                        Add to cart
-                        </Link>
-                    )
-                  }
+                    <button
+                    onClick={() => handleDeleteCard(p.productId)}
+                     type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Remove from Cart</button>
                 </div>
             </div>
         </div>
           )
         })
       ) : (
-        <div>No products for the moment! Sorry</div>
+        <div>Nothing in the cart for the moment!</div>
       )
     }
     </div>
-    </>
-  );
+  )
 }
 
-export default Products
+export default Cart

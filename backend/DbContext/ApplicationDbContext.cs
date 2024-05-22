@@ -62,6 +62,15 @@ namespace backend.DbContext
                     Role = Enums.Roles.Manager
                 }
             );
+            
+            // {
+            //     modelBuilder.Entity<Class>()
+            //         .HasOne(c => c.UserId)
+            //         .WithMany()
+            //         .HasForeignKey(c => c.UserId);
+            //
+            //     base.OnModelCreating(modelBuilder);
+            // }
         }
     }
 }

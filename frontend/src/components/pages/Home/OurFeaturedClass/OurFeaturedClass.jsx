@@ -7,7 +7,7 @@ const OurFeaturedClass = () => {
     <div className='bannerDown'>
         <h1>OUR FEATURED CLASSES</h1>
     <div className='bannerCardsUp'>
-                    <Link className='bannerCard card1'>
+                    <Link className='bannerCard card1' data-aos="fade-right">
                         <div className='bannerCardUp'>
                             <div className='ciconBanner'></div>
                             <p className='bannerCtitle'>Cycling</p>
@@ -18,7 +18,7 @@ const OurFeaturedClass = () => {
                         </div>
                     </Link>
 
-                    <Link className='bannerCard card2'>
+                    <Link className='bannerCard card2' data-aos="fade-up">
                         <div className='bannerCardUp'>
                             <div className='ciconBanner'></div>
                             <p className='bannerCtitle'>Meditation</p>
@@ -28,7 +28,7 @@ const OurFeaturedClass = () => {
                         </div>
                     </Link>
 
-                    <Link className='bannerCard card3'>
+                    <Link className='bannerCard card3' data-aos="fade-down">
                         <div className='bannerCardUp'>
                             <div className='ciconBanner'></div>
                             <p className='bannerCtitle'>Power Lifting</p>
@@ -38,7 +38,7 @@ const OurFeaturedClass = () => {
                         </div>
                     </Link>
 
-                    <Link className='bannerCard card4'>
+                    <Link className='bannerCard card4' data-aos="fade-left">
                         <div className='bannerCardUp'>
                             <div className='ciconBanner'></div>
                             <p className='bannerCtitle'>Workout</p>

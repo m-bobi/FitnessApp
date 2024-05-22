@@ -9,6 +9,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import axios from "axios";
 import config from "../../../config";
 import { IoMdMenu } from "react-icons/io";
+import { LuShoppingCart } from "react-icons/lu";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -65,6 +66,24 @@ const Navbar = () => {
     };
   }, []);
 
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const savedProducts = JSON.parse(localStorage.getItem('cart')) || [];
+      setCartCount(savedProducts.length);
+    };
+
+    updateCartCount();
+    window.addEventListener('storage', updateCartCount); 
+
+   
+    const intervalId = setInterval(updateCartCount, 1000); 
+    return () => {
+      clearInterval(intervalId); 
+    };
+  }, []);
+
   return (
     <div className={scrolled ? "navbar-scrolled" : "navbar"}>
       <Link to="/" className="logoHolder">
@@ -118,6 +137,12 @@ const Navbar = () => {
       <div className="nav-auth"></div>
 
       <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-10 auth">
+     {token && (
+       <Link to="/cart" className="navbar-cart">
+       <LuShoppingCart className="invert text-2xl"/>
+       {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+    </Link>
+     )}
       <div className="searchbar-icon">
       <Link className="search invert" onClick={toggleSearchBar}>
         <IoIosSearch className="searchIcon" />
