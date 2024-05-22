@@ -157,7 +157,7 @@ public class UserController : Controller
 
     // Create API to update an existing user.
     [HttpPut("updateUser/{id}")]
-    [Authorize(Roles = "Manager, Trainer")]
+    // [Authorize(Roles = "Manager, Trainer")]
     public async Task<IActionResult> UpdateUser([FromBody]User user)
     {
         if (user is null)

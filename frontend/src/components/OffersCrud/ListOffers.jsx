@@ -13,7 +13,9 @@ const ListOffers = () => {
   const [editedoffer, setEditedoffer] = useState({});
 
   const [offers, setOffers] = useState([]);
+
   const [totalPages, setTotalPages] = useState(0);
+  
   const [filter, setFilter] = useState({
     offerId: "",
     offerStatus: "",

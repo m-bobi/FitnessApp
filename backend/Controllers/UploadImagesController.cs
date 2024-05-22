@@ -102,6 +102,38 @@ public class UploadImagesController : Controller
         return Ok(unicNameOfImage);
     }
 
+    [HttpPut]
+    [Route("updateUserImage")]
+    public async Task<IActionResult> UpdateUserImage(IFormFile foto, string fotoVjeterProduktit)
+    {
+        if (foto == null || foto.Length == 0)
+        {
+            return BadRequest("Ju lutem vendosni foton");
+        }
+
+        var follderi = Path.Combine("..", "frontend", "public", "img", "users");;
+
+        if (!fotoVjeterProduktit.Equals("ProduktPaFoto.png"))
+        {
+            var fotoVjeter = Path.Combine(follderi, fotoVjeterProduktit);
+
+            if (System.IO.File.Exists(fotoVjeter))
+            {
+                System.IO.File.Delete(fotoVjeter);
+            }
+        }
+
+        var emriUnikFotos = GenerateUnicNameOfImage(foto.FileName);
+
+        var fotoERe = Path.Combine(follderi, emriUnikFotos);
+
+        using (var stream = new FileStream(fotoERe, FileMode.Create))
+        {
+            await foto.CopyToAsync(stream);
+        }
+
+        return Ok(emriUnikFotos);
+    }
     private string GenerateUnicNameOfImage(string imageName)
     {
         string unicNameOfImage = Guid.NewGuid().ToString("N") + Path.GetExtension(imageName);
