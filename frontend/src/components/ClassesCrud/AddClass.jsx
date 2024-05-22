@@ -120,7 +120,7 @@ const AddClass = () => {
                 <form className="space-y-4" onSubmit={handleSubmit} method="POST">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Class Type
+                      Class Test
                     </label>
                     <input
                       type="text"
