@@ -29,6 +29,7 @@ const Navbar = () => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("cart")
     window.location.reload();
   };
 
