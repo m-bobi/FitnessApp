@@ -1,10 +1,12 @@
+using Asp.Versioning;
 using backend.DbContext;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
-
+[ApiVersion( 1.0 )]
+[Route("api/[controller]" )]
 
 public class WorkoutsController : Controller
 {
@@ -77,7 +79,7 @@ public class WorkoutsController : Controller
     {
         if (workout is null || workout.WorkoutId == 0)
         {
-            return BadRequest("Invalid trainer data");
+            return BadRequest("Invalid workout data");
         }
 
         var existingWorkout = await _dbContext.Trainers.FindAsync(workout.WorkoutId);
@@ -88,13 +90,12 @@ public class WorkoutsController : Controller
 
         _dbContext.Entry(existingWorkout).CurrentValues.SetValues(workout);
         await _dbContext.SaveChangesAsync();
-        return Ok("Trainer updated successfully");
+        return Ok("Workout updated successfully");
     }
 
 
 
 }
-
 
 
 

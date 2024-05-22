@@ -1,12 +1,12 @@
-﻿using backend.DbContext; // Assuming this is the correct namespace
+﻿using Asp.Versioning;
+using backend.DbContext; // Assuming this is the correct namespace
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Controllers
-{
-
-
+namespace backend.Controllers;
+[ApiVersion( 1.0 )]
+[Route("api/[controller]" )]
 public class WorkoutplansController : Controller
 {
     private readonly ApplicationDbContext _dbContext;
@@ -80,7 +80,7 @@ public class WorkoutplansController : Controller
     [HttpPut("updateWorkoutplans/{id}")]
     public async Task<IActionResult> UpdateWorkoutPlans(int id, [FromBody] WorkoutPlans updatedWorkout)
     {
-        if (updatedWorkout == null || id <= 0 || id != updatedWorkout.WorkoutPlanId) // Check for null, invalid id, and ID mismatch
+        if (updatedWorkout == null || updatedWorkout.WorkoutPlanId == 0)
         {
             return BadRequest("Invalid workout plan data");
         }
@@ -119,13 +119,6 @@ public class WorkoutplansController : Controller
 
 
         
-
-
-    }
-
-
-
-
 
 
 }
