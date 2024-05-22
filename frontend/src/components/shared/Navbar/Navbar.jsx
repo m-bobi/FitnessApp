@@ -156,8 +156,8 @@ const Navbar = () => {
       )}
       </div>
         {token && userImage && (
-          <div
-            className="relative inline-flex items-center justify-center rounded-full shadow overflow-hidden cursor-pointer"
+          <Link to="/userprofile"
+            className="relative inline-flex items-center justify-center rounded-full shadow overflow-hidden cursor-pointer userImage"
             onMouseEnter={() => setIsDropdownVisible(true)}
           >
             <img
@@ -165,7 +165,7 @@ const Navbar = () => {
               alt="User"
               className="w-16 h-16 object-cover"
             />
-          </div>
+          </Link>
         )}
         {token && !userImage && (
           <div

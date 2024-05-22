@@ -9,9 +9,11 @@ import axios from "axios";
 import ListOrders from "../../OrderCrud/ListOrders";
 import AddOrders from "../../OrderCrud/AddOrders";
 import AddProducts from "../../ProductCrud/AddProducts"
-import ListProducts from "../../ProductCrud/ListProducts"
+// import ListProducts from "../../ProductCrud/ListProducts"
 import AddClass from "../../ClassesCrud/AddClass";
 import ListClass from "../../ClassesCrud/ListClass";
+import ListUsers from "../../ListUsers";
+import ListProducts from "../../ListProducts"
 
 
 const AdminDashboard = () => {
@@ -664,11 +666,8 @@ const AdminDashboard = () => {
             </div>
           </div>
           <div className="p-10">
-            <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
-              Products
               <AddProducts />
-            </h1>
-            <ListProducts />
+               <ListProducts/>
           </div>
 
           <div className="p-10">
@@ -686,6 +685,8 @@ const AdminDashboard = () => {
             </h1>
             <ListClass />
           </div>
+
+          <ListUsers/>
           <div className="mt-8 mx-4">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="p-6 mr-2 bg-gray-100 dark:bg-gray-800 sm:rounded-lg">
