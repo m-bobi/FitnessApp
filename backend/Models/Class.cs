@@ -14,5 +14,16 @@ public class Class
     [StringLength(20)]
     public string ClassType { get; set; }
 
+    public string ClassDescription { get; set; }
+
+    public string ClassImage { get; set; }
+    
     [Column(TypeName = "datetime")] public DateTime ClassDateTime { get; set; }
+    
+    [ForeignKey("UserId")]
+    public String UserId { get; set; }
+
+    // Navigation property
+   
+    // public User User { get; set; }
 }

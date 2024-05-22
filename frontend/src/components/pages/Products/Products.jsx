@@ -7,6 +7,7 @@ import { FaCartPlus } from "react-icons/fa";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -15,7 +16,7 @@ const Products = () => {
           `${config.apiBaseURL}getAllofProducts`
         );
         setProducts(response.data);
-        // setTotalPages(response.data.totalPages);
+        
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -24,21 +25,14 @@ const Products = () => {
     fetchProducts();
   }, );
 
-  // const addToCart = (product) => {
-  //   const updatedCart = [...cart, product];
-  //   setCart(updatedCart);
-  //   localStorage.setItem('cart', JSON.stringify(updatedCart));
-  // };
+
 
 
   const addToCart = (product) => {
-    // Assuming your props contain all the necessary data for saving the card
-    
-
    const savedProducts = JSON.parse(localStorage.getItem('cart')) || [];
       const newProduct = product;
 
-  // Check if the card is not already saved
+
   if (!savedProducts.some((product) => product.productId === newProduct.productId)) {
     savedProducts.push(newProduct);
     localStorage.setItem('cart', JSON.stringify(savedProducts));
@@ -81,12 +75,16 @@ const Products = () => {
                 <p>Only {p.productStock} left</p>
                 <div class="flex items-center justify-between">
                     <span class="text-3xl font-bold text-gray-900 dark:text-white">{p.productPrice}$</span>
-                    <Link 
-                    onClick={() => addToCart(p)}
-                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex space-between items-center gap-x-5">
-                    <FaCartPlus className='cartIconProduct' />
-                      Add to cart
-                      </Link>
+                  {
+                    token && (
+                      <Link 
+                      onClick={() => addToCart(p)}
+                       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex space-between items-center gap-x-5">
+                      <FaCartPlus className='cartIconProduct' />
+                        Add to cart
+                        </Link>
+                    )
+                  }
                 </div>
             </div>
         </div>

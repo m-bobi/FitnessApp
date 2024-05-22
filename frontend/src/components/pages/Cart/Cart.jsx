@@ -14,11 +14,9 @@ const Cart = () => {
     }, []); 
   
     const handleDeleteCard = (id) => {
-      // Remove the card with the specified cardId from the saved cards
       const updatedSavedCards = cart.filter((card) => card.productId !== id);
       localStorage.setItem('cart', JSON.stringify(updatedSavedCards));
   
-      // Introduce a setTimeout to force a slight delay before re-rendering
       setTimeout(() => {
         setCart(updatedSavedCards);
       }, 100);
@@ -60,7 +58,7 @@ const Cart = () => {
           )
         })
       ) : (
-        <div>No products for the moment! Sorry</div>
+        <div>Nothing in the cart for the moment!</div>
       )
     }
     </div>
