@@ -6,7 +6,7 @@ import "aos/dist/aos.css";
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Unauthorized from './components/Auth/Unauthorized';
-
+import Class from './pages/Classes/Class'
 
 function App() {
 
@@ -27,18 +27,17 @@ function App() {
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Router>
-      
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/products" element={<Products/>} />
+            <Route exact path="/products" element={<Products />} />
             <Route exact path="/offers" element={<Offers />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route exact path="/signin" element={<SignIn  />}  />
-            <Route exact path="/signup" element={<SignUp  />}  />
-            <Route exact path="/cart" element={<Carts/>}  />
-            <Route exact path="*" element={<Unauthorized  />}  />
-
+            <Route exact path="/signin" element={<SignIn />} />
+            <Route exact path="/signup" element={<SignUp />} />
+            <Route exact path="/cart" element={<Carts />} />
+            <Route path="/class/:id" element={<Class/>} />
+            <Route exact path="*" element={<Unauthorized />} />
           </Routes>
         </Router>
       </Suspense>

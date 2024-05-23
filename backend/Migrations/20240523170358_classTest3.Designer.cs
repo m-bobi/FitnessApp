@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.DbContext;
 
@@ -11,9 +12,11 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240523170358_classTest3")]
+    partial class classTest3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -569,8 +572,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "60616ec6-1c1a-4705-8ec8-0790f9e8b87c",
-                            CreatedAt = new DateTime(2024, 5, 23, 17, 13, 12, 714, DateTimeKind.Utc).AddTicks(3797),
+                            ConcurrencyStamp = "d8a180c2-5123-4018-b6f4-ac9af54a802c",
+                            CreatedAt = new DateTime(2024, 5, 23, 17, 3, 57, 372, DateTimeKind.Utc).AddTicks(6591),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -578,11 +581,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN6tEhRY73cNAwyZF3vJ7IzR1zXHcrVXoh3t2EpbRy5AfeoevIUw5CeeARIdC0tsYw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIO00BUDmLrTy8p17btrfTto5LBUkGDoxjKDL30YXs8a5Ki+fKUJ8cnUOm4MGYoQVA==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "e92f0ea2-c0fa-4115-b5fe-d8a01a0ad220",
+                            SecurityStamp = "6eb5561a-fea4-40ea-8bda-4c936636167b",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

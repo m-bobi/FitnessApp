@@ -27,4 +27,6 @@ public class User : IdentityUser
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     
     public Roles Role { get; set; }
+    
+    public ICollection<UserClass> UserClasses { get; set; }
 }
