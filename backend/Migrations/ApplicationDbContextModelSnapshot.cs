@@ -180,11 +180,9 @@ namespace backend.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("ClassId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Class");
                 });
@@ -575,8 +573,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "b2881e7f-4318-4740-9a3e-57a972f52f62",
-                            CreatedAt = new DateTime(2024, 5, 22, 7, 20, 7, 354, DateTimeKind.Utc).AddTicks(6666),
+                            ConcurrencyStamp = "448fa037-2404-48ce-b636-30312704687b",
+                            CreatedAt = new DateTime(2024, 5, 23, 16, 1, 32, 213, DateTimeKind.Utc).AddTicks(3483),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -584,11 +582,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENWix/nvzJwVIQnySwcZH8iVNXdLs63Htlc+IzyQG4ZlcbEzXN7SLNX0HWLPfwwGgQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKnC1RT4bdvizgbSiB6RZpccHJjFQHSTxVVDl6UVTMDxcjS/iayXMxPPiUq1T6+CPg==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "ed244500-3878-4ff5-b4e0-2fa9701f6ce6",
+                            SecurityStamp = "7c041d81-1834-4bd1-8e4f-523e52b32624",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -693,17 +691,6 @@ namespace backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("backend.Models.Class", b =>
-                {
-                    b.HasOne("backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("backend.Models.Orders", b =>

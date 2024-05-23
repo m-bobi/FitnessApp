@@ -54,10 +54,12 @@ const Products = () => {
       products && products.length > 0 ? (
         products.map((p) => {
           return(
-            <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <Link href="#">
+            <Link
+           to={`/productDetails/${p.productId}`}
+             class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div>
                 <img  src={`/img/products/${p.productImage}`}  />
-            </Link>
+            </div>
             <div class="px-5 pb-5">
                 <Link href="#">
                     <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{p.productName}</h5>
@@ -87,7 +89,7 @@ const Products = () => {
                   }
                 </div>
             </div>
-        </div>
+        </Link>
           )
         })
       ) : (

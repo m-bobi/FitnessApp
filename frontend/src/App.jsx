@@ -17,6 +17,7 @@ function App() {
   const SignIn = lazy(() => import("./components/SignIn/SignIn"));
   const SignUp = lazy(() => import("./components/SignUp/SignUp"));
   const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile"));
+  const ProductDetails = lazy(() => import("./components/shared/ProductDetails/ProductDetails"));
 
   useEffect(() => {
     Aos.init({
@@ -39,6 +40,7 @@ function App() {
             <Route exact path="/signup" element={<SignUp  />}  />
             <Route exact path="/cart" element={<Carts/>}  />
             <Route exact path="/userprofile" element={<UserProfile/>}  />
+            <Route exact path="/productDetails/:id" element={<ProductDetails/>}  />
             <Route exact path="*" element={<Unauthorized  />}  />
 
           </Routes>
