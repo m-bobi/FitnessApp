@@ -113,21 +113,37 @@ public class UserController : Controller
     // Create API to add user.
     [HttpPost("addUser")]
     [Authorize(Roles = "Manager")]
-    public async Task<IActionResult> AddUser([FromBody] User user)
+    public async Task<IActionResult> AddUser([FromBody] UserDto userDto)
     {
-        if (user is null)
+        if (userDto is null)
         {
             return BadRequest();
         }
 
-        await _dbContext.AddAsync(user);
-        await _dbContext.SaveChangesAsync();
-        return Ok();
-    }
+        var user = new User
+        {
+            UserName = userDto.Username,
+            Email = userDto.Email,
+            Name = userDto.Username,
+            PhoneNumber = userDto.PhoneNumber,
+            Address = userDto.Address,
+            Gender = userDto.Gender,
+            Birthdate = userDto.Birthdate,
+            Role = userDto.Role
+        };
 
-    // Create API to get a specific user by ID.
+        var result = await _userManager.CreateAsync(user);
+
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+
+        return BadRequest(result.Errors);
+    }
+    
     [HttpGet("getUser/{id}")]
-    // [Authorize(Roles = "Manager, Trainer")]
+    [Authorize(Roles = "Manager, Trainer")]
     public async Task<IActionResult> GetUserById(String id)
     {
         var user = await _dbContext.Users.FindAsync(id);
@@ -156,6 +172,7 @@ public class UserController : Controller
     }
 
     [HttpPut("updateUser/{id}")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> UpdateUser(string id, [FromBody]UserDto userDto)
     {
         if (userDto is null)
@@ -180,6 +197,7 @@ public class UserController : Controller
     }
 
      [HttpGet("getUserByUsername/{username}")]
+     [Authorize(Roles = "Manager")]
         public async Task<ActionResult<User>> GetUserByUsername(string username)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
@@ -190,8 +208,8 @@ public class UserController : Controller
             return Ok(user);
         }
 
-    [AllowAnonymous]
     [HttpGet("checkEmail")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> CheckEmail(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
