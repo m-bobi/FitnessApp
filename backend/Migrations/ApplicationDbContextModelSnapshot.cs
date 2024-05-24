@@ -398,11 +398,21 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<double>("ProductPrice")
-                        .HasColumnType("double");
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("ProductStock")
                         .HasColumnType("int");
+
+                    b.Property<string>("StripePriceId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("StripeProductId")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("varchar(24)");
 
                     b.HasKey("ProductId");
 
@@ -569,8 +579,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Age = 20,
-                            ConcurrencyStamp = "60616ec6-1c1a-4705-8ec8-0790f9e8b87c",
-                            CreatedAt = new DateTime(2024, 5, 23, 17, 13, 12, 714, DateTimeKind.Utc).AddTicks(3797),
+                            ConcurrencyStamp = "f78b391f-1782-43e4-8c2e-033675efc0d4",
+                            CreatedAt = new DateTime(2024, 5, 24, 8, 39, 26, 18, DateTimeKind.Utc).AddTicks(8079),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -578,11 +588,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN6tEhRY73cNAwyZF3vJ7IzR1zXHcrVXoh3t2EpbRy5AfeoevIUw5CeeARIdC0tsYw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAdFTDB+RFWeGYln1UHi93GOq91Jfl7J5jiffS3Fw9mWdCcnRSbSnkz4k8Bk4RKgTg==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "e92f0ea2-c0fa-4115-b5fe-d8a01a0ad220",
+                            SecurityStamp = "58e74249-c27e-4872-a125-2b3f629e6846",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

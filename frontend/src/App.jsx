@@ -6,13 +6,10 @@ import "aos/dist/aos.css";
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Unauthorized from './components/Auth/Unauthorized';
-import Class from './pages/Classes/Class'
-
 function App() {
 
 
-  const Products = lazy(() => import("./pages/Products/Products"));
-  const Offers = lazy(() => import("./pages/Offers/Offers"));
+  const Class = lazy(() => import("./pages/Classes/Class"));
   const Carts =lazy(() => import("./pages/Cart/Carts"));
   const SignIn = lazy(() => import("./components/SignIn/SignIn"));
   const SignUp = lazy(() => import("./components/SignUp/SignUp"));
@@ -32,14 +29,9 @@ function App() {
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/UserCRUD" element={<User />} />
-            <Route exact path="/orders" element={<Orders />} />
-            <Route exact path="/products" element={<Products />} />
-            <Route exact path="/trainers" element={<Trainers  />} />
-            <Route exact path="/offers" element={<Offers />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
-
+            <Route path='/class' element={<Class/>} />
             <Route exact path="/signin" element={<SignIn />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/cart" element={<Carts />} />

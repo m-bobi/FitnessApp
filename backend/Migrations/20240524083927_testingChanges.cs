@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class productChange : Migration
+    public partial class testingChanges : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -92,9 +92,7 @@ namespace backend.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ClassImage = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ClassDateTime = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    ClassDateTime = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -231,12 +229,16 @@ namespace backend.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ProductDescription = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProductPrice = table.Column<double>(type: "double", nullable: false),
+                    ProductPrice = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     ProductCategory = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ProductImage = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProductStock = table.Column<int>(type: "int", nullable: false)
+                    ProductStock = table.Column<int>(type: "int", nullable: false),
+                    StripeProductId = table.Column<string>(type: "varchar(24)", maxLength: 24, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    StripePriceId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -475,10 +477,36 @@ namespace backend.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "UserClasses",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClassId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserClasses", x => new { x.UserId, x.ClassId });
+                    table.ForeignKey(
+                        name: "FK_UserClasses_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserClasses_Class_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Class",
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Age", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "Gender", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", 20, "448fa037-2404-48ce-b636-30312704687b", new DateTime(2024, 5, 23, 16, 1, 32, 213, DateTimeKind.Utc).AddTicks(3483), "root@email.com", false, "Male", null, false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAEKnC1RT4bdvizgbSiB6RZpccHJjFQHSTxVVDl6UVTMDxcjS/iayXMxPPiUq1T6+CPg==", "044234234", false, 1, "7c041d81-1834-4bd1-8e4f-523e52b32624", false, "admin" });
+                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", 20, "f78b391f-1782-43e4-8c2e-033675efc0d4", new DateTime(2024, 5, 24, 8, 39, 26, 18, DateTimeKind.Utc).AddTicks(8079), "root@email.com", false, "Male", null, false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAEAdFTDB+RFWeGYln1UHi93GOq91Jfl7J5jiffS3Fw9mWdCcnRSbSnkz4k8Bk4RKgTg==", "044234234", false, 1, "58e74249-c27e-4872-a125-2b3f629e6846", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -521,6 +549,11 @@ namespace backend.Migrations
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserClasses_ClassId",
+                table: "UserClasses",
+                column: "ClassId");
         }
 
         /// <inheritdoc />
@@ -540,9 +573,6 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Class");
 
             migrationBuilder.DropTable(
                 name: "Gym");
@@ -578,6 +608,9 @@ namespace backend.Migrations
                 name: "Trainers");
 
             migrationBuilder.DropTable(
+                name: "UserClasses");
+
+            migrationBuilder.DropTable(
                 name: "WorkoutPlans");
 
             migrationBuilder.DropTable(
@@ -588,6 +621,9 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Class");
         }
     }
 }
