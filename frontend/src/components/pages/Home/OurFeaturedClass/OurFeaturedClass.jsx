@@ -36,7 +36,8 @@ const OurFeaturedClass = () => {
             <div className="bannerCardUp">
               <div className="ciconBanner">
                 <p className="bannerCtitle">{classItem.classType}</p>
-                <img src={`/img/classes/${classItem.classImage}`} alt="" />
+                <img src={`/img/classes/${classItem.classImage}`} alt=""/>
+                
               </div>
             </div>
             <div className="bannerCardDown">

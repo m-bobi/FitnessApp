@@ -80,11 +80,11 @@
     color: #EE4E4E !important;
 }
 
-.card1{
+.cardClass{
     background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../../../../assets/cyclingClass.jpg");
     background-size: cover;
 }
-.card2{
+/* .card2{
     background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../../../../assets/meditationClass.webp");
     background-size: cover;
     background-position-x:100%;
@@ -98,7 +98,7 @@
     background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url("../../../../assets/workoutClass.jpg");
     background-size: cover;
     background-position-x:40%;
-}
+} */
 
 .bannerCard {
     vertical-align: middle;
