@@ -29,7 +29,7 @@ const OurFeaturedClass = () => {
         {classes.map((classItem, index) => (
           <Link
             key={index}
-            to={`/class/${classItem.classId}`}
+            to={`class/${classItem.classId}`}
             className="bannerCard"
             data-aos="fade-right"
           >

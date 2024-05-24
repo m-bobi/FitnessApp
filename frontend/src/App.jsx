@@ -33,14 +33,14 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route path='/class' element={<Class/>} />
+            <Route path="/class/:id" element={<Class />} />
             <Route exact path="/signin" element={<SignIn />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/cart" element={<Carts />} />
             <Route exact path="/success" element={<Success />} />
             <Route exact path="/cancelled" element={<Cancelled />} />
             <Route exact path="/userprofile" element={<UserProfile />} />
-            <Route exact path='/products' element={<Products/>} />
+            <Route exact path="/products" element={<Products />} />
             <Route
               exact
               path="/productDetails/:id"
