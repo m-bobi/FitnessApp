@@ -46,7 +46,7 @@ const AddProducts = () => {
     axios
       .post(`${config.apiBaseURL}api/UploadImages/addProductImage`, formDataObj)
       .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}addProduct`, {
+        return axios.post(`${config.apiBaseURL}api/Products/addProduct`, {
           ...formData,
           productImage: imageResponse.data,
         });

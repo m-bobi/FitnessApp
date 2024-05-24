@@ -13,10 +13,10 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `${config.apiBaseURL}getAllofProducts`
+          `${config.apiBaseURL}api/Products/getAllofProducts`
         );
         setProducts(response.data);
-        
+
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -79,7 +79,7 @@ const Products = () => {
                     <span class="text-3xl font-bold text-gray-900 dark:text-white">{p.productPrice}$</span>
                   {
                     token && (
-                      <Link 
+                      <Link
                       onClick={() => addToCart(p)}
                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex space-between items-center gap-x-5">
                       <FaCartPlus className='cartIconProduct' />

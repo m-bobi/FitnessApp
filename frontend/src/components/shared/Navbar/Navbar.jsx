@@ -76,12 +76,12 @@ const Navbar = () => {
     };
 
     updateCartCount();
-    window.addEventListener('storage', updateCartCount); 
+    window.addEventListener('storage', updateCartCount);
 
-   
-    const intervalId = setInterval(updateCartCount, 1000); 
+
+    const intervalId = setInterval(updateCartCount, 1000);
     return () => {
-      clearInterval(intervalId); 
+      clearInterval(intervalId);
     };
   }, []);
 
@@ -123,17 +123,11 @@ const Navbar = () => {
             Dashboard
           </Link>
         )}
-        {/* <Link
-          to="/dashboard"
-          className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
-        >
-          Dashboard
-        </Link> */}
       </div>
-  
-    
 
-    
+
+
+
 
       <div className="nav-auth"></div>
 

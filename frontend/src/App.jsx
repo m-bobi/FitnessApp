@@ -14,8 +14,10 @@ function App() {
   const SignIn = lazy(() => import("./components/SignIn/SignIn"));
   const SignUp = lazy(() => import("./components/SignUp/SignUp"));
   const Success = lazy(() => import("./components/Payments/Success"))
-  const Cancelled = lazy(() => import("./components/Payments/Cancelled"));  const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile"));
+  const Cancelled = lazy(() => import("./components/Payments/Cancelled"));
+  const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile"));
   const ProductDetails = lazy(() => import("./components/shared/ProductDetails/ProductDetails"));
+  const Products = lazy(()=> import("./pages/Products/Products"));
 
   useEffect(() => {
     Aos.init({
@@ -38,6 +40,7 @@ function App() {
             <Route exact path="/success" element={<Success />} />
             <Route exact path="/cancelled" element={<Cancelled />} />
             <Route exact path="/userprofile" element={<UserProfile />} />
+            <Route exact path='/products' element={<Products/>} />
             <Route
               exact
               path="/productDetails/:id"
