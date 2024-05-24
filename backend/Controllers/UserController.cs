@@ -209,7 +209,6 @@ public class UserController : Controller
         }
 
     [HttpGet("checkEmail")]
-    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> CheckEmail(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -217,6 +216,16 @@ public class UserController : Controller
         bool usedEmail = user != null;
 
         return Ok(usedEmail);
+    }
+    
+    [HttpGet("checkUsername")]
+    public async Task<IActionResult> CheckUsername(string username)
+    {
+        var user = await _userManager.FindByNameAsync(username);
+
+        bool usedUsername = user != null;
+
+        return Ok(usedUsername);
     }
 
     // Create user object
