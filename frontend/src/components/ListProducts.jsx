@@ -15,7 +15,7 @@ const ListProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
           try {
-            const response = await axios.get("http://localhost:5259/getAllofProducts", {
+            const response = await axios.get("http://localhost:5259/api/Products/getAllofProducts", {
               headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",

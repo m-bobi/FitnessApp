@@ -66,6 +66,7 @@ function calculateAge(birthdate) {
       if (response.status === 200) {
         setUser(response.data);
         alert("Profile updated successfully");
+        window.location.reload()
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -202,7 +203,6 @@ function calculateAge(birthdate) {
                               userName: e.target.value,
                             })
                           }
-                          required
                         />
                       </div>
                       <div>
@@ -220,7 +220,6 @@ function calculateAge(birthdate) {
                           onChange={(e) =>
                             setFormData({ ...formData, gender: e.target.value })
                           }
-                          required
                         />
                       </div>
                       <div>
@@ -261,7 +260,6 @@ function calculateAge(birthdate) {
                               address: e.target.value,
                             })
                           }
-                          required
                         />
                       </div>
                       <div>
@@ -282,7 +280,6 @@ function calculateAge(birthdate) {
                               birthdate: e.target.value,
                             })
                           }
-                          required
                         />
                       </div>
                     </div>
@@ -301,7 +298,6 @@ function calculateAge(birthdate) {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        required
                       />
                     </div>
 
@@ -312,7 +308,6 @@ function calculateAge(birthdate) {
                           type="checkbox"
                           value=""
                           class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-                          required
                         />
                       </div>
                       <label

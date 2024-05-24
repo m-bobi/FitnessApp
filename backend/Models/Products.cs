@@ -26,7 +26,9 @@ public class Products
     
     [Required]
     public int ProductStock { get; set; }
-    
+
+    public int? ProductRate { get; set; }
+
     [StringLength(24)]
     public string StripeProductId { get; set; }
 
