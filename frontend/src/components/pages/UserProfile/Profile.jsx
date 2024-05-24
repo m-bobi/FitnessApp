@@ -6,16 +6,25 @@ import moment from "moment";
 const Profile = () => {
   const [user, setUser] = useState([]);
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
+
+  const [formData, setFormData] = useState({
+    name: "",
+    userName: "",
+    gender: "",
+    Birthdate: "",
+    phoneNumber: "",
+    address: "",
+    email: "",
+  });
 
   useEffect(() => {
     if (token) {
-      const userId = localStorage.getItem("id");
       axios
         .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
         .then((response) => {
           if (response.data) {
             setUser(response.data);
-            // setEditedUser(response.data);
           }
         })
         .catch((error) => {
@@ -26,6 +35,41 @@ const Profile = () => {
 
   const memberSince = () => {
     return moment(user.createdAt).fromNow();
+  };
+
+function calculateAge(birthdate) {
+  const dob = new Date(birthdate);
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const m = today.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userUpdateDto = {
+        userName: formData.userName,
+        address: formData.address,
+        phoneNumber: formData.phoneNumber,
+        birthdate: formData.birthdate,
+        gender: formData.gender,
+      };
+
+      const response = await axios.put(
+        `${config.apiBaseURL}api/User/updateUser/${userId}`,
+        userUpdateDto
+      );
+      if (response.status === 200) {
+        setUser(response.data);
+        alert("Profile updated successfully");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -90,10 +134,6 @@ const Profile = () => {
                 <div className="text-gray-700">
                   <div className="grid md:grid-cols-2 text-sm">
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold"> Name</div>
-                      <div className="px-4 py-2">{user.name}</div>
-                    </div>
-                    <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Username</div>
                       <div className="px-4 py-2">{user.userName}</div>
                     </div>
@@ -130,7 +170,9 @@ const Profile = () => {
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Age</div>
-                      <div className="px-4 py-2">{user.age} years old</div>
+                      <div className="px-4 py-2">
+                        {calculateAge(user.birthdate)} years old
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -140,23 +182,8 @@ const Profile = () => {
 
               <div className="bg-white p-3 shadow-sm rounded-sm">
                 <div className="grid grid-cols-1 mx-auto">
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div class="grid gap-6 mb-6 md:grid-cols-3">
-                      <div>
-                        <label
-                          for="first_name"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                          New Name
-                        </label>
-                        <input
-                          type="text"
-                          id="first_name"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder={user.name}
-                          required
-                        />
-                      </div>
                       <div>
                         <label
                           for="last_name"
@@ -169,6 +196,12 @@ const Profile = () => {
                           id="last_name"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder={user.userName}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              userName: e.target.value,
+                            })
+                          }
                           required
                         />
                       </div>
@@ -184,6 +217,9 @@ const Profile = () => {
                           id="company"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder={user.gender}
+                          onChange={(e) =>
+                            setFormData({ ...formData, gender: e.target.value })
+                          }
                           required
                         />
                       </div>
@@ -199,6 +235,12 @@ const Profile = () => {
                           id="phone"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder={user.phoneNumber}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              phoneNumber: e.target.value,
+                            })
+                          }
                         />
                       </div>
                       <div>
@@ -213,6 +255,33 @@ const Profile = () => {
                           id="address"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder={user.address}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              address: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          for="birthdate"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          New Birthdate
+                        </label>
+                        <input
+                          type="date"
+                          id="birthdate"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder={user.birthdate}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              birthdate: e.target.value,
+                            })
+                          }
                           required
                         />
                       </div>
@@ -229,6 +298,9 @@ const Profile = () => {
                         id="email"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder={user.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
                         required
                       />
                     </div>

@@ -16,12 +16,11 @@ public class User : IdentityUser
     public string? Address { get; set; }
 
     [RegularExpression(@"^\+?\d{1,3}[- ]?\d{3,14}$", ErrorMessage = "Invalid phone number format")]
-    public string? PhoneNumber { get; init; }
+    public string? PhoneNumber { get; set; }
 
     public string? Image { get; set; }
-    public int? Age { get; init; }
-
-    public string? Gender { get; init; }
+    public DateTime? Birthdate { get; set; }
+    public string? Gender { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;

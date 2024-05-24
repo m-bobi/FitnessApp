@@ -17,7 +17,7 @@ const SignUp = () => {
     name: "",
     address: "",
     mobile: "",
-    age: 0,
+    birthdate: "",
     password: "",
     gender: "",
     confirmPassword: "",
@@ -33,7 +33,7 @@ const SignUp = () => {
       name,
       address,
       mobile,
-      age,
+      birthdate,
       password,
       confirmPassword,
       gender,
@@ -46,7 +46,7 @@ const SignUp = () => {
       !name ||
       !address ||
       !mobile ||
-      !age ||
+      !birthdate ||
       !password ||
       !confirmPassword ||
       !gender
@@ -173,10 +173,10 @@ const SignUp = () => {
                     onChange={handleChange}
                   />
                   <InputField
-                    type="text"
-                    name="age"
-                    placeholder="Age"
-                    value={formData.age}
+                    type="date"
+                    name="birthdate"
+                    placeholder="Birthdate"
+                    value={formData.birthdate}
                     onChange={handleChange}
                   />
                   <InputField

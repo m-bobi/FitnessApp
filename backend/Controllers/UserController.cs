@@ -46,7 +46,7 @@ public class UserController : Controller
             Email = registerDto.Email,
             Role = registerDto.Role,
             Image = registerDto.Image,
-            Age = registerDto.Age,
+            Birthdate = registerDto.Birthdate,
             Address = registerDto.Address,
             PhoneNumber = registerDto.Mobile ,
             Gender = registerDto.Gender,
@@ -155,28 +155,26 @@ public class UserController : Controller
         return Ok("User deleted successfully");
     }
 
-    // Create API to update an existing user.
     [HttpPut("updateUser/{id}")]
-    // [Authorize(Roles = "Manager, Trainer")]
-    public async Task<IActionResult> UpdateUser([FromBody]User user)
+    public async Task<IActionResult> UpdateUser(string id, [FromBody]UserDto userDto)
     {
-        if (user is null)
+        if (userDto is null)
         {
             return BadRequest("Invalid user data");
         }
 
-        var existingUser = await _dbContext.Users.FindAsync(user.Id);
+        var existingUser = await _dbContext.Users.FindAsync(id);
         if (existingUser == null)
         {
             return NotFound();
         }
 
-        if (user.Id != existingUser.Id)
-        {
-            return BadRequest("User ID mismatch.");
-        }
+        existingUser.Address = userDto.Address;
+        existingUser.PhoneNumber = userDto.PhoneNumber;
+        existingUser.Birthdate = userDto.Birthdate;
+        existingUser.Gender = userDto.Gender;
+        existingUser.UserName = userDto.Username;
 
-        _dbContext.Entry(existingUser).CurrentValues.SetValues(user);
         await _dbContext.SaveChangesAsync();
         return Ok("User updated successfully!");
     }
@@ -212,7 +210,6 @@ public class UserController : Controller
             Username = user.UserName,
             Email = user.Email,
             Token = _tokenService.CreateToken(user),
-            // Image = null, qetu duhet mu bo uncomment edhe me ja qu image te userit qysh e kena ma nalt
             Role = Enums.Roles.User
         };
     }

@@ -55,7 +55,7 @@ namespace backend.DbContext
                     NormalizedUserName = adminEmail.ToUpper(),
                     Address = "admin street",
                     Name = "Admin",
-                    Age = 20,
+                    Birthdate = new System.DateTime(1990, 1, 1),
                     Gender = "Male",
                     PhoneNumber = "044234234",
                     PasswordHash = hasher.HashPassword(null, adminPassword),
