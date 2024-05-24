@@ -4,30 +4,11 @@ import config from "../../config";
 import { toast } from "react-toastify";
 
 const AddClass = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const userId = localStorage.getItem("id");
-
   const [formData, setFormData] = useState({
     classType: "",
     classDescription: "",
     classImage: null,
-    userId : userId
   });
-
-
-
-  const handleChange = (event) => {
-    const { name, value, files } = event.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-  };
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -36,11 +17,20 @@ const AddClass = () => {
         classType,
         classDescription,
         classImage,
-        userId
     } = formData;
 
 
-  
+
+    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+    const fileExtension = classImage.name.split(".").pop().toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      toast.error(
+        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+      );
+      return;
+    }
+
 
     const formDataObj = new FormData();
     formDataObj.append("image", classImage);
@@ -50,7 +40,7 @@ const AddClass = () => {
       .then((imageResponse) => {
         return axios.post(`${config.apiBaseURL}api/Class/addClass`, {
           ...formData,
-          image: imageResponse.data,
+          classImage: imageResponse.data,
         });
       })
       .then(() => {
@@ -64,7 +54,21 @@ const AddClass = () => {
       });
   }
 
- 
+
+  const handleChange = (event) => {
+    const { name, value, files } = event.target;
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
+
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleModal = () => {
+      setIsOpen(!isOpen);
+    };
 
 
   return (
@@ -137,8 +141,8 @@ const AddClass = () => {
                     </label>
                     <input
                       type="text"
-                      name="OrderStatus"
-                      placeholder="Enter order status"
+                      name="classDescription"
+                      placeholder="Enter class description"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
@@ -152,14 +156,14 @@ const AddClass = () => {
                     <input
                       type="file"
                       name="classImage"
-                      placeholder="Enter user"
+                      placeholder="Select class image"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
                     />
                   </div>
 
-              
+
                   <button
                     type="submit"
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

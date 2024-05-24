@@ -1,5 +1,6 @@
 
 using backend.DbContext;
+using backend.DTO;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,18 +27,75 @@ public class ClassController : Controller
 
 
     [HttpPost("addClass")]
-    public async Task<IActionResult> AddClass( [FromBody]Class newClass)
+    public async Task<IActionResult> AddClass([FromBody] ClassRequest newClassRequest)
     {
-        if (newClass is null)
+        if (newClassRequest is null)
         {
             return BadRequest();
         }
+
+        var newClass = new Class
+        {
+            ClassId = newClassRequest.ClassId,
+            ClassType = newClassRequest.ClassType,
+            ClassDescription = newClassRequest.ClassDescription,
+            ClassImage = newClassRequest.ClassImage,
+            ClassDateTime = newClassRequest.ClassDateTime
+        };
 
         await _dbContext.AddAsync(newClass);
         await _dbContext.SaveChangesAsync();
         return Ok();
     }
     
+    [HttpPost("enrollUserInClass/{userId}/{classId}")]
+    public async Task<IActionResult> EnrollUserInClass(string userId, int classId)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
+        var classEntity = await _dbContext.Class.FindAsync(classId);
+
+        if (user == null || classEntity == null)
+        {
+            return BadRequest("User or class does not exist");
+        }
+
+        var userClass = new UserClass
+        {
+            UserId = userId,
+            ClassId = classId
+        };
+
+        await _dbContext.UserClasses.AddAsync(userClass);
+        await _dbContext.SaveChangesAsync();
+
+        return Ok();
+    }
+    
+    [HttpGet("getEnrolledUsers/{classId}")]
+    public async Task<IActionResult> GetEnrolledUsers(int classId)
+    {
+        var classEntity = await _dbContext.Class.FindAsync(classId);
+
+        if (classEntity == null)
+        {
+            return BadRequest("Class does not exist");
+        }
+
+        var userClasses = await _dbContext.UserClasses
+            .Where(uc => uc.ClassId == classId)
+            .Include(uc => uc.User)
+            .ToListAsync();
+
+        var users = userClasses.Select(uc => new UserDto 
+        { 
+            Id = uc.User.Id, 
+            Email = uc.User.Email, 
+            Username = uc.User.UserName,
+            Role = uc.User.Role
+        }).ToList();
+
+        return Ok(users);
+    }
 
     [HttpGet("getClass/{id}")]
     public async Task<IActionResult> GetClassById(int id)
@@ -70,7 +128,7 @@ public class ClassController : Controller
     {
         if (uClass is null || uClass.ClassId == 0)
         {
-            return BadRequest("Invalid trainer data");
+            return BadRequest("Invalid class data");
         }
 
         var existingClass = await _dbContext.Class.FindAsync(uClass.ClassId);
@@ -81,7 +139,7 @@ public class ClassController : Controller
 
         _dbContext.Entry(existingClass).CurrentValues.SetValues(uClass);
         await _dbContext.SaveChangesAsync();
-        return Ok("Trainer updated successfully");
+        return Ok("Class updated successfully");
     }
 
 

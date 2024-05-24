@@ -1,16 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
 
 namespace backend.Models;
 
-// We use these packages to tell what metadata we use
-
-public class Class
+public class ClassRequest
 {
     [Key]
     public int ClassId { get; set; }
-    
+
     [Required]
     [StringLength(20)]
     public string ClassType { get; set; }
@@ -18,10 +15,7 @@ public class Class
     public string ClassDescription { get; set; }
 
     public string ClassImage { get; set; }
-    
-    [Column(TypeName = "datetime")] public DateTime ClassDateTime { get; set; }
-    
-    [JsonIgnore]
-    public ICollection<UserClass> UserClasses { get; set; }
 
+    [Column(TypeName = "datetime")] 
+    public DateTime ClassDateTime { get; set; }
 }

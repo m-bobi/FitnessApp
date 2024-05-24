@@ -24,6 +24,8 @@ namespace backend.DbContext
         public DbSet<Trainers> Trainers { get; set; }
         public DbSet<WorkoutPlans> WorkoutPlans { get; set; }
         public DbSet<Workouts> Workouts { get; set; }
+        
+        public DbSet<UserClass> UserClasses { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -63,14 +65,18 @@ namespace backend.DbContext
                 }
             );
             
-            // {
-            //     modelBuilder.Entity<Class>()
-            //         .HasOne(c => c.UserId)
-            //         .WithMany()
-            //         .HasForeignKey(c => c.UserId);
-            //
-            //     base.OnModelCreating(modelBuilder);
-            // }
+            modelBuilder.Entity<UserClass>()
+                .HasKey(uc => new { uc.UserId, uc.ClassId });
+
+            modelBuilder.Entity<UserClass>()
+                .HasOne(uc => uc.User)
+                .WithMany(u => u.UserClasses)
+                .HasForeignKey(uc => uc.UserId);
+
+            modelBuilder.Entity<UserClass>()
+                .HasOne(uc => uc.Class)
+                .WithMany(c => c.UserClasses)
+                .HasForeignKey(uc => uc.ClassId);
         }
     }
 }
