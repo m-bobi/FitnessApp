@@ -8,8 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Stripe;
+using TokenService = backend.Services.TokenService;
 
 var builder = WebApplication.CreateBuilder(args);
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("StripeSettings:SecretKey").Value;
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +47,8 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 builder.Services.AddScoped<TokenService, TokenService>();
+builder.Services.AddScoped<IStripeClient, StripeClient>(sp =>
+    new StripeClient(StripeConfiguration.ApiKey));
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
 {

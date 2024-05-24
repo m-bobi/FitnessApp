@@ -16,7 +16,8 @@ function App() {
   const Carts =lazy(() => import("./pages/Cart/Carts"));
   const SignIn = lazy(() => import("./components/SignIn/SignIn"));
   const SignUp = lazy(() => import("./components/SignUp/SignUp"));
-  const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile"));
+  const Success = lazy(() => import("./components/Payments/Success"))
+  const Cancelled = lazy(() => import("./components/Payments/Cancelled"));  const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile"));
   const ProductDetails = lazy(() => import("./components/shared/ProductDetails/ProductDetails"));
 
   useEffect(() => {
@@ -29,20 +30,29 @@ function App() {
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Router>
-      
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/products" element={<Products/>} />
+            <Route exact path="/UserCRUD" element={<User />} />
+            <Route exact path="/orders" element={<Orders />} />
+            <Route exact path="/products" element={<Products />} />
+            <Route exact path="/trainers" element={<Trainers />} />
             <Route exact path="/offers" element={<Offers />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route exact path="/signin" element={<SignIn  />}  />
-            <Route exact path="/signup" element={<SignUp  />}  />
-            <Route exact path="/cart" element={<Carts/>}  />
-            <Route exact path="/userprofile" element={<UserProfile/>}  />
-            <Route exact path="/productDetails/:id" element={<ProductDetails/>}  />
-            <Route exact path="*" element={<Unauthorized  />}  />
 
+            <Route exact path="/signin" element={<SignIn />} />
+            <Route exact path="/signup" element={<SignUp />} />
+            <Route exact path="/cart" element={<Carts />} />
+            <Route exact path="/success" element={<Success />} />
+            <Route exact path="/cancelled" element={<Cancelled />} />
+            <Route exact path="/userprofile" element={<UserProfile />} />
+            <Route
+              exact
+              path="/productDetails/:id"
+              element={<ProductDetails />}
+            />
+
+            <Route exact path="*" element={<Unauthorized />} />
           </Routes>
         </Router>
       </Suspense>

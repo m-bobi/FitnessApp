@@ -23,7 +23,7 @@ const ListProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `${config.apiBaseURL}getAllProducts?page=${currentPage}&limit=${productsPerPage}`
+          `${config.apiBaseURL}api/Products/getAllProducts?page=${currentPage}&limit=${productsPerPage}`
         );
         setProducts(response.data.product);
         setTotalPages(response.data.totalPages);

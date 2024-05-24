@@ -15,7 +15,7 @@ public class Products
     public string ProductDescription { get; set; }
     
     [Required]
-    public double ProductPrice { get; set; }
+    public decimal ProductPrice { get; set; } 
     
     [Required]
     [StringLength(12)]
@@ -26,4 +26,10 @@ public class Products
     
     [Required]
     public int ProductStock { get; set; }
+    
+    [StringLength(24)]
+    public string StripeProductId { get; set; }
+
+    [StringLength(50)]
+    public string StripePriceId { get; set; }
 }

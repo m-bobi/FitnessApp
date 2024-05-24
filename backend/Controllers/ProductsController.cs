@@ -1,18 +1,22 @@
+using Asp.Versioning;
 using backend.DbContext;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
+using Stripe.Checkout;
 
 namespace backend.Controllers;
-
+[ApiVersion( 1.0 )]
+[Route("api/[controller]" )]
 public class ProductsController : Controller
 {
     private readonly ApplicationDbContext _dbContext;
-
-    // Database Injection
-    public ProductsController(ApplicationDbContext dbContext)
+    private readonly IStripeClient _stripeClient;
+    public ProductsController(ApplicationDbContext dbContext, IStripeClient stripeClient)
     {
         _dbContext = dbContext;
+        _stripeClient = stripeClient;
     }
 
 // Create API to get all Products with pagination.
@@ -55,6 +59,32 @@ public class ProductsController : Controller
             return BadRequest();
         }
 
+        // Create a corresponding product in Stripe
+        var options = new ProductCreateOptions
+        {
+            Name = product.ProductName,
+            Description = product.ProductDescription,
+            Images = new List<string> { product.ProductImage } // will work even if we send one image, stripe expects an array of images
+        };
+
+        var service = new ProductService(_stripeClient);
+        Product stripeProduct = await service.CreateAsync(options);
+
+        // Store the ID of the created product in StripeProductId
+        product.StripeProductId = stripeProduct.Id;
+
+        // Create a price for the product in Stripe
+        var priceOptions = new PriceCreateOptions
+        {
+            UnitAmount = (long)(product.ProductPrice * 100),
+            Currency = "usd", 
+            Product = product.StripeProductId, // The ID of the product in Stripe
+        };
+
+        var priceService = new PriceService();
+        Price stripePrice = await priceService.CreateAsync(priceOptions);
+        product.StripePriceId = stripePrice.Id;
+
         await _dbContext.AddAsync(product);
         await _dbContext.SaveChangesAsync();
         return Ok();
@@ -95,4 +125,4 @@ public class ProductsController : Controller
         await _dbContext.SaveChangesAsync();
         return Ok("Product updated successfully");
     }
-}
+   }
