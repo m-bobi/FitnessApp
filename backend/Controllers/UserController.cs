@@ -143,7 +143,6 @@ public class UserController : Controller
     }
     
     [HttpGet("getUser/{id}")]
-    [Authorize(Roles = "Manager, Trainer")]
     public async Task<IActionResult> GetUserById(String id)
     {
         var user = await _dbContext.Users.FindAsync(id);
