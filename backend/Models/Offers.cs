@@ -17,14 +17,11 @@ public class Offers
     [Required]
     public string OfferDescription { get; set; }
     
-    [Column(TypeName = "datetime")]
-    public DateTime OfferEndDate { get; set; }
+    [Required]
+    public int OfferPrice { get; set; }
     
-    [Column(TypeName = "datetime")]
-    public DateTime OfferDurationDate { get; set; }
     
-    public int OfferDiscount { get; set; }
-
-    [ForeignKey("ManagerId")]
-    public int? ManagerId { get; }
+    
+    
+   
 }

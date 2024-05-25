@@ -23,9 +23,9 @@
     flex-wrap: wrap;
     gap: max(24px,3vw);
     justify-content: center;
+    gap: 30px;
     align-items: stretch;
-    width: 100%;
-    border: 1px solid ridge;
+    /* width: 100%; */
 }
 .bannerCard{
     width: 22%;

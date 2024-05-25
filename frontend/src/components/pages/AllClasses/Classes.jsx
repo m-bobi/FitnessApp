@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import "./OurFeaturedClass.css";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import config from "../../../../config";
+import React, { useEffect, useState } from 'react'
+import './AllClasses.css'
+import axios from 'axios';
+import config from '../../../config';
+import { Link } from 'react-router-dom';
 
-const OurFeaturedClass = () => {
+const Classes = () => {
+
   const [classes, setClasses] = useState([]);
 
   const fetchclasses = async () => {
@@ -12,8 +13,7 @@ const OurFeaturedClass = () => {
       const response = await axios.get(
         `${config.apiBaseURL}api/Class/getAllClasses`
       );
-      // setClasses(response.data);
-      setClasses(response.data.slice(0, 4));
+      setClasses(response.data);
     } catch (error) {
       console.error("Error fetching Trainers:", error);
     }
@@ -23,10 +23,16 @@ const OurFeaturedClass = () => {
     fetchclasses();
   }, []);
 
+
   return (
-    <div className="bannerDown">
-      <h1>OUR FEATURED CLASSES</h1>
-      <div className="bannerCardsUp">
+    <div className='allClasses'>
+          <div className="classesBanner">
+      <div className="homeBannerContainer" data-aos="fade-right">
+        <p className="firstText">Ascend - Classes</p>
+      </div>
+    </div>
+
+    <div className="bannerCardsUp">
         {classes.map((classItem, index) => (
           <Link
             key={index}
@@ -42,13 +48,10 @@ const OurFeaturedClass = () => {
           </Link>
         ))}
       </div>
-      <div className="bannerDownButton hover:bg-white">
-        <Link to="/classes">View All</Link>
-      </div>
 
-  
+
     </div>
-  );
-};
+  )
+}
 
-export default OurFeaturedClass;
+export default Classes

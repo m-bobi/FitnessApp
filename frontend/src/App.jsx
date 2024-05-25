@@ -6,6 +6,7 @@ import "aos/dist/aos.css";
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Unauthorized from './components/Auth/Unauthorized';
+import AllClasses from './pages/Classes/AllClasses';
 function App() {
 
 
@@ -41,6 +42,7 @@ function App() {
             <Route exact path="/cancelled" element={<Cancelled />} />
             <Route exact path="/userprofile" element={<UserProfile />} />
             <Route exact path="/products" element={<Products />} />
+            <Route exact path="/classes" element={<AllClasses />} />
             <Route
               exact
               path="/productDetails/:id"
