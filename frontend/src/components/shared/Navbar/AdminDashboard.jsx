@@ -15,6 +15,8 @@ import ListClass from "../../ClassesCrud/ListClass";
 import ListUsers from "../../ListUsers";
 import ListProducts from "../../ListProducts"
 import { RiProductHuntLine } from "react-icons/ri";
+import AddOffers from "../../OffersCrud/AddOffers";
+import ListOffers from "../../OffersCrud/ListOffers";
 
 
 const AdminDashboard = () => {
@@ -683,6 +685,11 @@ const AdminDashboard = () => {
           <div className="p-10">
               <AddProducts />
                <ListProducts/>
+          </div>
+
+          <div className="p-10">
+              <AddOffers />
+              <ListOffers/>
           </div>
 
           <div className="p-10">

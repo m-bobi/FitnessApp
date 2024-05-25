@@ -1,5 +1,6 @@
 using backend.DbContext;
 using Microsoft.EntityFrameworkCore;
+using backend.DTO;
 
 namespace backend.Services;
 

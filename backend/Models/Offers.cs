@@ -17,6 +17,8 @@ public class Offers
     [Required]
     public string OfferDescription { get; set; }
     
+    public string StripePriceId { get; set; }
+    
     [Required]
     public int OfferPrice { get; set; }
     

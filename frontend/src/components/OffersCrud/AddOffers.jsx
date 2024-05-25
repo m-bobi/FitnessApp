@@ -10,23 +10,25 @@ const AddOffers = () => {
     setIsOpen(!isOpen);
   };
 
+  const token = localStorage.getItem("token");
+
   const [offerType, setOfferType] = useState("");
   const [offerDescription, setOfferDescription] = useState("");
-  const [offerEndDate, setOfferEndDate] = useState("");
-  const [offerDurationDate, setOfferDurationDate] = useState("");
-  const [offerDiscount, setOfferDiscount] = useState(0);
+  const [offerPrice, setOfferPrice] = useState(0);
 
   const addOffer = (event) => {
     event.preventDefault();
     try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      };
       axios
-        .post(`${config.apiBaseURL}addOffer`, {
+        .post(`${config.apiBaseURL}api/Offers/addOffer`, {
             offerType: offerType,
             offerDescription: offerDescription,
-            offerEndDate: offerEndDate,
-            offerDurationDate: offerDurationDate,
-            offerDiscount : offerDiscount
-        })
+            offerPrice : offerPrice
+        }, {headers})
         .then(() => {
           console.log("success");
           window.alert("Order has been added.");
@@ -123,60 +125,26 @@ const AddOffers = () => {
 
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Offer End Date
+                      Offer Price
                     </label>
                     <input
-                      type="date"
+                      type="number"
                       name="UserID"
-                      placeholder="Enter offer end date"
+                      placeholder="Enter offer price"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={(event) => {
-                        setOfferEndDate(event.target.value);
+                        setOfferPrice(event.target.value);
                       }}
                     />
                   </div>
 
-                  <div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Offer Duration Date
-                      </label>
-                      <input
-                        type="date"
-                        name="DateTime"
-                        placeholder="Enter Offer Duration Date"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        required
-                        onChange={(event) => {
-                            setOfferDurationDate(event.target.value);
-                        }}
-                      />
-                    </div>
-                  </div>
 
-                  <div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Offer Discount
-                      </label>
-                      <input
-                        type="text"
-                        name="DateTime"
-                        placeholder="Enter offer Discount"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        required
-                        onChange={(event) => {
-                            setOfferDiscount(event.target.value);
-                        }}
-                      />
-                    </div>
-                  </div>
                   <button
                     type="submit"
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                    Add Order
+                    Add Offer
                   </button>
                 </form>
               </div>
