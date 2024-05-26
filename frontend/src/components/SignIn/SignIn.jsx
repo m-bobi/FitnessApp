@@ -53,14 +53,14 @@ const SignIn = () => {
           console.error("User ID not found in token.");
         }
 
-        const exp = decodedToken.exp;
-        if (exp) {
-          // Convert exp to milliseconds and store it in localStorage
-          const expiryTime = exp * 1000; // exp is usually in seconds, converting to milliseconds
-          localStorage.setItem("tokenExpiryTime", expiryTime.toString());
-        } else {
-          console.error("Token expiry time not found.");
-        }
+        // const exp = decodedToken.exp;
+        // if (exp) {
+        //   // Convert exp to milliseconds and store it in localStorage
+        //   const expiryTime = exp * 1000; // exp is usually in seconds, converting to milliseconds
+        //   localStorage.setItem("tokenExpiryTime", expiryTime.toString());
+        // } else {
+        //   console.error("Token expiry time not found.");
+        // }
 
 
 

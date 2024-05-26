@@ -30,28 +30,28 @@ const Navbar = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
     localStorage.removeItem("cart")
-    localStorage.removeItem("tokenExpiryTime");
+    // localStorage.removeItem("tokenExpiryTime");
     window.location.reload();
   };
 
 
 
-  const isTokenExpired = () => {
-    const tokenExpiryTime = localStorage.getItem("tokenExpiryTime");
-    if (!tokenExpiryTime) {
-      return true; // No expiry time means token is not valid or not present
-    }
-    const currentTime = Date.now();
-    return currentTime > parseInt(tokenExpiryTime, 10);
-  };
+  // const isTokenExpired = () => {
+  //   const tokenExpiryTime = localStorage.getItem("tokenExpiryTime");
+  //   if (!tokenExpiryTime) {
+  //     return true; // No expiry time means token is not valid or not present
+  //   }
+  //   const currentTime = Date.now();
+  //   return currentTime > parseInt(tokenExpiryTime, 10);
+  // };
 
-  const checkTokenInterval = () => {
-    if (isTokenExpired()) {
-      handleSignOut();
-    }
-  };
+  // const checkTokenInterval = () => {
+  //   if (isTokenExpired()) {
+  //     handleSignOut();
+  //   }
+  // };
 
-  setInterval(checkTokenInterval, 60000);
+  // setInterval(checkTokenInterval, 60000);
 
   useEffect(() => {
     if (token) {
