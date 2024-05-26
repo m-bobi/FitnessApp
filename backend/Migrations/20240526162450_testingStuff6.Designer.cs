@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240525173658_offerStripeAdded")]
-    partial class offerStripeAdded
+    [Migration("20240526162450_testingStuff6")]
+    partial class testingStuff6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -583,8 +583,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "24d804c8-00c6-4df0-9187-cd2d2c297cda",
-                            CreatedAt = new DateTime(2024, 5, 25, 17, 36, 57, 439, DateTimeKind.Utc).AddTicks(3629),
+                            ConcurrencyStamp = "52280b91-f8bf-410f-91c8-5d437919374b",
+                            CreatedAt = new DateTime(2024, 5, 26, 16, 24, 49, 596, DateTimeKind.Utc).AddTicks(4262),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -592,11 +592,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO4VJkzKGCnEosX/wNkssViMXkRJWjuXctWGj8NZzNUpmvSks9IDDmqBkXpCvMmjKQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAJlYrCwzHmyqBfJljMMnjhiVpS3Ggt6CjP1vDbkz+Kri71GFrRhVD/CfPo9PO54IQ==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "2924d6ca-3b26-454c-aeac-886a570e4d73",
+                            SecurityStamp = "be2e86f9-d1d1-477b-b986-3e752977dd17",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

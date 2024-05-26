@@ -10,7 +10,7 @@ public class User : IdentityUser
 {
     [Required]
     [StringLength(20, ErrorMessage = "The name should be less than 20 characters.")]
-    public string? Name { get; init; }
+    public string? Name { get; set; }
 
     [StringLength(20, ErrorMessage = "The address should be less than 20 characters.")]
     public string? Address { get; set; }
