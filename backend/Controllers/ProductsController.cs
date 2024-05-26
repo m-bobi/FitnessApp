@@ -70,15 +70,14 @@ public class ProductsController : Controller
         var service = new ProductService(_stripeClient);
         Product stripeProduct = await service.CreateAsync(options);
 
-        // Store the ID of the created product in StripeProductId
+
         product.StripeProductId = stripeProduct.Id;
 
-        // Create a price for the product in Stripe
         var priceOptions = new PriceCreateOptions
         {
             UnitAmount = (long)(product.ProductPrice * 100),
             Currency = "usd", 
-            Product = product.StripeProductId, // The ID of the product in Stripe
+            Product = product.StripeProductId, 
         };
 
         var priceService = new PriceService();

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import config from "../../config";
 
-
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,15 +23,18 @@ const AddOffers = () => {
         "Content-Type": "application/json",
       };
       axios
-        .post("http://localhost:5259/api/Offers/addOffer", {
+        .post(
+          `${config.apiBaseURL}api/Offers/addOffer`,
+          {
             offerType: offerType,
             offerDescription: offerDescription,
-            offerPrice : offerPrice,
-            stripePriceId: offerPrice 
-        }, {headers})
+            offerPrice: parseInt(offerPrice),
+          },
+          { headers }
+        )
         .then(() => {
           console.log("success");
-          window.alert("Order has been added.");
+          window.alert("Offer has been added.");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -92,7 +94,7 @@ const AddOffers = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4"  method="POST">
+                <form className="space-y-4" method="POST">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Offer Type
@@ -139,7 +141,6 @@ const AddOffers = () => {
                       }}
                     />
                   </div>
-
 
                   <button
                     onClick={addOffer}

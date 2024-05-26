@@ -21,9 +21,6 @@ public class Offers
     
     [Required]
     public int OfferPrice { get; set; }
-    
-    
-    
-    
+
    
 }
