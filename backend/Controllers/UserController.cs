@@ -174,6 +174,8 @@ public class UserController : Controller
         existingUser.Birthdate = userDto.Birthdate;
         existingUser.Gender = userDto.Gender;
         existingUser.UserName = userDto.Username;
+        existingUser.Name = userDto.Name;
+        existingUser.Role = userDto.Role;
 
         await _dbContext.SaveChangesAsync();
         return Ok("User updated successfully!");
