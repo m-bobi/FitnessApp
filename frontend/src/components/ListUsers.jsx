@@ -261,6 +261,7 @@ const ListUsers = () => {
                 value={editedUser[field]}
                 onChange={(e) => handleEditField(field, e.target.value)}
                 className="border rounded-lg px-2 py-1 w-full text-slate-700"
+                readOnly={field === 'id'}
               />
             </div>
           ))}
