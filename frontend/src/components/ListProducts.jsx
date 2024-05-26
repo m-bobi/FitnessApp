@@ -11,7 +11,6 @@ const ListProducts = () => {
     const [openmodal, setOpenModal] = useState(false);
 
     const [selectedProduct, setSelectedProduct] = useState(null);
-    // const [editedUser, setEditedUser] = useState({});
     const [editedProduct, setEditedProduct] = useState({
         productId: "",
         productName: "",
@@ -20,7 +19,7 @@ const ListProducts = () => {
         productCategory: "",
         productStock: "",
         productRate: ""
-       
+
       });
 
       const handleEditField = (field, value) => {
@@ -64,7 +63,7 @@ const ListProducts = () => {
           productCategory: product.productCategory,
           productStock: product.productStock,
           productRate: product.productRate
-        });;
+        });
       };
 
 
@@ -85,7 +84,7 @@ const ListProducts = () => {
           }
         };
 
-    
+
 
       useEffect(() => {
         fetchProducts();
@@ -95,7 +94,7 @@ const ListProducts = () => {
         if (window.confirm("Are you sure you want to delete this user?")) {
           try {
             await axios.delete(
-              `${config.apiBaseURL}deleteProduct/${id}`,
+              `${config.apiBaseURL}api/Products/deleteProduct/${id}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
