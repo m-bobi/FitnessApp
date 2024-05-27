@@ -16,9 +16,7 @@ const AddProducts = () => {
     productImage: null,
   });
 
-  function handleSubmit(event) {
-    event.preventDefault();
-
+  function handleSubmit() {
     const {
       productName,
       productDescription,
@@ -86,6 +84,18 @@ const AddProducts = () => {
     <div className="relative">
 
       {/* Modal Trigger Button */}
+      <ToastContainer
+          position="bottom-right"
+          padding="5%"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"

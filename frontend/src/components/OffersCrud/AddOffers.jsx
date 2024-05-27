@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import config from "../../config";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,8 +17,7 @@ const AddOffers = () => {
   const [offerDescription, setOfferDescription] = useState("");
   const [offerPrice, setOfferPrice] = useState(0);
 
-  const addOffer = (event) => {
-    event.preventDefault();
+  const addOffer = () => {
     try {
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -34,7 +35,7 @@ const AddOffers = () => {
         )
         .then(() => {
           console.log("success");
-          window.alert("Offer has been added.");
+          toast.success("Offer has been added.");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -46,6 +47,18 @@ const AddOffers = () => {
 
   return (
     <div className="relative">
+          <ToastContainer
+          position="bottom-right"
+          padding="5%"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -94,7 +107,7 @@ const AddOffers = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" method="POST">
+                <form className="space-y-4">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Offer Type

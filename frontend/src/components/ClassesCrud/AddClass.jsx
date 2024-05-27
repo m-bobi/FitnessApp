@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../../config";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddClass = () => {
   const [formData, setFormData] = useState({
@@ -10,8 +11,7 @@ const AddClass = () => {
     classImage: null,
   });
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit() {
 
     const {
         classType,
@@ -73,6 +73,18 @@ const AddClass = () => {
 
   return (
     <div className="relative">
+       <ToastContainer
+          position="bottom-right"
+          padding="5%"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -121,7 +133,7 @@ const AddClass = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" onSubmit={handleSubmit} method="POST">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Class Type

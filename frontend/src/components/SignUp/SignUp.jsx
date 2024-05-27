@@ -24,8 +24,7 @@ const SignUp = () => {
     image: null,
   });
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit() {
 
     const {
       email,
@@ -129,7 +128,7 @@ const SignUp = () => {
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
-              <form className="w-full flex-1 mt-8" onSubmit={handleSubmit}>
+              <form className="w-full flex-1 mt-8" >
                 <div className="flex flex-col items-center">
                   <InputField
                     type="email"
