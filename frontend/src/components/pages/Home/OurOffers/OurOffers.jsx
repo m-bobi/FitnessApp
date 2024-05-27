@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import config from "../../../../config";
+import Cookies from 'js-cookie';
 
 const stripePromise = loadStripe(`${config.stripeKey}`);
 const OurOffers = () => {
   const [allOffers, setAllOffers] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const token = Cookies.get('token');
 
   useEffect(() => {
     const fetchOffers = async () => {

@@ -10,6 +10,7 @@ import {jwtDecode} from "jwt-decode";
 import config from "../../config";
 import Navbar from "../shared/Navbar/Navbar";
 import InputField from "../Inputs/Input";
+import Cookies from 'js-cookie';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     try {
       const response = await axios.post(`${config.apiBaseURL}api/User/login`, {
         email: formData.email,
@@ -37,7 +38,8 @@ const SignIn = () => {
       if (response.status === 200) {
         const { token } = response.data;
 
-        localStorage.setItem("token", token);
+        Cookies.set('token', token, { expires: 7, secure: true });
+        // localStorage.setItem("token", token);
 
         const decodedToken = jwtDecode(token);
 
@@ -47,19 +49,11 @@ const SignIn = () => {
           ];
 
         if (userId) {
-          localStorage.setItem("id", userId);
+          // localStorage.setItem("id", userId);
+          Cookies.set('id', userId, { expires: 7, secure: true });
         } else {
           console.error("User ID not found in token.");
         }
-
-        // const exp = decodedToken.exp;
-        // if (exp) {
-        //   // Convert exp to milliseconds and store it in localStorage
-        //   const expiryTime = exp * 1000; // exp is usually in seconds, converting to milliseconds
-        //   localStorage.setItem("tokenExpiryTime", expiryTime.toString());
-        // } else {
-        //   console.error("Token expiry time not found.");
-        // }
 
 
 

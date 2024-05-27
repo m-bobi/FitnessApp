@@ -14,6 +14,7 @@ import ListProducts from "../../ListProducts"
 import { RiProductHuntLine } from "react-icons/ri";
 import AddOffers from "../../OffersCrud/AddOffers";
 import ListOffers from "../../OffersCrud/ListOffers";
+import Cookies from 'js-cookie';
 
 
 const AdminDashboard = () => {
@@ -23,7 +24,7 @@ const AdminDashboard = () => {
     trainers: 0,
     classes: 0,
   });
-  const token = localStorage.getItem("token");
+  const token = Cookies.get('token');
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [role, setRole] = useState("");
@@ -97,8 +98,8 @@ const AdminDashboard = () => {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
+    Cookies.remove('token');
+    Cookies.remove('id');
   };
 
   const StatisticCard = ({ title, value, icon }) => (

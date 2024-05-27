@@ -93,6 +93,19 @@ public class UserController : Controller
         }
 
         var accessToken = _tokenService.CreateToken(userInDb);
+        
+        ///// addeddd
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTime.Now.AddDays(7),
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        };
+        
+        Response.Cookies.Append("token", accessToken, cookieOptions);
+        ///// addeddd
+        
         await _dbContext.SaveChangesAsync();
 
         return Ok(new AuthResponse

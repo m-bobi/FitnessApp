@@ -113,6 +113,17 @@ builder.Services.AddAuthentication(options => {
         };
     });
 
+////////// ADDEDDDD 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+});
+
+//////// ADDDEDDDD
+
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

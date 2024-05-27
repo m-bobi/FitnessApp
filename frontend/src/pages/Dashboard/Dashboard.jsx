@@ -3,16 +3,17 @@ import AdminDashboard from '../../components/shared/Navbar/AdminDashboard'
 import axios from 'axios';
 import Unauthorized from "../../components/Auth/Unauthorized"
 import config from '../../config';
+import Cookies from 'js-cookie';
 
 const Dashboard = () => {
   const [isManager, setIsManager] = useState(false);
-  const token = localStorage.getItem("token")
+  const token = Cookies.get("token")
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (token) {
-      const userId = localStorage.getItem("id");
+      const userId = Cookies.get("id");
       axios
         .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
         .then((response) => {

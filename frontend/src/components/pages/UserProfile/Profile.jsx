@@ -3,10 +3,11 @@ import "./Profile.css";
 import axios from "axios";
 import config from "../../../config";
 import moment from "moment";
+import Cookies from 'js-cookie';
 const Profile = () => {
   const [user, setUser] = useState([]);
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("id");
+  const token = Cookies.get('token');
+  const userId = Cookies.get('id');
 
   const [formData, setFormData] = useState({
     name: "",

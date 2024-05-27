@@ -4,10 +4,11 @@ import axios from 'axios';
 import config from '../../../config';
 import { Link } from 'react-router-dom';
 import { FaCartPlus } from "react-icons/fa";
+import Cookies from 'js-cookie';
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
-  const token = localStorage.getItem("token");
+  const token = Cookies.get('token');
 
   useEffect(() => {
     const fetchProducts = async () => {

@@ -3,6 +3,7 @@ import axios from "axios";
 import config from "../../config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from 'js-cookie';
 
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,7 @@ const AddOffers = () => {
     setIsOpen(!isOpen);
   };
 
-  const token = localStorage.getItem("token");
+  const token = Cookies.get('token');
 
   const [offerType, setOfferType] = useState("");
   const [offerDescription, setOfferDescription] = useState("");

@@ -10,6 +10,7 @@ import axios from "axios";
 import config from "../../../config";
 import { IoMdMenu } from "react-icons/io";
 import { LuShoppingCart } from "react-icons/lu";
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -24,38 +25,22 @@ const Navbar = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isManager, setIsManager] = useState(false);
 
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = Cookies.get('token');
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("cart")
-    // localStorage.removeItem("tokenExpiryTime");
+    Cookies.remove('token');
+    Cookies.remove('id');
+    localStorage.removeItem("cart");
     window.location.reload();
   };
 
 
 
-  // const isTokenExpired = () => {
-  //   const tokenExpiryTime = localStorage.getItem("tokenExpiryTime");
-  //   if (!tokenExpiryTime) {
-  //     return true; // No expiry time means token is not valid or not present
-  //   }
-  //   const currentTime = Date.now();
-  //   return currentTime > parseInt(tokenExpiryTime, 10);
-  // };
-
-  // const checkTokenInterval = () => {
-  //   if (isTokenExpired()) {
-  //     handleSignOut();
-  //   }
-  // };
-
-  // setInterval(checkTokenInterval, 60000);
 
   useEffect(() => {
     if (token) {
-      const userId = localStorage.getItem("id");
+      const userId = Cookies.get('id');
       axios
         .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
         .then((response) => {
