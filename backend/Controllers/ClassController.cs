@@ -74,27 +74,34 @@ public class ClassController : Controller
     [HttpGet("getEnrolledUsers/{classId}")]
     public async Task<IActionResult> GetEnrolledUsers(int classId)
     {
-        var classEntity = await _dbContext.Class.FindAsync(classId);
-
-        if (classEntity == null)
+        try
         {
-            return BadRequest("Class does not exist");
+            var classEntity = await _dbContext.Class.FindAsync(classId);
+
+            if (classEntity == null)
+            {
+                return NotFound("Class does not exist!");
+            }
+
+            var userClasses = await _dbContext.UserClasses
+                .Where(uc => uc.ClassId == classId)
+                .Include(uc => uc.User)
+                .ToListAsync();
+
+            var users = userClasses.Select(uc => new UserDto
+            {
+                Id = uc.User.Id,
+                Email = uc.User.Email,
+                Username = uc.User.UserName,
+                Role = uc.User.Role
+            }).ToList();
+
+            return Ok(users);
         }
-
-        var userClasses = await _dbContext.UserClasses
-            .Where(uc => uc.ClassId == classId)
-            .Include(uc => uc.User)
-            .ToListAsync();
-
-        var users = userClasses.Select(uc => new UserDto 
-        { 
-            Id = uc.User.Id, 
-            Email = uc.User.Email, 
-            Username = uc.User.UserName,
-            Role = uc.User.Role
-        }).ToList();
-
-        return Ok(users);
+        catch (Exception e)
+        {
+            return StatusCode(500, $"Internal Server error: {e.Message}");
+        }
     }
 
     [HttpGet("getClass/{id}")]

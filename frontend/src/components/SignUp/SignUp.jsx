@@ -8,6 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputField from "../Inputs/Input";
+import {
+  validateEmail,
+  validatePassword,
+  checkEmailExists,
+  checkUsernameExists,
+  validateUsername,
+} from "../../utils/Validations";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -24,7 +31,8 @@ const SignUp = () => {
     image: null,
   });
 
-  function handleSubmit() {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     const {
       email,
@@ -54,19 +62,42 @@ const SignUp = () => {
       return;
     }
 
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    const emailExists = await checkEmailExists(email);
+    if (emailExists) {
+      toast.error("This email is already in use.");
+      return;
+    }
+
+    if (!validateUsername(username)) {
+      toast.error("Please enter a valid username.");
+      return;
+    }
+
+    const usernameExists = await checkUsernameExists(username);
+    if (usernameExists) {
+      toast.error("This username is already in use.");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      toast.error(
+        "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
+      );
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;
     }
 
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
-      return;
-    }
-
     const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
     const fileExtension = image.name.split(".").pop().toLowerCase();
-
     if (!allowedExtensions.includes(fileExtension)) {
       toast.error(
         "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
@@ -74,30 +105,30 @@ const SignUp = () => {
       return;
     }
 
-    const formDataObj = new FormData();
-    formDataObj.append("image", image);
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append("image", image);
 
-    axios
-      .post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
-      .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}api/User/register`, {
-          ...formData,
-          image: imageResponse.data,
-        });
-      })
-      .then(() => {
-        toast.success("You've successfully registered!");
-        setTimeout(() => {
-          navigate("/signin");
-        }, 2000);
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error(
-          "An error occurred while registering. Please try again later."
-        );
+      const imageResponse = await axios.post(
+        `${config.apiBaseURL}api/UploadImages/addUserImage`,
+        formDataObj
+      );
+      await axios.post(`${config.apiBaseURL}api/User/register`, {
+        ...formData,
+        image: imageResponse.data,
       });
-  }
+
+      toast.success("You've successfully registered!");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "An error occurred while registering. Please try again later."
+      );
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -213,27 +244,26 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-              </form>
 
-              <button
-                onClick={handleSubmit}
-                type="submit"
-                className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-              >
-                <svg
-                  className="w-6 h-6 -ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <button
+                  type="submit"
+                  className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                 >
-                  <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                  <circle cx="8.5" cy="7" r="4" />
-                  <path d="M20 8v6M23 11h-6" />
-                </svg>
-                <span className="ml-3">Sign Up</span>
-              </button>
+                  <svg
+                    className="w-6 h-6 -ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                    <circle cx="8.5" cy="7" r="4" />
+                    <path d="M20 8v6M23 11h-6" />
+                  </svg>
+                  <span className="ml-3">Sign Up</span>
+                </button>
+              </form>
             </div>
           </div>
           <div className="flex-1 bg-gray-300 text-center hidden lg:flex justify-center p-3 pt-20 pb-20">
