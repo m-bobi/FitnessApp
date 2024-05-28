@@ -66,3 +66,14 @@ export const validateDateOfBirth = (dateOfBirth) => {
     return true;
 };
 
+export const runValidations = async (rules) => {
+    for (let i = 0; i < rules.length; i++) {
+        const rule = rules[i];
+        const error = await rule();
+        if (error) {
+            return error;
+        }
+    }
+    return null;
+};
+

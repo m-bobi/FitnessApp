@@ -14,6 +14,7 @@ import {
   checkEmailExists,
   checkUsernameExists,
   validateUsername,
+  runValidations
 } from "../../utils/Validations";
 
 const SignUp = () => {
@@ -47,88 +48,68 @@ const SignUp = () => {
       image,
     } = formData;
 
-    if (
-      !email ||
-      !username ||
-      !name ||
-      !address ||
-      !mobile ||
-      !birthdate ||
-      !password ||
-      !confirmPassword ||
-      !gender
-    ) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
+   const error = await runValidations([
+     () =>
+       (!email ||
+         !username ||
+         !name ||
+         !address ||
+         !mobile ||
+         !birthdate ||
+         !password ||
+         !confirmPassword ||
+         !gender) &&
+       "Please fill in all fields.",
+     () => !validateEmail(email) && "Please enter a valid email address.",
+     async () =>
+       (await checkEmailExists(email)) && "This email is already in use.",
+     () => !validateUsername(username) && "Please enter a valid username.",
+     async () =>
+       (await checkUsernameExists(username)) &&
+       "This username is already in use.",
+     () =>
+       !validatePassword(password) &&
+       "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+     () => password !== confirmPassword && "Passwords do not match.",
+     () => {
+       const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+       const fileExtension = image.name.split(".").pop().toLowerCase();
+       return (
+         !allowedExtensions.includes(fileExtension) &&
+         "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+       );
+     },
+   ]);
 
-    if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
+   if (error) {
+     toast.error(error);
+     return;
+   }
 
-    const emailExists = await checkEmailExists(email);
-    if (emailExists) {
-      toast.error("This email is already in use.");
-      return;
-    }
+    const formDataObj = new FormData();
+    formDataObj.append("image", image);
 
-    if (!validateUsername(username)) {
-      toast.error("Please enter a valid username.");
-      return;
-    }
-
-    const usernameExists = await checkUsernameExists(username);
-    if (usernameExists) {
-      toast.error("This username is already in use.");
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      toast.error(
-        "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
-      );
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
-    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-    const fileExtension = image.name.split(".").pop().toLowerCase();
-    if (!allowedExtensions.includes(fileExtension)) {
-      toast.error(
-        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
-      );
-      return;
-    }
-
-    try {
-      const formDataObj = new FormData();
-      formDataObj.append("image", image);
-
-      const imageResponse = await axios.post(
-        `${config.apiBaseURL}api/UploadImages/addUserImage`,
-        formDataObj
-      );
-      await axios.post(`${config.apiBaseURL}api/User/register`, {
-        ...formData,
-        image: imageResponse.data,
-      });
-
-      toast.success("You've successfully registered!");
-      setTimeout(() => {
-        navigate("/signin");
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-      toast.error(
-        "An error occurred while registering. Please try again later."
-      );
-    }
-  };
+    axios
+      .post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
+      .then((imageResponse) => {
+        return axios.post(`${config.apiBaseURL}api/User/register`, {
+          ...formData,
+          image: imageResponse.data,
+        });
+      })
+      .then(() => {
+        toast.success("You've successfully registered!");
+        setTimeout(() => {
+          navigate("/signin");
+        }, 2000);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(
+          "An error occurred while registering. Please try again later."
+        );
+    });
+  }
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -248,7 +229,8 @@ const SignUp = () => {
                 <button
                   type="submit"
                   className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                >
+                  onClick={handleSubmit}
+               >
                   <svg
                     className="w-6 h-6 -ml-2"
                     fill="none"
