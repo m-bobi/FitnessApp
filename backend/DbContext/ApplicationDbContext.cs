@@ -1,3 +1,4 @@
+using backend.DTO;
 using backend.Enums;
 using backend.Models;
 using Microsoft.AspNetCore.Identity;
@@ -77,6 +78,8 @@ namespace backend.DbContext
                 .HasOne(uc => uc.Class)
                 .WithMany(c => c.UserClasses)
                 .HasForeignKey(uc => uc.ClassId);
+            
+           
         }
     }
 }

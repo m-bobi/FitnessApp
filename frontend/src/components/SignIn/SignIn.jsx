@@ -10,6 +10,7 @@ import {jwtDecode} from "jwt-decode";
 import config from "../../config";
 import Navbar from "../shared/Navbar/Navbar";
 import InputField from "../Inputs/Input";
+import Cookies from 'js-cookie';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -27,8 +28,7 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     try {
       const response = await axios.post(`${config.apiBaseURL}api/User/login`, {
         email: formData.email,
@@ -38,7 +38,8 @@ const SignIn = () => {
       if (response.status === 200) {
         const { token } = response.data;
 
-        localStorage.setItem("token", token);
+        Cookies.set('token', token, { expires: 7, secure: true });
+        // localStorage.setItem("token", token);
 
         const decodedToken = jwtDecode(token);
 
@@ -48,10 +49,13 @@ const SignIn = () => {
           ];
 
         if (userId) {
-          localStorage.setItem("id", userId);
+          // localStorage.setItem("id", userId);
+          Cookies.set('id', userId, { expires: 7, secure: true });
         } else {
           console.error("User ID not found in token.");
         }
+
+
 
         toast.success("You've successfully logged in! Redirecting..");
 
@@ -64,6 +68,8 @@ const SignIn = () => {
       toast.error("An error occurred while logging in. Please try again.");
     }
   };
+
+
 
   return (
     <div className="fix">

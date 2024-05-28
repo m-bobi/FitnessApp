@@ -264,6 +264,8 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("OfferPrice")
+                        .HasColumnType("int");
                     b.Property<int>("OfferDiscount")
                         .HasColumnType("int");
 
@@ -277,6 +279,10 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<string>("StripePriceId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("OfferId");
 
@@ -400,6 +406,9 @@ namespace backend.Migrations
 
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("ProductRate")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductStock")
                         .HasColumnType("int");
@@ -579,6 +588,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ConcurrencyStamp = "b6acb445-90ad-4b90-9ae3-eb4edcef52f0",
+                            CreatedAt = new DateTime(2024, 5, 27, 10, 29, 4, 420, DateTimeKind.Utc).AddTicks(8420),
                             ConcurrencyStamp = "9caa583e-ba50-424e-9325-5058f7853d53",
                             CreatedAt = new DateTime(2024, 5, 24, 17, 26, 33, 198, DateTimeKind.Utc).AddTicks(1917),
                             Email = "root@email.com",
@@ -588,6 +599,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOH2sNoAZzpKCBMv82VxU9pP+DuGINc16mxAxWFvtVtPfJu4js2aMOzTN1pwrU56kg==",
+                            PhoneNumber = "044234234",
+                            PhoneNumberConfirmed = false,
+                            Role = 1,
+                            SecurityStamp = "bd7595df-8b25-48a8-990b-a90d090cd60f",
                             PasswordHash = "AQAAAAIAAYagAAAAENfCRapNYOmlmIqyrUYV9p3ZZCCulPF6J31F8QZQTmo9vre0t8UNYUzoN1OIXnR61Q==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,

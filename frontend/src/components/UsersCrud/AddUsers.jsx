@@ -19,7 +19,6 @@ const AddUsers = () => {
   };
 
   const addUser = async (event) => {
-    event.preventDefault();
 
     const userdata = {
       Name: Name,
@@ -44,6 +43,18 @@ const AddUsers = () => {
   return (
     <div className="relative">
       {/* Modal Trigger Button */}
+      <ToastContainer
+          position="bottom-right"
+          padding="5%"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"

@@ -102,7 +102,7 @@ public class UploadImagesController : Controller
         return Ok(unicNameOfImage);
     }
 
-    [HttpPut]
+    [HttpPost]
     [Route("updateUserImage")]
     public async Task<IActionResult> UpdateUserImage(IFormFile foto, string fotoVjeterProduktit)
     {

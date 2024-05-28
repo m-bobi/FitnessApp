@@ -6,6 +6,7 @@ import "aos/dist/aos.css";
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Unauthorized from './components/Auth/Unauthorized';
+import AllClasses from './pages/Classes/AllClasses';
 function App() {
 
 
@@ -33,7 +34,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route path="/class/:id" element={<Class />} />
+            <Route path="/className/:id" element={<Class />} />
             <Route exact path="/signin" element={<SignIn />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/cart" element={<Carts />} />
@@ -41,6 +42,7 @@ function App() {
             <Route exact path="/cancelled" element={<Cancelled />} />
             <Route exact path="/userprofile" element={<UserProfile />} />
             <Route exact path="/products" element={<Products />} />
+            <Route exact path="/classes" element={<AllClasses />} />
             <Route
               exact
               path="/productDetails/:id"

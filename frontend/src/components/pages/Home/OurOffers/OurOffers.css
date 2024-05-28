@@ -1,0 +1,17 @@
+.ourOffers{
+    background-size: cover;
+    background-position-y: 40%;
+    padding: 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: max(20px,2vw);
+    width: 100%;
+}
+
+.ourOffers h1{
+    font-size: max(25px,2vw);
+    transition: 0.3s ease;
+    cursor: pointer;
+}

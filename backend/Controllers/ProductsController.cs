@@ -70,15 +70,14 @@ public class ProductsController : Controller
         var service = new ProductService(_stripeClient);
         Product stripeProduct = await service.CreateAsync(options);
 
-        // Store the ID of the created product in StripeProductId
+
         product.StripeProductId = stripeProduct.Id;
 
-        // Create a price for the product in Stripe
         var priceOptions = new PriceCreateOptions
         {
             UnitAmount = (long)(product.ProductPrice * 100),
             Currency = "usd", 
-            Product = product.StripeProductId, // The ID of the product in Stripe
+            Product = product.StripeProductId, 
         };
 
         var priceService = new PriceService();
@@ -112,16 +111,28 @@ public class ProductsController : Controller
         return Ok("Product deleted successfully");
     }
 
-    // Create API to update an existing Product.
+    // Create API to update an existing Product.// Create API to update an existing Product.
     [HttpPut("updateProduct/{id}")]
-    public async Task<IActionResult> UpdateProduct([FromBody] Products product)
+    public async Task<IActionResult> UpdateProduct(int id, [FromBody] Products product)
     {
-        if (product is null || product.ProductId == 0) return BadRequest("Invalid Product data");
+        if (product is null)
+        {
+            return BadRequest("Invalid Product data");
+        }
 
-        var existingProduct = await _dbContext.Products.FindAsync(product.ProductId);
-        if (existingProduct == null) return NotFound();
+        var existingProduct = await _dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id);
+        if (existingProduct == null)
+        {
+            return NotFound();
+        }
 
-        _dbContext.Entry(existingProduct).CurrentValues.SetValues(product);
+        existingProduct.ProductName = product.ProductName;
+        existingProduct.ProductDescription = product.ProductDescription;
+        existingProduct.ProductPrice = product.ProductPrice;
+        existingProduct.ProductCategory = product.ProductCategory;
+        existingProduct.ProductStock = product.ProductStock;
+        existingProduct.ProductRate = product.ProductRate;
+
         await _dbContext.SaveChangesAsync();
         return Ok("Product updated successfully");
     }

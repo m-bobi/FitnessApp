@@ -77,7 +77,7 @@ const ListClass = () => {
   };
 
   return (
-    <div className="flex flex-col items-center pt-40">
+    <div className="flex flex-col items-center ">
       <div className="flex mb-4 space-x-4 text-slate-800">
         <input
           type="text"

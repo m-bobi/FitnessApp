@@ -12,18 +12,18 @@ const AddProducts = () => {
     productPrice: "",
     productCategory: "",
     productStock: "",
+    productRate : 0,
     productImage: null,
   });
 
-  function handleSubmit(event) {
-    event.preventDefault();
-
+  function handleSubmit() {
     const {
       productName,
       productDescription,
       productPrice,
       productCategory,
       productStock,
+      productRate,
       productImage,
     } = formData;
 
@@ -84,6 +84,18 @@ const AddProducts = () => {
     <div className="relative">
 
       {/* Modal Trigger Button */}
+      <ToastContainer
+          position="bottom-right"
+          padding="5%"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -195,6 +207,20 @@ const AddProducts = () => {
                       type="number"
                       name="productStock"
                       placeholder="Enter product stock"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      required
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Product Rate
+                    </label>
+                    <input
+                      type="number"
+                      name="productRate"
+                      placeholder="Enter product rate from 1 to 5"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}

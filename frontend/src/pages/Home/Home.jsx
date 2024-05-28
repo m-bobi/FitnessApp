@@ -5,6 +5,7 @@ import TrainersBanner from '../../components/TrainersCrud/TrainersBanner';
 import HomeBanner from '../../components/pages/Home/HomeBanner/HomeBanner';
 import AboutGym from '../../components/pages/Home/AboutGym/AboutGym';
 import OurFeaturedClass from '../../components/pages/Home/OurFeaturedClass/OurFeaturedClass';
+import OurOffers from '../../components/pages/Home/OurOffers/OurOffers';
 
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
         <HomeBanner/>
         <AboutGym/>
         <OurFeaturedClass/>
+        <OurOffers/>
       </div>
   );
 }

@@ -3,10 +3,11 @@ import "./Profile.css";
 import axios from "axios";
 import config from "../../../config";
 import moment from "moment";
+import Cookies from 'js-cookie';
 const Profile = () => {
   const [user, setUser] = useState([]);
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("id");
+  const token = Cookies.get('token');
+  const userId = Cookies.get('id');
 
   const [formData, setFormData] = useState({
     name: "",
@@ -66,6 +67,7 @@ function calculateAge(birthdate) {
       if (response.status === 200) {
         setUser(response.data);
         alert("Profile updated successfully");
+        window.location.reload()
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -122,9 +124,9 @@ function calculateAge(birthdate) {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                       />
                     </svg>
@@ -183,18 +185,18 @@ function calculateAge(birthdate) {
               <div className="bg-white p-3 shadow-sm rounded-sm">
                 <div className="grid grid-cols-1 mx-auto">
                   <form onSubmit={handleSubmit}>
-                    <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div className="grid gap-6 mb-6 md:grid-cols-3">
                       <div>
                         <label
                           for="last_name"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
                           New Username
                         </label>
                         <input
                           type="text"
                           id="last_name"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder={user.userName}
                           onChange={(e) =>
                             setFormData({
@@ -202,38 +204,19 @@ function calculateAge(birthdate) {
                               userName: e.target.value,
                             })
                           }
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          for="company"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                          New Gender
-                        </label>
-                        <input
-                          type="text"
-                          id="company"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder={user.gender}
-                          onChange={(e) =>
-                            setFormData({ ...formData, gender: e.target.value })
-                          }
-                          required
                         />
                       </div>
                       <div>
                         <label
                           for="phone"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
                           New Phone number
                         </label>
                         <input
                           type="tel"
                           id="phone"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder={user.phoneNumber}
                           onChange={(e) =>
                             setFormData({
@@ -246,14 +229,14 @@ function calculateAge(birthdate) {
                       <div>
                         <label
                           for="address"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
                           New Address
                         </label>
                         <input
                           type="text"
                           id="address"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder={user.address}
                           onChange={(e) =>
                             setFormData({
@@ -261,68 +244,44 @@ function calculateAge(birthdate) {
                               address: e.target.value,
                             })
                           }
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          for="birthdate"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                          New Birthdate
-                        </label>
-                        <input
-                          type="date"
-                          id="birthdate"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder={user.birthdate}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              birthdate: e.target.value,
-                            })
-                          }
-                          required
                         />
                       </div>
                     </div>
-                    <div class="mb-6">
+                    <div className="mb-6">
                       <label
                         for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         New Email address
                       </label>
                       <input
                         type="email"
                         id="email"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder={user.email}
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        required
                       />
                     </div>
 
-                    <div class="flex items-start mb-6">
-                      <div class="flex items-center h-5">
+                    <div className="flex items-start mb-6">
+                      <div className="flex items-center h-5">
                         <input
                           id="remember"
                           type="checkbox"
                           value=""
-                          class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-                          required
+                          className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
                         />
                       </div>
                       <label
                         for="remember"
-                        class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         I agree with the{" "}
                         <a
                           href="#"
-                          class="text-blue-600 hover:underline dark:text-blue-500"
+                          className="text-blue-600 hover:underline dark:text-blue-500"
                         >
                           terms and conditions
                         </a>
@@ -331,7 +290,7 @@ function calculateAge(birthdate) {
                     </div>
                     <button
                       type="submit"
-                      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
                       Edit
                     </button>

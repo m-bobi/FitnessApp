@@ -10,6 +10,7 @@ import axios from "axios";
 import config from "../../../config";
 import { IoMdMenu } from "react-icons/io";
 import { LuShoppingCart } from "react-icons/lu";
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -24,18 +25,22 @@ const Navbar = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isManager, setIsManager] = useState(false);
 
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = Cookies.get('token');
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("cart")
+    Cookies.remove('token');
+    Cookies.remove('id');
+    localStorage.removeItem("cart");
     window.location.reload();
   };
 
+
+
+
   useEffect(() => {
     if (token) {
-      const userId = localStorage.getItem("id");
+      const userId = Cookies.get('id');
       axios
         .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
         .then((response) => {
@@ -92,23 +97,23 @@ const Navbar = () => {
       </Link>
       <div className="navLinks ">
         <Link
-          to="/UserCRUD"
+          to="/classes"
           className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg"
         >
-          User
+          Classes
         </Link>
-        <Link
+        {/* <Link
           to="/trainers"
           className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
         >
           Trainers
-        </Link>
-        <Link
+        </Link> */}
+        {/* <Link
           to="/orders"
           className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
         >
           Orders
-        </Link>
+        </Link> */}
         <Link
           to="/products"
           className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"

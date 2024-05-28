@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import config from "../../config";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Cookies from 'js-cookie';
 
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,26 +12,31 @@ const AddOffers = () => {
     setIsOpen(!isOpen);
   };
 
+  const token = Cookies.get('token');
+
   const [offerType, setOfferType] = useState("");
   const [offerDescription, setOfferDescription] = useState("");
-  const [offerEndDate, setOfferEndDate] = useState("");
-  const [offerDurationDate, setOfferDurationDate] = useState("");
-  const [offerDiscount, setOfferDiscount] = useState(0);
+  const [offerPrice, setOfferPrice] = useState(0);
 
-  const addOffer = (event) => {
-    event.preventDefault();
+  const addOffer = () => {
     try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      };
       axios
-        .post(`${config.apiBaseURL}addOffer`, {
+        .post(
+          `${config.apiBaseURL}api/Offers/addOffer`,
+          {
             offerType: offerType,
             offerDescription: offerDescription,
-            offerEndDate: offerEndDate,
-            offerDurationDate: offerDurationDate,
-            offerDiscount : offerDiscount
-        })
+            offerPrice: parseInt(offerPrice),
+          },
+          { headers }
+        )
         .then(() => {
           console.log("success");
-          window.alert("Order has been added.");
+          toast.success("Offer has been added.");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -41,6 +48,18 @@ const AddOffers = () => {
 
   return (
     <div className="relative">
+          <ToastContainer
+          position="bottom-right"
+          padding="5%"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -89,7 +108,7 @@ const AddOffers = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" onSubmit={addOffer} method="POST">
+                <form className="space-y-4">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Offer Type
@@ -123,60 +142,25 @@ const AddOffers = () => {
 
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Offer End Date
+                      Offer Price
                     </label>
                     <input
-                      type="date"
+                      type="number"
                       name="UserID"
-                      placeholder="Enter offer end date"
+                      placeholder="Enter offer price"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={(event) => {
-                        setOfferEndDate(event.target.value);
+                        setOfferPrice(event.target.value);
                       }}
                     />
                   </div>
 
-                  <div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Offer Duration Date
-                      </label>
-                      <input
-                        type="date"
-                        name="DateTime"
-                        placeholder="Enter Offer Duration Date"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        required
-                        onChange={(event) => {
-                            setOfferDurationDate(event.target.value);
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Offer Discount
-                      </label>
-                      <input
-                        type="text"
-                        name="DateTime"
-                        placeholder="Enter offer Discount"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        required
-                        onChange={(event) => {
-                            setOfferDiscount(event.target.value);
-                        }}
-                      />
-                    </div>
-                  </div>
                   <button
-                    type="submit"
+                    onClick={addOffer}
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                    Add Order
+                    Add Offer
                   </button>
                 </form>
               </div>

@@ -48,4 +48,35 @@ public CheckoutController(ApplicationDbContext dbContext, IStripeClient stripeCl
         Response.Headers.Append("Location", session.Url);
         return new JsonResult(new { id = session.Id });
     }
+    
+    [HttpPost("checkoutOffer/{offerId}")]
+    public async Task<IActionResult> CreateCheckoutSessionOffer(int offerId, int quantity = 1)
+    {
+        var offer = await _dbContext.Offers.FindAsync(offerId);
+        if (offer == null) return NotFound();
+
+        var options = new SessionCreateOptions
+        {
+            PaymentMethodTypes = new List<string>
+            {
+                "card",
+            },
+            LineItems = new List<SessionLineItemOptions>
+            {
+                new()
+                {
+                    Price = offer.StripePriceId,
+                    Quantity = quantity,
+                },
+            },
+            Mode = "payment",
+            SuccessUrl = "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
+            CancelUrl = "http://localhost:3000/cancelled",
+        };
+
+        var service = new SessionService(_stripeClient);
+        var session = await service.CreateAsync(options);
+        Response.Headers.Append("Location", session.Url);
+        return new JsonResult(new { id = session.Id });
+    }
 }

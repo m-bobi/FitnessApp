@@ -5,12 +5,10 @@ import Navbar from "../../components/shared/Navbar/Navbar";
 
 const Class = () => {
   return (
-    <div className="flex">
-      <div className="">
+      <div>
         <Navbar/>
         <ClassPage />
       </div>
-    </div>
   );
 };
 

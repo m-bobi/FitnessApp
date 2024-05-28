@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../../config";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddClass = () => {
   const [formData, setFormData] = useState({
@@ -10,8 +11,7 @@ const AddClass = () => {
     classImage: null,
   });
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit() {
 
     const {
         classType,
@@ -73,6 +73,18 @@ const AddClass = () => {
 
   return (
     <div className="relative">
+       <ToastContainer
+          position="bottom-right"
+          padding="5%"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -121,7 +133,7 @@ const AddClass = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" onSubmit={handleSubmit} method="POST">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Class Type
@@ -142,7 +154,7 @@ const AddClass = () => {
                     <input
                       type="text"
                       name="classDescription"
-                      placeholder="Enter class description"
+                      placeholder="Enter className description"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
@@ -156,7 +168,7 @@ const AddClass = () => {
                     <input
                       type="file"
                       name="classImage"
-                      placeholder="Select class image"
+                      placeholder="Select className image"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
