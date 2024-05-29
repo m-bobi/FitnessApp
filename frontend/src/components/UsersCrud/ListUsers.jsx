@@ -261,13 +261,49 @@ const ListUsers = () => {
 
 
 
-{selectedUser && (
-        <div className="relative w-full h-full max-w-2xl px-4 md:h-auto">
-          {Object.keys(editedUser).map((field) => (
-            <div key={field} className="mb-2">
-              <label className="block mb-1 text-sm font-medium ">
-                {field}
-              </label>
+
+
+ {selectedUser && (
+    <div
+          id="authentication-modal"
+          tabIndex="-1"
+          aria-hidden="true"
+          className="fixed top-0 right-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+        >
+          <div className="relative p-4 w-full max-w-md">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Update User!
+                </h3>
+                <button
+                onClick={() => setSelectedUser(false)}
+                  type="button"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  <svg
+                    className="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    ></path>
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
+              </div>
+              <div className="p-4 md:p-5">
+                <form className="space-y-4">
+                {Object.keys(editedUser).map((field) => (
+            <div key={field} className="relative  w-full max-w-md">
+                <div className="p-4 md:p-5">
               <input
                 type="text"
                 value={editedUser[field]}
@@ -275,6 +311,7 @@ const ListUsers = () => {
                 className="border rounded-lg px-2 py-1 w-full text-slate-700"
                 readOnly={field === 'id'}
               />
+              </div>
             </div>
           ))}
           <button
@@ -283,8 +320,14 @@ const ListUsers = () => {
           >
             Update User
           </button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+        )}
+
+
 
 {/* <!-- Add User Modal --> */}
 <div className="fixed left-0 right-0 z-50 items-center justify-center hidden overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full" id="add-user-modal">

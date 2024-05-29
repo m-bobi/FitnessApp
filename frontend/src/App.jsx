@@ -7,6 +7,7 @@ import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom
 import Dashboard from './pages/Dashboard/Dashboard';
 import Unauthorized from './components/Auth/Unauthorized';
 import AllClasses from './pages/Classes/AllClasses';
+import UserDashboard from './pages/UserDashboard/UserDashboard';
 function App() {
 
 
@@ -19,6 +20,7 @@ function App() {
   const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile"));
   const ProductDetails = lazy(() => import("./components/shared/ProductDetails/ProductDetails"));
   const Products = lazy(()=> import("./pages/Products/Products"));
+  const AboutUs = lazy(()=> import("./pages/AboutUs/AboutUs"));
 
   useEffect(() => {
     Aos.init({
@@ -43,6 +45,8 @@ function App() {
             <Route exact path="/userprofile" element={<UserProfile />} />
             <Route exact path="/products" element={<Products />} />
             <Route exact path="/classes" element={<AllClasses />} />
+            <Route exact path="/users" element={<UserDashboard />} />
+            <Route exact path="/aboutus" element={<AboutUs />} />
             <Route
               exact
               path="/productDetails/:id"
