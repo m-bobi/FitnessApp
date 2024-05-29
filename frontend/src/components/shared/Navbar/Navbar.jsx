@@ -120,6 +120,13 @@ const Navbar = () => {
         >
           Products
         </Link>
+
+        <Link
+          to="/aboutus"
+          className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
+        >
+          About Us
+        </Link>
         {isManager && (
           <Link
             to="/dashboard"

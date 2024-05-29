@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import config from '../config';
+import Cookies from 'js-cookie';
+
 
 const ListProducts = () => {
 
     const [allProducts, setAllProducts] = useState([]);
 
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
 
     const [openmodal, setOpenModal] = useState(false);
 

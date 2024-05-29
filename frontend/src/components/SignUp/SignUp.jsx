@@ -34,7 +34,6 @@ const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const {
       email,
       username,
@@ -89,6 +88,7 @@ const SignUp = () => {
     const formDataObj = new FormData();
     formDataObj.append("image", image);
 
+<<<<<<< HEAD
     axios
       .post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
       .then((imageResponse) => {
@@ -96,6 +96,51 @@ const SignUp = () => {
           ...formData,
           image: imageResponse.data,
         });
+=======
+    if (!validateUsername(username)) {
+      toast.error("Please enter a valid username.");
+      return;
+    }
+
+    const usernameExists = await checkUsernameExists(username);
+    if (usernameExists) {
+      toast.error("This username is already in use.");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      toast.error(
+        "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
+      );
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+    const fileExtension = image.name.split(".").pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      toast.error(
+        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+      );
+      return;
+    }
+
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append("image", image);
+
+      const imageResponse = await axios.post(
+        `${config.apiBaseURL}api/UploadImages/addUserImage`,
+        formDataObj
+      );
+      await axios.post(`${config.apiBaseURL}api/User/register`, {
+        ...formData,
+        image: imageResponse.data,
+>>>>>>> e6485264af872bacf911ba3369ea499df89d6dc3
       })
       .then(() => {
         toast.success("You've successfully registered!");
@@ -103,6 +148,7 @@ const SignUp = () => {
           navigate("/signin");
         }, 2000);
       })
+<<<<<<< HEAD
       .catch((error) => {
         console.error(error);
         toast.error(
@@ -110,6 +156,15 @@ const SignUp = () => {
         );
     });
   }
+=======
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "An error occurred while registering. Please try again later."
+      );
+    }
+  };
+>>>>>>> e6485264af872bacf911ba3369ea499df89d6dc3
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -140,7 +195,7 @@ const SignUp = () => {
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
-              <form className="w-full flex-1 mt-8" >
+              <form className="w-full flex-1 mt-8">
                 <div className="flex flex-col items-center">
                   <InputField
                     type="email"
@@ -227,7 +282,7 @@ const SignUp = () => {
                 </div>
 
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
                   className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   onClick={handleSubmit}
                >

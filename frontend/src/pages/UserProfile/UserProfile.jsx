@@ -2,9 +2,10 @@ import React from 'react'
 import Navbar from "../../components/shared/Navbar/Navbar"
 import Profile from '../../components/pages/UserProfile/Profile'
 import Unauthorized from '../../components/Auth/Unauthorized';
+import Cookies from 'js-cookie';
 
 const UserProfile = () => {
-  const token = localStorage.getItem("token");
+  const token = Cookies.get("token");
   return (
     <div>
       {

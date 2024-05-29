@@ -580,8 +580,13 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+<<<<<<< HEAD
                             ConcurrencyStamp = "76357f52-05d6-4131-94e8-dab4fcfc09fc",
                             CreatedAt = new DateTime(2024, 5, 28, 18, 30, 52, 946, DateTimeKind.Utc).AddTicks(3301),
+=======
+                            ConcurrencyStamp = "aeff38f1-4046-4e97-b2f0-9734280d1d3e",
+                            CreatedAt = new DateTime(2024, 5, 28, 18, 51, 23, 706, DateTimeKind.Utc).AddTicks(1953),
+>>>>>>> e6485264af872bacf911ba3369ea499df89d6dc3
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -589,11 +594,19 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
+<<<<<<< HEAD
                             PasswordHash = "AQAAAAIAAYagAAAAEC8j8fau41+ylUq+YVtbrIHUR7ruUzr7oYaC6uuCNal5+oawAQbcjBpV9HOr+ifh/w==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
                             SecurityStamp = "3d1cccdd-8277-4a11-8038-a0d894d0116b",
+=======
+                            PasswordHash = "AQAAAAIAAYagAAAAECVWRexb9jBtCRPuY/CW+4CfXTgndsnNVAPSi5VLuMN39x7AIcCs3l87hl3jOwzF3g==",
+                            PhoneNumber = "044234234",
+                            PhoneNumberConfirmed = false,
+                            Role = 1,
+                            SecurityStamp = "17111266-c467-437d-848e-fcae48c1e29e",
+>>>>>>> e6485264af872bacf911ba3369ea499df89d6dc3
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
