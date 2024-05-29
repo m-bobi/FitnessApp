@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Unauthorized from './components/Auth/Unauthorized';
 import AllClasses from './pages/Classes/AllClasses';
 import UserDashboard from './pages/UserDashboard/UserDashboard';
+import ProductsDashboard from './pages/ProductsDashboard/ProductsDashboard';
 function App() {
 
 
@@ -47,6 +48,7 @@ function App() {
             <Route exact path="/classes" element={<AllClasses />} />
             <Route exact path="/users" element={<UserDashboard />} />
             <Route exact path="/aboutus" element={<AboutUs />} />
+            <Route exact path="/productdashboard" element={<ProductsDashboard />} />
             <Route
               exact
               path="/productDetails/:id"

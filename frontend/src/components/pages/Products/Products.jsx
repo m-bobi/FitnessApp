@@ -3,6 +3,7 @@ import "./Products.css";
 import { Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import Cookies from "js-cookie";
+import api from "../../Auth/api";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);

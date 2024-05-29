@@ -207,7 +207,6 @@ public class UserController : Controller
     }
 
     [HttpPut("updateUser/{id}")]
-    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> UpdateUser(string id, [FromBody]UserDto userDto)
     {
         if (userDto is null)
