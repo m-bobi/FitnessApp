@@ -17,6 +17,7 @@ public class UserController : Controller
     private readonly UserManager<User> _userManager;
     private readonly TokenService _tokenService;
     private readonly ApplicationDbContext _dbContext;
+   
 
     public UserController(UserManager<User> userManager, TokenService tokenService, ApplicationDbContext dbContext)
     {
@@ -115,6 +116,28 @@ public class UserController : Controller
             Token = accessToken,
         });
     }
+    public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
+    {
+        // Validate request
+        if (string.IsNullOrEmpty(request.RefreshToken))
+        {
+            return BadRequest("Refresh token is missing");
+        }
+
+        // Validate refresh token
+        var user = await _userManager.GetUserByRefreshTokenAsync(request.RefreshToken);
+        if (user == null)
+        {
+            return BadRequest("Invalid refresh token");
+        }
+
+        // Generate new access token using the refresh token
+        var newAccessToken = _tokenService.CreateRefreshToken(user);
+
+        return Ok(new { AccessToken = newAccessToken });
+    }
+
+
 
     [HttpGet("getAllUsers")]
     [Authorize(Roles = "Manager, Trainer")]
