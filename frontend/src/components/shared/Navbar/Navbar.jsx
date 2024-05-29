@@ -30,7 +30,7 @@ const Navbar = () => {
     Cookies.remove("token");
     Cookies.remove("id");
     localStorage.removeItem("cart");
-    window.location.reload();
+    navigate("/signin")
   };
 
   useEffect(() => {
