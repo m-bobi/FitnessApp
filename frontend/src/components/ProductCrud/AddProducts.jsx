@@ -1,22 +1,36 @@
 import React, { useState } from "react";
-import axios from "axios";
-import config from '../../config'
 import { ToastContainer, toast } from "react-toastify";
+import api from "../Auth/api";
 
 const AddProducts = () => {
-
-
   const [formData, setFormData] = useState({
     productName: "",
     productDescription: "",
     productPrice: "",
     productCategory: "",
     productStock: "",
-    productRate : 0,
+    productRate: 0,
     productImage: null,
   });
 
-  function handleSubmit() {
+  const handleChange = (event) => {
+    const { name, value, files } = event.target;
+
+    if (files) {
+      setFormData({
+        ...formData,
+        [name]: files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  async function handleSubmit(event) {
+    event.preventDefault();
     const {
       productName,
       productDescription,
@@ -27,50 +41,56 @@ const AddProducts = () => {
       productImage,
     } = formData;
 
-
-
-
     const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
     const fileExtension = productImage.name.split(".").pop().toLowerCase();
 
     if (!allowedExtensions.includes(fileExtension)) {
       toast.error(
-        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+        "Invalid file type. Only png, jpg, jpeg, and webp files are allowed."
       );
       return;
     }
 
-    const formDataObj = new FormData();
-    formDataObj.append("image", productImage);
+    const imageFormData = new FormData();
+    imageFormData.append("image", productImage);
 
-    axios
-      .post(`${config.apiBaseURL}api/UploadImages/addProductImage`, formDataObj)
-      .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}api/Products/addProduct`, {
-          ...formData,
-          productImage: imageResponse.data,
-        });
-      })
-      .then(() => {
+    let imageName;
+    try {
+      const response = await api.post(
+        `api/UploadImages/addProductImage`,
+        imageFormData
+      );
+      imageName = response.data;
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "An error occurred while uploading the image. Please try again later."
+      );
+      return;
+    }
+
+    const productData = {
+      productName,
+      productDescription,
+      productPrice,
+      productCategory,
+      productStock,
+      productRate,
+      productImage: imageName,
+    };
+
+    api
+      .post(`api/Products/addProduct`, productData)
+      .then((productResponse) => {
         toast.success("You've successfully added a product!");
-
       })
       .catch((error) => {
         console.error(error);
         toast.error(
-          "An error occurred while adding. Please try again later."
+          "An error occurred while adding the product. Please try again later."
         );
       });
   }
-
-
-  const handleChange = (event) => {
-    const { name, value, files } = event.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-  };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -78,24 +98,21 @@ const AddProducts = () => {
     setIsOpen(!isOpen);
   };
 
-
-
   return (
     <div className="relative">
-
       {/* Modal Trigger Button */}
       <ToastContainer
-          position="bottom-right"
-          padding="5%"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -144,7 +161,7 @@ const AddProducts = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" >
+                <form className="space-y-4">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Product Name
@@ -240,8 +257,7 @@ const AddProducts = () => {
                   </div>
 
                   <button
-
-                   onClick={handleSubmit}
+                    onClick={handleSubmit}
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Add Product

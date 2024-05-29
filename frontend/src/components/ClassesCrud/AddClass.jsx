@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import config from "../../config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api from "../Auth/api";
 
 const AddClass = () => {
   const [formData, setFormData] = useState({
@@ -35,10 +34,10 @@ const AddClass = () => {
     const formDataObj = new FormData();
     formDataObj.append("image", classImage);
 
-    axios
-      .post(`${config.apiBaseURL}api/UploadImages/addClassImage`, formDataObj)
+    api
+      .post(`api/UploadImages/addClassImage`, formDataObj)
       .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}api/Class/addClass`, {
+        return api.post(`api/Class/addClass`, {
           ...formData,
           classImage: imageResponse.data,
         });

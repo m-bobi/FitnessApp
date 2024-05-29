@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../shared/Navbar/Navbar";
-import "./SignUp.css";
-import config from "../../config";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,8 +12,9 @@ import {
   checkEmailExists,
   checkUsernameExists,
   validateUsername,
-  runValidations
+  runValidations,
 } from "../../utils/Validations";
+import api from "../Auth/api";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -32,8 +31,17 @@ const SignUp = () => {
     image: null,
   });
 
+    const handleChange = (event) => {
+      const { name, value, files } = event.target;
+      setFormData({
+        ...formData,
+        [name]: files ? files[0] : value,
+      });
+    };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    try{
     const {
       email,
       username,
@@ -47,131 +55,87 @@ const SignUp = () => {
       image,
     } = formData;
 
-   const error = await runValidations([
-     () =>
-       (!email ||
-         !username ||
-         !name ||
-         !address ||
-         !mobile ||
-         !birthdate ||
-         !password ||
-         !confirmPassword ||
-         !gender) &&
-       "Please fill in all fields.",
-     () => !validateEmail(email) && "Please enter a valid email address.",
-     async () =>
-       (await checkEmailExists(email)) && "This email is already in use.",
-     () => !validateUsername(username) && "Please enter a valid username.",
-     async () =>
-       (await checkUsernameExists(username)) &&
-       "This username is already in use.",
-     () =>
-       !validatePassword(password) &&
-       "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
-     () => password !== confirmPassword && "Passwords do not match.",
-     () => {
-       const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-       const fileExtension = image.name.split(".").pop().toLowerCase();
-       return (
-         !allowedExtensions.includes(fileExtension) &&
-         "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
-       );
-     },
-   ]);
+    const error = await runValidations([
+      () =>
+        (!email ||
+          !username ||
+          !name ||
+          !address ||
+          !mobile ||
+          !birthdate ||
+          !password ||
+          !confirmPassword ||
+          !gender) &&
+        "Please fill in all fields.",
+      () => !validateEmail(email) && "Please enter a valid email address.",
+      async () =>
+        (await checkEmailExists(email)) && "This email is already in use.",
+      () => !validateUsername(username) && "Please enter a valid username.",
+      async () =>
+        (await checkUsernameExists(username)) &&
+        "This username is already in use.",
+      () =>
+        !validatePassword(password) &&
+        "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+      () => password !== confirmPassword && "Passwords do not match.",
+      () => {
+        const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+        const fileExtension = image.name.split(".").pop().toLowerCase();
+        return (
+          !allowedExtensions.includes(fileExtension) &&
+          "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+        );
+      },
+    ]);
 
-   if (error) {
-     toast.error(error);
-     return;
-   }
-
-    const formDataObj = new FormData();
-    formDataObj.append("image", image);
-
-<<<<<<< HEAD
-    axios
-      .post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
-      .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}api/User/register`, {
-          ...formData,
-          image: imageResponse.data,
-        });
-=======
-    if (!validateUsername(username)) {
-      toast.error("Please enter a valid username.");
+    if (error) {
+      toast.error(error);
       return;
     }
 
-    const usernameExists = await checkUsernameExists(username);
-    if (usernameExists) {
-      toast.error("This username is already in use.");
-      return;
-    }
+    const imageFormData = new FormData();
+    imageFormData.append("image", formData.image);
 
-    if (!validatePassword(password)) {
-      toast.error(
-        "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
-      );
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
-    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-    const fileExtension = image.name.split(".").pop().toLowerCase();
-    if (!allowedExtensions.includes(fileExtension)) {
-      toast.error(
-        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
-      );
-      return;
-    }
-
+    let imageName;
     try {
-      const formDataObj = new FormData();
-      formDataObj.append("image", image);
-
-      const imageResponse = await axios.post(
-        `${config.apiBaseURL}api/UploadImages/addUserImage`,
-        formDataObj
+      const response = await api.post(
+        `api/UploadImages/addUserImage`,
+        imageFormData
       );
-      await axios.post(`${config.apiBaseURL}api/User/register`, {
-        ...formData,
-        image: imageResponse.data,
->>>>>>> e6485264af872bacf911ba3369ea499df89d6dc3
-      })
+      imageName = response.data;
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "An error occurred while uploading the image. Please try again later."
+      );
+      return;
+    }
+
+    const userData = {
+      ...formData,
+      image: imageName,
+    };
+
+    api
+      .post(`api/User/register`, userData)
       .then(() => {
         toast.success("You've successfully registered!");
         setTimeout(() => {
           navigate("/signin");
         }, 2000);
       })
-<<<<<<< HEAD
       .catch((error) => {
         console.error(error);
         toast.error(
           "An error occurred while registering. Please try again later."
         );
-    });
-  }
-=======
+      });
     } catch (error) {
       console.error(error);
       toast.error(
         "An error occurred while registering. Please try again later."
       );
     }
-  };
->>>>>>> e6485264af872bacf911ba3369ea499df89d6dc3
-
-  const handleChange = (event) => {
-    const { name, value, files } = event.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
   };
 
   return (
@@ -195,7 +159,7 @@ const SignUp = () => {
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
-              <form className="w-full flex-1 mt-8">
+              <form className="w-full flex-1 mt-8" onSubmit={handleSubmit}>
                 <div className="flex flex-col items-center">
                   <InputField
                     type="email"
@@ -282,10 +246,8 @@ const SignUp = () => {
                 </div>
 
                 <button
-                  onClick={handleSubmit}
                   className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                  onClick={handleSubmit}
-               >
+                >
                   <svg
                     className="w-6 h-6 -ml-2"
                     fill="none"

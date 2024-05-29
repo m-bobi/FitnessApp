@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./TrainersSection.css";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import config from "../../config";
-
+import api from "./Auth/api";
 
 const TrainersSection = () => {
-
-
   const [isOpen, setIsOpen] = useState(false);
-
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
-
 
   const [selectedTrainer, setSelectedTrainer] = useState(null);
   const [editedTrainer, setEditedTrainer] = useState({});
@@ -31,8 +23,8 @@ const TrainersSection = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(
-        `${config.apiBaseURL}updateTrainer/${selectedTrainer.trainerId}`,
+      await api.put(
+        `api/Trainers/updateTrainer/${selectedTrainer.trainerId}`,
         editedTrainer
       );
       setSelectedTrainer(null);
@@ -51,8 +43,8 @@ const TrainersSection = () => {
   const addTrainer = async (event) => {
     event.preventDefault();
     try {
-      axios
-        .post(`${config.apiBaseURL}addTrainer`, {
+      api
+        .post(`api/Trainers/addTrainer`, {
           trainerName: trainerName,
           trainerEmail: trainerEmail,
           trainerAddress: trainerAddress,
@@ -79,7 +71,7 @@ const TrainersSection = () => {
 
   const fetchTrainers = async () => {
     try {
-      const response = await axios.get(`${config.apiBaseUrl}getAllTrainers`);
+      const response = await api.get(`api/Trainers/getAllTrainers`);
       setTrainers(response.data);
     } catch (error) {
       console.error("Error fetching Trainers:", error);
@@ -92,11 +84,9 @@ const TrainersSection = () => {
 
   const onDelete = async (id) => {
     try {
-      await axios
-        .delete(`${config.apiBaseURL}deleteTrainer/${id}`)
-        .then(() => {
-          fetchTrainers();
-        });
+      await api.delete(`api/Trainers/deleteTrainer/${id}`).then(() => {
+        fetchTrainers();
+      });
     } catch (error) {
       error.console(error);
     }
@@ -215,30 +205,30 @@ const TrainersSection = () => {
                     />
                   </div>
 
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Trainer Type
-                      </label>
-                      <select
-                        name="TrainerType"
-                        id="trainerType"
-                        className="bg-gray-50 bTrainer bTrainer-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:bTrainer-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:bTrainer-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        value={trainerType}
-                        onChange={(event) => {
-                          setTrainerType(event.target.value);
-                        }}
-                        required
-                      >
-                        <option value="" selected>
-                          Select Trainer Type
-                        </option>
-                        <option value="Yoga">Yoga</option>
-                        <option value="Karate">Karate</option>
-                        <option value="Boxing">Boxing</option>
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Trainer Type
+                    </label>
+                    <select
+                      name="TrainerType"
+                      id="trainerType"
+                      className="bg-gray-50 bTrainer bTrainer-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:bTrainer-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:bTrainer-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      value={trainerType}
+                      onChange={(event) => {
+                        setTrainerType(event.target.value);
+                      }}
+                      required
+                    >
+                      <option value="" selected>
+                        Select Trainer Type
+                      </option>
+                      <option value="Yoga">Yoga</option>
+                      <option value="Karate">Karate</option>
+                      <option value="Boxing">Boxing</option>
+                    </select>
+                  </div>
 
-                    <div>
+                  <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Trainer Image
                     </label>
@@ -254,7 +244,7 @@ const TrainersSection = () => {
                       }}
                       value={trainerImage}
                     />
-                    </div>
+                  </div>
 
                   <button
                     type="submit"

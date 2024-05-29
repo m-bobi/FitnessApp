@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./OurFeaturedClass.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import config from "../../../../config";
-
+import api from "../../../Auth/api";
 const OurFeaturedClass = () => {
   const [classes, setClasses] = useState([]);
 
   const fetchclasses = async () => {
     try {
-      const response = await axios.get(
-        `${config.apiBaseURL}api/Class/getAllClasses`
+      const response = await api.get(
+        `api/Class/getAllClasses`
       );
-      // setClasses(response.data);
       setClasses(response.data.slice(0, 4));
     } catch (error) {
       console.error("Error fetching Trainers:", error);

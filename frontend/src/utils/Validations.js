@@ -1,5 +1,4 @@
-import axios from 'axios';
-import config from '../config';
+import api from "../components/Auth/api";
 
 export const validateImageSize = (image) => {
     const maxSize = 5000000;
@@ -19,7 +18,7 @@ export const validateEmail = (email) => {
 
 export const checkEmailExists = async (email) => {
     try {
-        const response = await axios.get(`${config.apiBaseURL}api/User/checkEmail`, { params: { email } });
+        const response = await api.get(`api/User/checkEmail`, { params: { email } });
         return response.data;
     } catch (error) {
         console.error(error);
@@ -28,7 +27,7 @@ export const checkEmailExists = async (email) => {
 
 export const checkUsernameExists = async (username) => {
     try {
-        const response = await axios.get(`${config.apiBaseURL}api/User/checkUsername`, { params: { username } });
+        const response = await api.get(`api/User/checkUsername`, { params: { username } });
         return response.data;
     } catch (error) {
         console.error(error);

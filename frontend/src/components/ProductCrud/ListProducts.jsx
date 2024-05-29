@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { CiTrash } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
-import axios from "axios";
-import config from "../../config";
-
+import api from "../Auth/api";
+import toast, {ToastContainer} from "react-toastify";
 
 const ListProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,7 +13,7 @@ const ListProducts = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [filter, setFilter] = useState({
     productId: "",
-    productName: ""
+    productName: "",
   });
 
   const productsPerPage = 10;
@@ -22,32 +21,34 @@ const ListProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `${config.apiBaseURL}api/Products/getAllProducts?page=${currentPage}&limit=${productsPerPage}`
+        const response = await api.get(
+          `api/Products/getAllProducts?page=${currentPage}&limit=${productsPerPage}`
         );
         setProducts(response.data.product);
         setTotalPages(response.data.totalPages);
+        toast.success("Products fetched successfully");
       } catch (error) {
         console.error("Error fetching products:", error);
+        toast.error("Error fetching products");
       }
     };
 
     fetchProducts();
   }, [currentPage]);
 
-const handleDelete = async (productId) => {
-  if (window.confirm("Are you sure you want to delete this product?")) {
-    try {
-      await axios.delete(`${config.apiBaseURL}deleteProduct/${productId}`);
-      setProducts(
-        products.filter((product) => product.productId !== productId)
-      );
-    } catch (error) {
-      console.error("Error deleting product:", error);
+  const handleDelete = async (productId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        await api.delete(`api/Products/deleteProduct/${productId}`);
+        setProducts(
+          products.filter((product) => product.productId !== productId)
+        );
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        toast.error("Error deleting product");
+      }
     }
-  }
-};
-
+  };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -69,20 +70,22 @@ const handleDelete = async (productId) => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(
-        `${config.apiBaseURL}updateProduct/${selectedProduct.productId}`,
+      await api.put(
+        `api/Products/updateProduct/${selectedProduct.productId}`,
         editedProduct
       );
       setSelectedProduct(null);
       setEditedProduct({});
-
+      toast.success("Product updated successfully");
     } catch (error) {
       console.error("Error updating product:", error);
+      toast.error("Error updating product");
     }
   };
 
   return (
     <div className="flex flex-col items-center pt-40">
+      <ToastContainer />
       <div className="flex mb-4 space-x-4 text-slate-800">
         <input
           type="text"

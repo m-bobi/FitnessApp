@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.css";
-import axios from "axios";
-import config from "../../../config";
 import moment from "moment";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
+import api from "../../Auth/api";
+import { toast, ToastContainer } from "react-toastify";
+
 const Profile = () => {
   const [user, setUser] = useState([]);
-  const token = Cookies.get('token');
-  const userId = Cookies.get('id');
+  const token = Cookies.get("token");
+  const userId = Cookies.get("id");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,8 +22,8 @@ const Profile = () => {
 
   useEffect(() => {
     if (token) {
-      axios
-        .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
+      api
+        .get(`api/User/getUser/${userId}`)
         .then((response) => {
           if (response.data) {
             setUser(response.data);
@@ -38,16 +39,16 @@ const Profile = () => {
     return moment(user.createdAt).fromNow();
   };
 
-function calculateAge(birthdate) {
-  const dob = new Date(birthdate);
-  const today = new Date();
-  let age = today.getFullYear() - dob.getFullYear();
-  const m = today.getMonth() - dob.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-    age--;
+  function calculateAge(birthdate) {
+    const dob = new Date(birthdate);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+    return age;
   }
-  return age;
-}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,22 +61,24 @@ function calculateAge(birthdate) {
         gender: formData.gender,
       };
 
-      const response = await axios.put(
-        `${config.apiBaseURL}api/User/updateUser/${userId}`,
+      const response = await api.put(
+        `api/User/updateUser/${userId}`,
         userUpdateDto
       );
       if (response.status === 200) {
         setUser(response.data);
-        alert("Profile updated successfully");
-        window.location.reload()
+        toast.success("Profile updated successfully!");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error updating profile:", error);
+      toast.error("Error updating profile. :( Please try again later.");
     }
   };
 
   return (
     <div className="bg-gray-100 profile">
+      <ToastContainer />
       <div className="w-full text-white bg-main-color">
         <div className="container mx-auto my-5 p-5">
           <div className="md:flex no-wrap md:-mx-2 ">

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
-import config from "../../config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie';
+import api from "../Auth/api";
 
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,22 +19,16 @@ const AddOffers = () => {
 
   const addOffer = () => {
     try {
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      };
-      axios
+      api
         .post(
-          `${config.apiBaseURL}api/Offers/addOffer`,
+          `api/Offers/addOffer`,
           {
             offerType: offerType,
             offerDescription: offerDescription,
             offerPrice: parseInt(offerPrice),
-          },
-          { headers }
+          }
         )
         .then(() => {
-          console.log("success");
           toast.success("Offer has been added.");
         })
         .catch((error) => {

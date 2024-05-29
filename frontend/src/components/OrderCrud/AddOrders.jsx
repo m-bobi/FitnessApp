@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-import config from "../../config";
+import api from "../Auth/api";
+import { toast, ToastContainer } from "react-toastify";
 
 const AddOrders = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,29 +16,21 @@ const AddOrders = () => {
   const addOrder = async (event) => {
     event.preventDefault();
     try {
-      await axios.post(
-        `${config.apiBaseURL}api/Orders/addOrder`,
-        {
-          orderTotalAmount: orderTotalAmount,
-          orderStatus: orderStatus,
-          userName: userName,
-          orderDate: orderDate,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log("success");
-      window.alert("Order has been added.");
+      await api.post(`api/Orders/addOrder`, {
+        orderTotalAmount: orderTotalAmount,
+        orderStatus: orderStatus,
+        userName: userName,
+        orderDate: orderDate,
+      });
+      toast.success("Order added successfully!");
     } catch (error) {
-      console.error("Error:", error);
+      toast.error("Error adding order.." + error);
     }
   };
 
   return (
     <div className="relative">
+      <ToastContainer/>
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -121,7 +113,7 @@ const AddOrders = () => {
 
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                     Username
+                      Username
                     </label>
                     <input
                       type="text"

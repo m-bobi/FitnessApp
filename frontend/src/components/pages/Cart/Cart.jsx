@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Cart.css";
-import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
+import api from "../../Auth/api";
 import config from "../../../config";
 
 const stripePromise = loadStripe(
@@ -29,8 +29,8 @@ const Cart = () => {
   };
 
 const handleCheckout = async () => {
-  const response = await axios.post(
-    `${config.apiBaseURL}checkout/${cart[0].productId}`,
+  const response = await api.post(
+    `checkout/${cart[0].productId}`,
     { quantity: 1 }
   );
 

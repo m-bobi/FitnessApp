@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
-import config from "../../config";
-
+import api from "./Auth/api";
+import { toast, ToastContainer } from "react-toastify";
 
 const AddUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +18,6 @@ const AddUsers = () => {
   };
 
   const addUser = async (event) => {
-
     const userdata = {
       Name: Name,
       Username: Username,
@@ -32,11 +30,10 @@ const AddUsers = () => {
     };
 
     try {
-      await axios.post(`${config.apiBaseURL}api/User/addUser`, userdata);
-      console.log("Success");
-      window.alert("User has been added.");
+      await api.post(`api/User/addUser`, userdata);
+      toast.success("User has been added.");
     } catch (error) {
-      console.error("Error:", error);
+      toast.error("Error adding user!");
     }
   };
 
@@ -44,17 +41,17 @@ const AddUsers = () => {
     <div className="relative">
       {/* Modal Trigger Button */}
       <ToastContainer
-          position="bottom-right"
-          padding="5%"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -104,8 +101,6 @@ const AddUsers = () => {
               </div>
               <div className="p-4 md:p-5">
                 <form className="space-y-4" onSubmit={addUser} method="POST">
-
-
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Name

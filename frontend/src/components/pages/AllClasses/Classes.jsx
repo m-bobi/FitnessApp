@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './AllClasses.css'
-import axios from 'axios';
-import config from '../../../config';
 import { Link } from 'react-router-dom';
+import api from '../../Auth/api';
 
 const Classes = () => {
 
@@ -10,8 +9,8 @@ const Classes = () => {
 
   const fetchclasses = async () => {
     try {
-      const response = await axios.get(
-        `${config.apiBaseURL}api/Class/getAllClasses`
+      const response = await api.get(
+        `api/Class/getAllClasses`
       );
       setClasses(response.data);
     } catch (error) {

@@ -1,16 +1,14 @@
-// SignIn.js
 import React, { useState } from "react";
 import "./SignIn.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
-import config from "../../config";
 import Navbar from "../shared/Navbar/Navbar";
 import InputField from "../Inputs/Input";
 import Cookies from "js-cookie";
+import api, { setAuthToken } from "../Auth/api";
 import { validateEmail, runValidations } from "../../utils/Validations";
 
 const SignIn = () => {
@@ -43,7 +41,7 @@ const SignIn = () => {
     }
 
     try {
-      const response = await axios.post(`${config.apiBaseURL}api/User/login`, {
+      const response = await api.post(`api/User/login`, {
         email: formData.email,
         password: formData.password,
       });
@@ -67,7 +65,7 @@ const SignIn = () => {
         } else {
           console.error("User ID not found in token.");
         }
-
+        setAuthToken(token);
         toast.success("You've successfully logged in! Redirecting..");
 
         setTimeout(() => {

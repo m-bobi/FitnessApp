@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { GoSignOut } from "react-icons/go";
-import { jwtDecode } from "jwt-decode";
-import config from "../../../config";
-import axios from "axios";
 import ListOrders from "../../OrderCrud/ListOrders";
 import AddOrders from "../../OrderCrud/AddOrders";
-import AddProducts from "../../ProductCrud/AddProducts"
+import AddProducts from "../../ProductCrud/AddProducts";
 import AddClass from "../../ClassesCrud/AddClass";
 import ListClass from "../../ClassesCrud/ListClass";
-import ListUsers from "../../UsersCrud/ListUsers";
-import ListProducts from "../../ListProducts"
-import { RiProductHuntLine } from "react-icons/ri";
+import ListProducts from "../../ListProducts";
 import AddOffers from "../../OffersCrud/AddOffers";
 import ListOffers from "../../OffersCrud/ListOffers";
 import SideBar from "../DashboardLists/SideBar";
-import Cookies from 'js-cookie';
-
-
+import Cookies from "js-cookie";
+import api from "../../Auth/api";
+import { decodeToken } from "../../../utils/Decode";
+import { ToastContainer, toast } from "react-toastify";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -26,11 +20,11 @@ const AdminDashboard = () => {
     trainers: 0,
     classes: 0,
   });
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [role, setRole] = useState("");
-  const [userImage, setUserImage] = useState('');
+  const [userImage, setUserImage] = useState("");
 
   const [isDark, setIsDark] = useState(() => {
     if (window.localStorage.getItem("dark")) {
@@ -44,29 +38,19 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (token) {
-      const decodedToken = jwtDecode(token);
-      const name =
-        decodedToken[
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-        ];
-      const role =
-        decodedToken[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ];
-
-        const userId = localStorage.getItem("id");
-
+      const { name, role } = decodeToken(token);
 
       setUserName(name);
       setRole(role);
 
-      axios
-        .get(`${config.apiBaseURL}api/User/getUser/${userId}`)
+      const userId = localStorage.getItem("id");
+
+      api
+        .get(`api/User/getUser/${userId}`)
         .then((response) => {
           if (response.data && response.data.image) {
             setUserImage(`/img/users/${response.data.image}`);
           }
-
         })
         .catch((error) => {
           console.error("Error fetching users data:", error);
@@ -75,20 +59,24 @@ const AdminDashboard = () => {
 
     const fetchStatistics = async () => {
       try {
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        };
+
+        const header = {
+         headers: { Authorization: `Bearer ${token}` }
+        }; // Add a closing parenthesis here
+
         const responses = await Promise.all([
-          axios.get(`${config.apiBaseURL}api/Statistics/new-signups`, { headers }),
-          axios.get(`${config.apiBaseURL}api/Statistics/revenue`, { headers }),
-          axios.get(`${config.apiBaseURL}api/Statistics/trainers`, { headers }),
-          axios.get(`${config.apiBaseURL}api/Statistics/classes`, { headers }),
+          api.get(`api/Statistics/new-signups`, header), // Add the header object as the second argument here
+          api.get(`api/Statistics/revenue`, header), // Add the header object as the second argument here
+          api.get(`api/Statistics/trainers`, header), // Add the header object as the second argument here
+          api.get(`api/Statistics/classes`, header), // Add the header object as the second argument here
         ]);
-        const [newSignups, revenue, trainers, classes] = responses.map(res => res.data);
+        const [newSignups, revenue, trainers, classes] = responses.map(
+          (res) => res.data
+        );
         setStats({ newSignups, revenue, trainers, classes });
+        toast.success("Statistics up to date!");
       } catch (error) {
-        console.error("Error fetching statistics", error);
+        toast.error("An error occurred while fetching statistics");
       }
     };
     fetchStatistics();
@@ -100,12 +88,13 @@ const AdminDashboard = () => {
   };
 
   const handleSignOut = () => {
-    Cookies.remove('token');
-    Cookies.remove('id');
+    Cookies.remove("token");
+    Cookies.remove("id");
   };
 
   const StatisticCard = ({ title, value, icon }) => (
     <div className="bg-blue-500 dark:bg-gray-800 shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-blue-600 dark:border-gray-600 text-white font-medium group">
+      <ToastContainer />
       <div className="flex justify-center items-center w-14 h-14 bg-white rounded-full transition-all duration-300 transform group-hover:rotate-12">
         <svg
           width="30"
@@ -131,7 +120,6 @@ const AdminDashboard = () => {
     </div>
   );
 
-
   return (
     <div className={isDark ? "dark" : ""}>
       {/* <Helmet>
@@ -154,10 +142,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-     
-    
-      <SideBar/>
-       
+        <SideBar />
 
         <div className="h-full ml-14 mt-14 mb-10 md:ml-64">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
@@ -526,13 +511,13 @@ const AdminDashboard = () => {
             </div>
           </div>
           <div className="p-10">
-              <AddProducts />
-               <ListProducts/>
+            <AddProducts />
+            <ListProducts />
           </div>
 
           <div className="p-10">
-              <AddOffers />
-              <ListOffers/>
+            <AddOffers />
+            <ListOffers />
           </div>
 
           <div className="p-10">

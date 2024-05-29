@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { CiTrash } from "react-icons/ci";
 import { RiPencilLine } from "react-icons/ri";
-import config from "../../config";
+import api from "../Auth/api";
+import { toast, ToastContainer } from "react-toastify";
 
 const ListOrders = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,19 +21,14 @@ const ListOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(
-          `${config.apiBaseURL}api/Orders/getAllOrders?page=${currentPage}&limit=${ordersPerPage}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
+        const response = await api.get(
+          `api/Orders/getAllOrders?page=${currentPage}&limit=${ordersPerPage}`
         );
-
         setOrders(response.data.orders);
         setTotalPages(response.data.totalPages);
       } catch (error) {
         console.error("Error fetching orders:", error);
+        toast.error("Error fetching orders...", + error);
       }
     };
 
@@ -43,14 +38,7 @@ const ListOrders = () => {
   const handleDelete = async (orderId) => {
     if (window.confirm("Are you sure you want to delete this order?")) {
       try {
-        await axios.delete(
-          `${config.apiBaseURL}api/Orders/deleteOrder/${orderId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        await api.delete(`api/Orders/deleteOrder/${orderId}`);
         setOrders(orders.filter((order) => order.orderId !== orderId));
       } catch (error) {
         console.error("Error deleting order:", error);
@@ -78,24 +66,22 @@ const ListOrders = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(
-        `${config.apiBaseURL}api/Orders/updateOrder/${selectedOrder.orderId}`,
-        editedOrder,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      await api.put(
+        `api/Orders/updateOrder/${selectedOrder.orderId}`,
+        editedOrder
       );
       setSelectedOrder(null);
       setEditedOrder({});
+      toast.success("Order updated successfully!");
     } catch (error) {
       console.error("Error updating order:", error);
+      toast.error("Error updating order...");
     }
   };
 
   return (
     <div className="mt-4 mx-4">
+      <ToastContainer />
       <div className="flex mb-4 space-x-4 text-slate-800">
         <input
           type="text"

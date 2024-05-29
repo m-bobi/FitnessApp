@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./OurOffers.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
-import config from "../../../../config";
 import Cookies from 'js-cookie';
-
+import api from "../../../Auth/api";
+import config
+ from "../../../../config";
 const stripePromise = loadStripe(`${config.stripeKey}`);
+
 const OurOffers = () => {
   const [allOffers, setAllOffers] = useState([]);
 
@@ -15,14 +16,12 @@ const OurOffers = () => {
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5259/api/Offers/getAllOffers",
+        const response = await api.get(
+          "api/Offers/getAllOffers",
           {}
         );
         setAllOffers(response.data);
-        console.log(response.data);
       } catch (error) {
-        console.log(allOffers);
         console.error("Error fetching users:", error);
       }
     };
@@ -45,8 +44,8 @@ const OurOffers = () => {
 
   const handleCheckout = async (offerId) => {
     try {
-      const response = await axios.post(
-        `${config.apiBaseURL}checkoutOffer/${offerId}`,
+      const response = await api.post(
+        `checkoutOffer/${offerId}`,
         { quantity: 1 }
       );
 
