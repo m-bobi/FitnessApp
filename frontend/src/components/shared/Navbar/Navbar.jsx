@@ -108,6 +108,12 @@ const Navbar = () => {
         >
           About Us
         </Link>
+        <Link
+          to="/contactus"
+          className="hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg sm:text-sm lg:text-lg xl:text-lg"
+        >
+          Contact Us
+        </Link>
         {isManager && (
           <Link
             to="/dashboard"

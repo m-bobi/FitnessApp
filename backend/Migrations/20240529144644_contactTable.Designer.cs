@@ -12,8 +12,8 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240529134146_refreshed")]
-    partial class refreshed
+    [Migration("20240529144644_contactTable")]
+    partial class contactTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,6 +184,34 @@ namespace backend.Migrations
                     b.HasKey("ClassId");
 
                     b.ToTable("Class");
+                });
+
+            modelBuilder.Entity("backend.Models.Contact", b =>
+                {
+                    b.Property<int>("ContactId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ContactId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContactId");
+
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("backend.Models.Gym", b =>
@@ -583,8 +611,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "350a7264-9a17-4c13-a685-42df095cfd99",
-                            CreatedAt = new DateTime(2024, 5, 29, 13, 41, 45, 641, DateTimeKind.Utc).AddTicks(7346),
+                            ConcurrencyStamp = "ba0f9137-114f-4982-9e6a-09a9763cfff9",
+                            CreatedAt = new DateTime(2024, 5, 29, 14, 46, 43, 898, DateTimeKind.Utc).AddTicks(2064),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -592,11 +620,11 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFN768UxF/q3DMXB7Ea5A4m3nX993ZthlNgexCYqEuZpd8X+k2y/Dds6ngMvoUyHNA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED+F/d86d6QulLe0LdBWu4/yD5q+nnHorFbqJ2UJMFX8+t18MqpIvwMgHrasWi7dVQ==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             Role = 1,
-                            SecurityStamp = "a0b4cd83-aba6-4276-8e94-7b5cd4449c11",
+                            SecurityStamp = "a5965684-e466-4362-aada-d08f358b5d2e",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

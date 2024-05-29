@@ -27,6 +27,7 @@ namespace backend.DbContext
         public DbSet<Workouts> Workouts { get; set; }
         
         public DbSet<UserClass> UserClasses { get; set; }
+        public DbSet<Contact> Contact { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
