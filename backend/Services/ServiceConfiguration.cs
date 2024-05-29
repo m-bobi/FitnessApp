@@ -116,5 +116,12 @@ namespace backend.Services;
                         ),
                     };
                 });
+            
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+            });
+
         }
     }
