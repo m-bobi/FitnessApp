@@ -116,26 +116,26 @@ public class UserController : Controller
             Token = accessToken,
         });
     }
-    public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
-    {
-        // Validate request
-        if (string.IsNullOrEmpty(request.RefreshToken))
-        {
-            return BadRequest("Refresh token is missing");
-        }
-
-        // Validate refresh token
-        var user = await _userManager.GetUserByRefreshTokenAsync(request.RefreshToken);
-        if (user == null)
-        {
-            return BadRequest("Invalid refresh token");
-        }
-
-        // Generate new access token using the refresh token
-        var newAccessToken = _tokenService.CreateRefreshToken(user);
-
-        return Ok(new { AccessToken = newAccessToken });
-    }
+    // public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
+    // {
+    //     // Validate request
+    //     if (string.IsNullOrEmpty(request.RefreshToken))
+    //     {
+    //         return BadRequest("Refresh token is missing");
+    //     }
+    //
+    //     // Validate refresh token
+    //     var user = await _userManager.GetUserByRefreshTokenAsync(request.RefreshToken);
+    //     if (user == null)
+    //     {
+    //         return BadRequest("Invalid refresh token");
+    //     }
+    //
+    //     // Generate new access token using the refresh token
+    //     var newAccessToken = _tokenService.CreateRefreshToken(user);
+    //
+    //     return Ok(new { AccessToken = newAccessToken });
+    // }
 
 
 

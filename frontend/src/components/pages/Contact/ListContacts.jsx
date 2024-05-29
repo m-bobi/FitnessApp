@@ -26,13 +26,15 @@ const ListContacts = () => {
           `api/Contact/deleteContact/${id}`,
           setAllContacts(allContacts.filter((p) => p.contactId !== id))
         );
-        toast.success("Product deleted successfully!")
+        toast.success("Contact deleted successfully!")
       } catch (error) {
         console.error("Error deleting product:", error);
         toast.error("Error deleting product!")
       }
     }
   };
+
+  
 
   return (
     <>
