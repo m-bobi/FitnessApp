@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import config from '../../config';
+import Cookies from 'js-cookie';
 
 const ListUsers = () => {
 
     const [allUsers, setAllUsers] = useState([]);
 
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
 
     const [selectedUser, setSelectedUser] = useState(null);
     // const [editedUser, setEditedUser] = useState({});

@@ -33,7 +33,6 @@ const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const {
       email,
       username,
@@ -116,12 +115,13 @@ const SignUp = () => {
       await axios.post(`${config.apiBaseURL}api/User/register`, {
         ...formData,
         image: imageResponse.data,
-      });
-
-      toast.success("You've successfully registered!");
-      setTimeout(() => {
-        navigate("/signin");
-      }, 2000);
+      })
+      .then(() => {
+        toast.success("You've successfully registered!");
+        setTimeout(() => {
+          navigate("/signin");
+        }, 2000);
+      })
     } catch (error) {
       console.error(error);
       toast.error(
@@ -159,7 +159,7 @@ const SignUp = () => {
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">Sign up</h1>
-              <form className="w-full flex-1 mt-8" >
+              <form className="w-full flex-1 mt-8">
                 <div className="flex flex-col items-center">
                   <InputField
                     type="email"
@@ -246,7 +246,7 @@ const SignUp = () => {
                 </div>
 
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
                   className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                 >
                   <svg

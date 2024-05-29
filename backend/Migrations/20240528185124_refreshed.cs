@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class qualityOfLife : Migration
+    public partial class refreshed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -162,9 +162,9 @@ namespace backend.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OfferDescription = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    OfferEndDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    OfferDurationDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    OfferDiscount = table.Column<int>(type: "int", nullable: false)
+                    StripePriceId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    OfferPrice = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -235,6 +235,7 @@ namespace backend.Migrations
                     ProductImage = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ProductStock = table.Column<int>(type: "int", nullable: false),
+                    ProductRate = table.Column<int>(type: "int", nullable: true),
                     StripeProductId = table.Column<string>(type: "varchar(24)", maxLength: 24, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     StripePriceId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
@@ -506,7 +507,7 @@ namespace backend.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Birthdate", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "Gender", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "9caa583e-ba50-424e-9325-5058f7853d53", new DateTime(2024, 5, 24, 17, 26, 33, 198, DateTimeKind.Utc).AddTicks(1917), "root@email.com", false, "Male", null, false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAENfCRapNYOmlmIqyrUYV9p3ZZCCulPF6J31F8QZQTmo9vre0t8UNYUzoN1OIXnR61Q==", "044234234", false, 1, "28bb9bd7-7caa-4ef9-8756-da0cf12729bf", false, "admin" });
+                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "aeff38f1-4046-4e97-b2f0-9734280d1d3e", new DateTime(2024, 5, 28, 18, 51, 23, 706, DateTimeKind.Utc).AddTicks(1953), "root@email.com", false, "Male", null, false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAECVWRexb9jBtCRPuY/CW+4CfXTgndsnNVAPSi5VLuMN39x7AIcCs3l87hl3jOwzF3g==", "044234234", false, 1, "17111266-c467-437d-848e-fcae48c1e29e", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
