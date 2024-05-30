@@ -370,7 +370,7 @@ const ListProducts = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="2">No products for the moment</td>
+                      <td colSpan="2">No products at the moment!</td>
                     </tr>
                   )}
                 </tbody>
@@ -665,7 +665,7 @@ const ListProducts = () => {
                 ></path>
               </svg>
               <h3 className="mt-5 mb-6 text-lg text-gray-500 dark:text-gray-400">
-                Are you sure you want to delete this user?
+                Are you sure you want to delete this product?
               </h3>
               <a
                 href="#"

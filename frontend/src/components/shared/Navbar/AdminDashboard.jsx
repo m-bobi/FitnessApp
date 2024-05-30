@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ListOrders from "../../OrderCrud/ListOrders";
 import AddOrders from "../../OrderCrud/AddOrders";
-import AddProducts from "../../ProductCrud/AddProducts";
 import AddClass from "../../ClassesCrud/AddClass";
 import ListClass from "../../ClassesCrud/ListClass";
-import ListProducts from "../../ListProducts";
 import AddOffers from "../../OffersCrud/AddOffers";
 import ListOffers from "../../OffersCrud/ListOffers";
 import SideBar from "../DashboardLists/SideBar";
@@ -59,9 +57,8 @@ const AdminDashboard = () => {
 
     const fetchStatistics = async () => {
       try {
-
         const header = {
-         headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         }; // Add a closing parenthesis here
 
         const responses = await Promise.all([
@@ -509,10 +506,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="p-10">
-            <AddProducts />
-            <ListProducts />
           </div>
 
           <div className="p-10">

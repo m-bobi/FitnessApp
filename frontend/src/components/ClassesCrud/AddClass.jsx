@@ -10,8 +10,8 @@ const AddClass = () => {
     classImage: null,
   });
 
-  function handleSubmit() {
-
+  function handleSubmit(event) {
+    event.preventDefault();
     const {
         classType,
         classDescription,
@@ -43,7 +43,7 @@ const AddClass = () => {
         });
       })
       .then(() => {
-        toast.success("You've successfully registered!");
+        toast.success("Class successfully added!");
       })
       .catch((error) => {
         console.error(error);
