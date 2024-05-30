@@ -95,17 +95,17 @@ public class UserController : Controller
 
         var accessToken = _tokenService.CreateToken(userInDb);
         
-        ///// addeddd
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTime.Now.AddDays(7),
-            Secure = true,
-            SameSite = SameSiteMode.Strict
-        };
-        
-        Response.Cookies.Append("token", accessToken, cookieOptions);
-        ///// addeddd
+        // ///// addeddd
+        // var cookieOptions = new CookieOptions
+        // {
+        //     HttpOnly = true,
+        //     Expires = DateTime.Now.AddDays(7),
+        //     Secure = true,
+        //     SameSite = SameSiteMode.Strict
+        // };
+        //
+        // Response.Cookies.Append("token", accessToken, cookieOptions);
+        // ///// addeddd
         
         await _dbContext.SaveChangesAsync();
 
@@ -140,7 +140,7 @@ public class UserController : Controller
 
 
     [HttpGet("getAllUsers")]
-    [Authorize(Roles = "Manager, Trainer")]
+    // [Authorize(Roles = "Manager, Trainer")]
     public async Task<List<User>> GetAllUsers()
     {
         return await _dbContext.Users.ToListAsync();

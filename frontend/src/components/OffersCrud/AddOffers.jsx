@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie';
-import api from "../Auth/api";
+import api ,{setAuthToken} from "../Auth/api";
 
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,8 @@ const AddOffers = () => {
   const [offerDescription, setOfferDescription] = useState("");
   const [offerPrice, setOfferPrice] = useState(0);
 
-  const addOffer = () => {
+  const addOffer = (event) => {
+    event.preventDefault();
     try {
       api
         .post(
@@ -26,13 +27,15 @@ const AddOffers = () => {
             offerType: offerType,
             offerDescription: offerDescription,
             offerPrice: parseInt(offerPrice),
-          }
+          },
+          setAuthToken(token)
         )
         .then(() => {
           toast.success("Offer has been added.");
         })
         .catch((error) => {
           console.error("Error:", error);
+          console.log(event);
         });
     } catch (error) {
       console.error("Error:", error);
@@ -101,7 +104,7 @@ const AddOffers = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={addOffer}>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Offer Type
@@ -150,7 +153,7 @@ const AddOffers = () => {
                   </div>
 
                   <button
-                    onClick={addOffer}
+                    type="submit"
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Add Offer

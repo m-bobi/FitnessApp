@@ -1,0 +1,8 @@
+.ourBestTrainers{
+    display: flex;
+    flex-direction: column;
+}
+
+.trainersContainer{
+    display: flex;
+}

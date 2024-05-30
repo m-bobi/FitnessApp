@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./ClassPage.css";
 import api from "../Auth/api";
+import Cookies from 'js-cookie';
 import { toast, ToastContainer } from "react-toastify";
 
 const ClassPage = () => {
   const { id } = useParams();
   const [classItem, setClassItem] = useState(null);
   const [enrolled, setEnrolled] = useState(false);
+  const token = Cookies.get("token");
 
   useEffect(() => {
     const fetchClass = async () => {
@@ -127,7 +129,9 @@ const ClassPage = () => {
                 </div>
               </div>
 
-              <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+            {
+              token ? (
+                <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
                 {enrolled ? (
                   <button
                     title=""
@@ -143,10 +147,16 @@ const ClassPage = () => {
                     className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-green rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     role="button"
                   >
-                    Enroll to this className
+                    Enroll to this class
                   </button>
                 )}
               </div>
+              ) : (
+                <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                  <p>If you want to enroll to this class, please sign in</p><Link to="/signin" className="font-medium text-blue-600" >here</Link>
+                </div>
+              )
+            }
 
               <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
 

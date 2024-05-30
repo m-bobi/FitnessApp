@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import api from "../Auth/api";
+import api, {setAuthToken} from "../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ListUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
+
+  const token = Cookies.get("token");
+  setAuthToken(token);
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [editedUser, setEditedUser] = useState({
