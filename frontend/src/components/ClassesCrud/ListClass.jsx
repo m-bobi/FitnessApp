@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { CiTrash } from "react-icons/ci";
-import { RiPencilLine } from "react-icons/ri";
 import api from "../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
 
 const ListClass = () => {
-  const [currentPage, setCurrentPage] = useState();
-
   const [selectedClass, setSelectedClass] = useState(null);
   const [editedClass, setEditedClass] = useState({});
 
   const [classes, setClasses] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [filter, setFilter] = useState({
-    classId: "",
-    classType: "",
-    classDescription: "",
-  });
 
   const fetchclasses = async () => {
     try {
@@ -43,36 +33,41 @@ const ListClass = () => {
     }
   };
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  const handleUpdate = async (event) => {
+    event.preventDefault();
+    try {
+      const classEditing = {
+        classType: editedClass.classType,
+        classDescription: editedClass.classDescription,
+      };
+      await api.put(
+        `api/Class/updateClass/${selectedClass.classId}`,
+        classEditing
+      );
+      setClasses(
+        classes.map((classes) =>
+          classes.classId === selectedClass.classId
+            ? { ...classes, ...classEditing }
+            : classes
+        )
+      );
+      setSelectedClass(null);
+      setEditedClass({});
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilter({ ...filter, [name]: value });
-  };
-
-  const handleEdit = (Class) => {
-    setSelectedClass(Class);
-    setEditedClass(Class);
+  const handleEdit = (classes) => {
+    setSelectedClass(classes);
+    setEditedClass({
+      classType: classes.classType,
+      classDescription: classes.classDescription,
+    });
   };
 
   const handleEditField = (field, value) => {
     setEditedClass({ ...editedClass, [field]: value });
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await api.put(
-        `api/Class/updateClass/${selectedClass.classId}`,
-        editedClass
-      );
-      setSelectedClass(null);
-      setEditedClass({});
-      toast.success("Class updated successfully!");
-    } catch (error) {
-      console.error("Error updating class:", error);
-    }
   };
 
   return (
@@ -442,25 +437,71 @@ const ListClass = () => {
       </div>
 
       {selectedClass && (
-        <div className="relative w-full h-full max-w-2xl px-4 md:h-auto">
-          {Object.keys(editedClass).map((field) => (
-            <div key={field} className="mb-2">
-              <label className="block mb-1 text-sm font-medium ">{field}</label>
-              <input
-                type="text"
-                value={editedClass[field]}
-                onChange={(e) => handleEditField(field, e.target.value)}
-                className="border rounded-lg px-2 py-1 w-full text-slate-700"
-                readOnly={field === "classId"}
-              />
+        <div
+          id="authentication-modal"
+          tabIndex="-1"
+          aria-hidden="true"
+          className="fixed top-0 right-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+        >
+          <div className="relative p-4 w-full max-w-md">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Update Class
+                </h3>
+                <button
+                  onClick={() => setSelectedClass(false)}
+                  type="button"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  <svg
+                    className="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    ></path>
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
+              </div>
+              <div className="p-4 md:p-5">
+                <form className="space-y-4">
+                  {Object.keys(editedClass).map((field) => (
+                    <div key={field} className="relative  w-full max-w-md">
+                      <div className="p-4 md:p-5">
+                        <label htmlFor="">
+                          {field.charAt(0).toUpperCase() + field.slice(1)}
+                        </label>
+                        <input
+                          type="text"
+                          placeholder={editedClass[field]}
+                          onChange={(e) =>
+                            handleEditField(field, e.target.value)
+                          }
+                          className="border rounded-lg px-2 py-1 w-full text-slate-700"
+                          readOnly={field === "id"}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded"
+                    onClick={handleUpdate}
+                  >
+                    Update Class
+                  </button>
+                </form>
+              </div>
             </div>
-          ))}
-          <button
-            className="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded"
-            onClick={handleUpdate}
-          >
-            Update class
-          </button>
+          </div>
         </div>
       )}
 

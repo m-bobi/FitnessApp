@@ -131,22 +131,25 @@ public class ClassController : Controller
     }
 
     [HttpPut("updateClass/{id}")]
-    public async Task<IActionResult> UpdateClass([FromBody] Class uClass)
+    public async Task<IActionResult> UpdateClass(int id, [FromBody] Class uclass)
     {
-        if (uClass is null || uClass.ClassId == 0)
+        if (uclass is null)
         {
-            return BadRequest("Invalid class data");
+            return BadRequest("Invalid Class data");
         }
 
-        var existingClass = await _dbContext.Class.FindAsync(uClass.ClassId);
+        var existingClass = await _dbContext.Class.FirstOrDefaultAsync(p => p.ClassId == id);
         if (existingClass == null)
         {
             return NotFound();
         }
 
-        _dbContext.Entry(existingClass).CurrentValues.SetValues(uClass);
+        existingClass.ClassType = uclass.ClassType;
+        existingClass.ClassDescription= uclass.ClassType;
+
+
         await _dbContext.SaveChangesAsync();
-        return Ok("Class updated successfully");
+        return Ok("Class updated successfully!");
     }
 
 
