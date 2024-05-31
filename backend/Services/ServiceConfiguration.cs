@@ -110,7 +110,7 @@ namespace backend.Services;
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = validIssuer,
-                        ValidAudience = validAudience,
+                        ValidAudience = validAudience, 
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(symmetricSecurityKey)
                         ),

@@ -12,6 +12,7 @@ public class UserDto
     public DateTime? Birthdate { get; set; }
     public string? Email { get; set; }
     public string Token { get; set; }
+    public string RefreshToken { get; set; }
     public string Username { get; set; }
     
     public Roles Role { get; set; }

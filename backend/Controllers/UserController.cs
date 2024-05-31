@@ -19,13 +19,7 @@ public class UserController : Controller
     private readonly ApplicationDbContext _dbContext;
 
    private readonly UserService _userService;
-  
-//     public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
-//    {
-//         //Find the user associated with the provided refresh token
-//        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
-//        return user;
-//    }
+
     public UserController(UserManager<User> userManager, TokenService tokenService, ApplicationDbContext dbContext)
     {
         _userManager = userManager;
@@ -60,7 +54,8 @@ public class UserController : Controller
             Gender = registerDto.Gender,
             UserName = registerDto.Username,
         };
-
+        
+        user.RefreshToken = Guid.NewGuid().ToString();
         var result = await _userManager.CreateAsync(user, registerDto.Password);
 
         if (result.Succeeded)
@@ -100,52 +95,33 @@ public class UserController : Controller
             return Unauthorized();
         }
 
-        var accessToken = _tokenService.CreateToken(userInDb);
-        
-        // ///// addeddd
-        // var cookieOptions = new CookieOptions
-        // {
-        //     HttpOnly = true,
-        //     Expires = DateTime.Now.AddDays(7),
-        //     Secure = true,
-        //     SameSite = SameSiteMode.Strict
-        // };
-        //
-        // Response.Cookies.Append("token", accessToken, cookieOptions);
-        // ///// addeddd
-        
+        var tokens = _tokenService.CreateTokens(userInDb);
+    
         await _dbContext.SaveChangesAsync();
 
         return Ok(new AuthResponse
         {
             Username = userInDb.UserName,
             Email = userInDb.Email,
-            Token = accessToken,
+            Token = tokens.AccessToken,
+            RefreshToken = tokens.RefreshToken
         });
     }
-
-    // public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
-    // {
-    //     // Validate request
-    //     if (string.IsNullOrEmpty(request.RefreshToken))
-    //     {
-    //        return BadRequest("Refresh token is missing");
-    //    }
-
-    //     // Validate refresh token
-    //     var user = await _userService.GetUserByRefreshTokenAsync(request.RefreshToken);
-    //    if (user == null)
-    //    {
-    //        return BadRequest("Invalid refresh token");
-    //    }
-
-    //     // Generate new access token using the refresh token
-    //     var newAccessToken = _tokenService.CreateRefreshToken(user);
-
-    //     return Ok(new { AccessToken = newAccessToken });
-    // }
-
-
+    
+    [HttpPost("refresh-token")]
+    public IActionResult RefreshToken([FromBody] string refreshToken)
+    {
+        try
+        {
+            var newAccessToken = _tokenService.RefreshAccessToken(refreshToken);
+            return Ok(new { AccessToken = newAccessToken });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
     [HttpGet("getAllUsers")]
     // [Authorize(Roles = "Manager, Trainer")]
     public async Task<List<User>> GetAllUsers()
@@ -274,12 +250,14 @@ public class UserController : Controller
     // Create user object
     private UserDto CreateUserObject (User user)
     {
+        var tokens = _tokenService.CreateTokens(user);
         return new UserDto
         {
             Id = user.Id,
             Username = user.UserName,
             Email = user.Email,
-            Token = _tokenService.CreateToken(user),
+            Token = tokens.AccessToken,
+            RefreshToken = tokens.RefreshToken,
             Role = Enums.Roles.User
         };
     }

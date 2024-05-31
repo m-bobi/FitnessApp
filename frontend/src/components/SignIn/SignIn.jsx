@@ -47,10 +47,10 @@ const SignIn = () => {
       });
 
       if (response.status === 200) {
-        const { token } = response.data;
+        const { token, refreshToken } = response.data;
 
         Cookies.set("token", token, { expires: 7, secure: true });
-        // localStorage.setItem("token", token);
+        Cookies.set("refreshToken", refreshToken, { expires: 7, secure: true });
 
         const decodedToken = jwtDecode(token);
 

@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using backend.DbContext;
 using backend.Models;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,12 +10,14 @@ namespace backend.Services;
 public class TokenService
 {
     private const int ExpirationMinutes = 30;
-    private const int RefreshTokenExpirationMinutes = 21600; // 15 days
+    private const int RefreshTokenExpirationMinutes = 10080;
     private readonly IConfiguration _configuration;
+    private readonly ApplicationDbContext _context;
 
-    public TokenService(IConfiguration configuration)
+    public TokenService(IConfiguration configuration, ApplicationDbContext context)
     {
         _configuration = configuration;
+        _context = context;
     }
 
     public string CreateToken(User user)
@@ -30,7 +33,7 @@ public class TokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
    
-    public string CreateRefreshToken(User user)
+    private string CreateRefreshToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["JwtTokenSettings:SymmetricSecurityKey"]);
@@ -44,6 +47,32 @@ public class TokenService
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+    
+    public string RefreshAccessToken(string refreshToken)
+    {
+        var user = _context.Users.SingleOrDefault(u => u.RefreshToken == refreshToken);
+        if (user == null)
+        {
+            throw new Exception("Invalid refresh token");
+        }
+
+        var newAccessToken = CreateToken(user);
+
+        var newRefreshToken = CreateRefreshToken(user);
+        user.RefreshToken = newRefreshToken;
+
+        return newAccessToken;
+    }
+    
+    public (string AccessToken, string RefreshToken) CreateTokens(User user)
+    {
+        var accessToken = CreateToken(user);
+        var refreshToken = CreateRefreshToken(user);
+
+        user.RefreshToken = refreshToken;
+
+        return (accessToken, refreshToken);
     }
     
     private List<Claim> CreateClaims(User user)

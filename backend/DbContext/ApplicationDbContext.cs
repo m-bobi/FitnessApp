@@ -63,7 +63,8 @@ namespace backend.DbContext
                     PasswordHash = hasher.HashPassword(null, adminPassword),
                     Email = adminEmail,
                     NormalizedEmail = adminEmail.ToUpper(),
-                    Role = Enums.Roles.Manager
+                    Role = Enums.Roles.Manager,
+                    RefreshToken = "f3e1QfQ6UYy3Qec6S0YHYCIBJr650EnapwAOeqs6FtTnCjcBePrZoXaLL7EqzXCwjX2imH01FRPKKQASPPOluCTuOhZBfmWHK5wMYkh6TchNIFsliyl3mw0ArEw9nFBjYkJKZougaMD7SziOGhq5WUbKusE2akIMJUvCiQkxEuZ3D9rMc5tYp7kwU2m4NRkgfkqqPcUPTKOMyaj3w2wkQIxwG3cT6IKTIDaL7ayx0zentz4oZclxCuKmtGvXkYSSJjWd4Edn75HIGZ1o1Kc8NjdkNLsKcddVf7wOCcKdQQHVuHFbcPzibZHMpsYmQK6T"
                 }
             );
             
