@@ -49,20 +49,17 @@ export const validateUsername = (username) => {
     return true;
 };
 
-export const validatePhoneNumber = (phoneNumber) => {
-    const phoneNumberPattern = /^\d{10}$/;
-    if (!phoneNumberPattern.test(phoneNumber)) {
-        return false;
-    }
-    return true;
-};
-
 export const validateDateOfBirth = (dateOfBirth) => {
     const dateOfBirthPattern = /^\d{4}-\d{2}-\d{2}$/;
     if (!dateOfBirthPattern.test(dateOfBirth)) {
         return false;
     }
     return true;
+};
+
+export const validatePhoneNumber = (phoneNumber) => {
+    const pattern = /^(\+\d{1,3}\s?)?1?\-?\.?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    return pattern.test(phoneNumber);
 };
 
 export const runValidations = async (rules) => {

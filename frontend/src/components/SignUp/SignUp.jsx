@@ -13,6 +13,7 @@ import {
   checkUsernameExists,
   validateUsername,
   runValidations,
+  validatePhoneNumber,
 } from "../../utils/Validations";
 import api from "../Auth/api";
 
@@ -30,106 +31,108 @@ const SignUp = () => {
     confirmPassword: "",
     image: null,
   });
-
-    const handleChange = (event) => {
-      const { name, value, files } = event.target;
-      setFormData({
-        ...formData,
-        [name]: files ? files[0] : value,
-      });
-    };
+  const handleChange = (event) => {
+    const { name, value, files } = event.target;
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try{
-    const {
-      email,
-      username,
-      name,
-      address,
-      mobile,
-      birthdate,
-      password,
-      confirmPassword,
-      gender,
-      image,
-    } = formData;
-
-    const error = await runValidations([
-      () =>
-        (!email ||
-          !username ||
-          !name ||
-          !address ||
-          !mobile ||
-          !birthdate ||
-          !password ||
-          !confirmPassword ||
-          !gender) &&
-        "Please fill in all fields.",
-      () => !validateEmail(email) && "Please enter a valid email address.",
-      async () =>
-        (await checkEmailExists(email)) && "This email is already in use.",
-      () => !validateUsername(username) && "Please enter a valid username.",
-      async () =>
-        (await checkUsernameExists(username)) &&
-        "This username is already in use.",
-      () =>
-        !validatePassword(password) &&
-        "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
-      () => password !== confirmPassword && "Passwords do not match.",
-      () => {
-        const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-        const fileExtension = image.name.split(".").pop().toLowerCase();
-        return (
-          !allowedExtensions.includes(fileExtension) &&
-          "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
-        );
-      },
-    ]);
-
-    if (error) {
-      toast.error(error);
-      return;
-    }
-
-    const imageFormData = new FormData();
-    imageFormData.append("image", formData.image);
-
-    let imageName;
     try {
-      const response = await api.post(
-        `api/UploadImages/addUserImage`,
-        imageFormData
-      );
-      imageName = response.data;
-    } catch (error) {
-      console.error(error);
-      toast.error(
-        "An error occurred while uploading the image. Please try again later."
-      );
-      return;
-    }
+      const {
+        email,
+        username,
+        name,
+        address,
+        mobile,
+        birthdate,
+        password,
+        confirmPassword,
+        gender,
+        image,
+      } = formData;
 
-    const userData = {
-      ...formData,
-      image: imageName,
-    };
+      const error = await runValidations([
+        () =>
+          (!email ||
+            !username ||
+            !name ||
+            !address ||
+            !mobile ||
+            !birthdate ||
+            !password ||
+            !confirmPassword ||
+            !gender) &&
+          "Please fill in all fields.",
+        () => !validateEmail(email) && "Please enter a valid email address.",
+        async () =>
+          (await checkEmailExists(email)) && "This email is already in use.",
+        () => !validateUsername(username) && "Please enter a valid username.",
+        async () =>
+          (await checkUsernameExists(username)) &&
+          "This username is already in use.",
+        () =>
+          !validatePhoneNumber(mobile) && "Please enter a valid phone number.",
 
-    api
-      .post(`api/User/register`, userData)
-      .then(() => {
-        toast.success("You've successfully registered!");
-        setTimeout(() => {
-          navigate("/signin");
-        }, 2000);
-      })
-      .catch((error) => {
+        () =>
+          !validatePassword(password) &&
+          "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+        () => password !== confirmPassword && "Passwords do not match.",
+        () => {
+          const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+          const fileExtension = image.name.split(".").pop().toLowerCase();
+          return (
+            !allowedExtensions.includes(fileExtension) &&
+            "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+          );
+        },
+      ]);
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      const imageFormData = new FormData();
+      imageFormData.append("image", formData.image);
+
+      let imageName;
+      try {
+        const response = await api.post(
+          `api/UploadImages/addUserImage`,
+          imageFormData
+        );
+        imageName = response.data;
+      } catch (error) {
         console.error(error);
         toast.error(
-          "An error occurred while registering. Please try again later."
+          "An error occurred while uploading the image. Please try again later."
         );
-      });
+        return;
+      }
+
+      const userData = {
+        ...formData,
+        image: imageName,
+      };
+
+      api
+        .post(`api/User/register`, userData)
+        .then(() => {
+          toast.success("You've successfully registered!");
+          setTimeout(() => {
+            navigate("/signin");
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error(
+            "An error occurred while registering. Please try again later."
+          );
+        });
     } catch (error) {
       console.error(error);
       toast.error(
@@ -192,7 +195,7 @@ const SignUp = () => {
                   <InputField
                     type="text"
                     name="mobile"
-                    placeholder="Mobile"
+                    placeholder="Phone Number"
                     value={formData.mobile}
                     onChange={handleChange}
                   />
@@ -245,9 +248,7 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                <button
-                  className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                >
+                <button className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                   <svg
                     className="w-6 h-6 -ml-2"
                     fill="none"
