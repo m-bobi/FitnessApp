@@ -29,6 +29,7 @@ const Navbar = () => {
   const handleSignOut = () => {
     Cookies.remove("token");
     Cookies.remove("id");
+    Cookies.remove("refreshToken")
     localStorage.removeItem("cart");
     navigate("/signin")
   };
