@@ -17,8 +17,15 @@ public class UserController : Controller
     private readonly UserManager<User> _userManager;
     private readonly TokenService _tokenService;
     private readonly ApplicationDbContext _dbContext;
-   
 
+   private readonly UserService _userService;
+  
+//     public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
+//    {
+//         //Find the user associated with the provided refresh token
+//        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+//        return user;
+//    }
     public UserController(UserManager<User> userManager, TokenService tokenService, ApplicationDbContext dbContext)
     {
         _userManager = userManager;
@@ -116,27 +123,27 @@ public class UserController : Controller
             Token = accessToken,
         });
     }
+
     // public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
     // {
     //     // Validate request
     //     if (string.IsNullOrEmpty(request.RefreshToken))
     //     {
-    //         return BadRequest("Refresh token is missing");
-    //     }
-    //
+    //        return BadRequest("Refresh token is missing");
+    //    }
+
     //     // Validate refresh token
-    //     var user = await _userManager.GetUserByRefreshTokenAsync(request.RefreshToken);
-    //     if (user == null)
-    //     {
-    //         return BadRequest("Invalid refresh token");
-    //     }
-    //
+    //     var user = await _userService.GetUserByRefreshTokenAsync(request.RefreshToken);
+    //    if (user == null)
+    //    {
+    //        return BadRequest("Invalid refresh token");
+    //    }
+
     //     // Generate new access token using the refresh token
     //     var newAccessToken = _tokenService.CreateRefreshToken(user);
-    //
+
     //     return Ok(new { AccessToken = newAccessToken });
     // }
-
 
 
     [HttpGet("getAllUsers")]
