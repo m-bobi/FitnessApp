@@ -72,18 +72,18 @@ const AddClass = () => {
 
   return (
     <div className="relative">
-       <ToastContainer
-          position="bottom-right"
-          padding="5%"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -137,14 +137,20 @@ const AddClass = () => {
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Class Type
                     </label>
-                    <input
-                      type="text"
+                    <select
                       name="ClassType"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter Class Type"
-                      onChange={handleChange}
                       required
-                    />
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled selected>
+                        Select class type
+                      </option>
+                      <option value="Boxing">Boxing</option>
+                      <option value="Yoga">Yoga</option>
+                      <option value="Meditation">Meditation</option>
+                      <option value="Weightlift">Weightlift</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -162,7 +168,7 @@ const AddClass = () => {
 
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                     Class Image
+                      Class Image
                     </label>
                     <input
                       type="file"
@@ -173,7 +179,6 @@ const AddClass = () => {
                       onChange={handleChange}
                     />
                   </div>
-
 
                   <button
                     type="submit"

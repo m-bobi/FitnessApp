@@ -206,14 +206,19 @@ const AddProducts = () => {
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Product Category
                     </label>
-                    <input
-                      type="text"
+                    <select
                       name="productCategory"
-                      placeholder="Enter product category"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
-                    />
+                    >
+                      <option value="" disabled selected>
+                        Select product category
+                      </option>
+                      <option value="Clothes">Clothes</option>
+                      <option value="Suplements">Suplements</option>
+                      <option value="Equipments">Equipments</option>
+                    </select>
                   </div>
 
                   <div>
