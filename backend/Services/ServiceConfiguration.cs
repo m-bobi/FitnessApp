@@ -71,7 +71,8 @@ namespace backend.Services;
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
+            
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("_myAllowSpecificOrigins",

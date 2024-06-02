@@ -1,9 +1,7 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.Models
-{
+namespace backend.Models;
     public class Orders
     {
         [Key]
@@ -18,9 +16,13 @@ namespace backend.Models
         [Required]
         public string OrderStatus { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("Id")]
         public String UserId { get; set; }
 
         public User User { get; set; }
+
+        [ForeignKey("ProductId")]
+        public int ProductId { get; set; }
+
+        public Products Product { get; set; }
     }
-}

@@ -43,7 +43,7 @@ public class TokenService
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id) }),
+            Subject = new ClaimsIdentity(new[] { new Claim("refreshTokenId", user.Id) }),
             Expires = DateTime.UtcNow.AddMinutes(RefreshTokenExpirationMinutes),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };

@@ -60,7 +60,6 @@ const SignIn = () => {
           ];
 
         if (userId) {
-          // localStorage.setItem("id", userId);
           Cookies.set("id", userId, { expires: 7, secure: true });
         } else {
           console.error("User ID not found in token.");
@@ -71,7 +70,6 @@ const SignIn = () => {
         setTimeout(() => {
           navigate("/");
         }, 2000);
-
       } else {
         toast.error("Login failed. Please check your email and password.");
       }
@@ -85,14 +83,12 @@ const SignIn = () => {
   const handleSignOut = () => {
     Cookies.remove("token");
     Cookies.remove("id");
-    Cookies.remove("refreshToken")
+    Cookies.remove("refreshToken");
     localStorage.removeItem("cart");
 
+    toast.error("Session expired. You have been signed out.");
 
-  toast.error("Session expired. You have been signed out.");
-
-
-    navigate("/signin")
+    navigate("/signin");
   };
 
   const checkTokenAndRefresh = async () => {
@@ -103,20 +99,23 @@ const SignIn = () => {
         handleSignOut();
         return;
       }
-  
+
       const decodedToken = jwtDecode(token);
       const currentTime = Date.now() / 1000;
-  
+
       if (decodedToken.exp < currentTime) {
-        const response = await api.post("/api/User/refresh-token", {
+        const response = await api.post("api/User/refresh-token", {
           refreshToken: refreshToken,
         });
-  
+
         if (response.status === 200) {
           const { accessToken, refreshToken } = response.data;
           Cookies.set("token", accessToken, { expires: 7, secure: true });
-          Cookies.set("refreshToken", refreshToken, { expires: 7, secure: true });
-          setAuthToken(accessToken); 
+          Cookies.set("refreshToken", refreshToken, {
+            expires: 7,
+            secure: true,
+          });
+          setAuthToken(accessToken);
           toast.success("Token refreshed successfully!");
         } else {
           throw new Error("Failed to refresh token");
@@ -124,21 +123,19 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Error checking and refreshing token:", error);
-      handleSignOut(); 
+      handleSignOut();
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     checkTokenAndRefresh();
 
     const intervalId = setInterval(() => {
       checkTokenAndRefresh();
-    }, 30000); 
+    }, 30000);
 
     return () => clearInterval(intervalId);
   }, []);
-
-  
 
   return (
     <div className="fix">

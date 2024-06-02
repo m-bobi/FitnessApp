@@ -22,11 +22,13 @@ public class User : IdentityUser
     public DateTime? Birthdate { get; set; }
     public string? Gender { get; set; }
 
+    
     [Column(TypeName = "datetime")]
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     
     public Roles Role { get; set; }
     
     public ICollection<UserClass> UserClasses { get; set; }
+    public ICollection<Orders> Orders { get; set; }
     public string RefreshToken { get; set; }
 }

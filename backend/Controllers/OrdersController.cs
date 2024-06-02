@@ -1,4 +1,5 @@
 using backend.DbContext;
+using backend.DTO;
 using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -106,5 +107,42 @@ public class OrdersController : Controller
         _dbContext.Entry(existingOrder).CurrentValues.SetValues(order);
         await _dbContext.SaveChangesAsync();
         return Ok("Order updated successfully");
+    }
+    
+    [HttpGet("getOrdersByUser/{userId}")]
+    public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByUser(string userId)
+    {
+        try
+        {
+            var orders = await _dbContext.Orders
+                .Include(o => o.User)
+                .Include(o => o.Product)
+                .Where(o => o.UserId == userId)
+                .Select(o => new OrderDTO
+                {
+                    OrderId = o.OrderId,
+                    OrderDate = o.OrderDate,
+                    OrderTotalAmount = o.OrderTotalAmount,
+                    OrderStatus = o.OrderStatus,
+                    UserId = o.UserId,
+                    UserName = o.User.UserName,
+                    ProductId = o.ProductId,
+                    ProductName = o.Product.ProductName,
+                    ProductDescription = o.Product.ProductDescription
+                })
+                .ToListAsync();
+
+            if (orders == null || orders.Count == 0)
+            {
+                return NotFound("No orders found for this user");
+            }
+
+            return Ok(orders);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error fetching orders: " + ex.Message);
+            return StatusCode(500, "Internal server error");
+        }
     }
 }

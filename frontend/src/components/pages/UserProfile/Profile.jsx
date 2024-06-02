@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 const Profile = () => {
   const [user, setUser] = useState([]);
+  const [orders, setOrders] = useState([]);
   const token = Cookies.get("token");
   const userId = Cookies.get("id");
 
@@ -32,6 +33,19 @@ const Profile = () => {
         .catch((error) => {
           console.error("Error fetching users data:", error);
         });
+
+    api
+      .get(`api/Orders/getOrdersByUser/${userId}`)
+      .then((response) => {
+        if (response.status === 404) {
+          setOrders([]);
+        } else if (response.data) {
+          setOrders(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching orders data:", error);
+      });
     }
   }, [token]);
 
@@ -113,6 +127,8 @@ const Profile = () => {
               </div>
 
               <div className="my-4"></div>
+
+
             </div>
 
             <div className="w-full md:w-9/12 mx-2 h-64">
@@ -300,11 +316,65 @@ const Profile = () => {
                   </form>
                 </div>
               </div>
+
+  <div className="my-4"></div>
+
+              <div className="bg-white p-3 shadow-sm rounded-sm">
+                <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                  <span clas="text-blue-500">
+                    <svg
+                      className="h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </span>
+                  <span className="tracking-wide">Orders</span>
+                </div>
+                <div className="text-gray-700">
+                  <div className="grid md:grid-cols-2 text-sm">
+                    <table className="table-auto w-full">
+                      <thead>
+                        <tr>
+                          <th className="px-4 py-2">Order ID</th>
+                          <th className="px-4 py-2">Product Name</th>
+                          <th className="px-4 py-2">Product Description</th>
+                          <th className="px-4 py-2">Product Price total</th>
+                          <th className="px-4 py-2">Order Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-center">
+                        {orders.map((order) => (
+                          <tr key={order.orderId}>
+                            <td className="px-4 py-2">{order.orderId}</td>
+                            <td className="px-4 py-2">{order.productName}</td>
+                            <td className="px-4 py-2">
+                              {order.productDescription}
+                            </td>
+                            <td className="px-4 py-2">
+                              {order.orderTotalAmount}$
+                            </td>
+                            <td className="px-4 py-2">{order.orderStatus}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

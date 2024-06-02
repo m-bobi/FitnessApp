@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api, { setAuthToken } from "./Auth/api";
 import { toast, ToastContainer } from "react-toastify";
+import AddProducts from "../components/ProductCrud/AddProducts"
 
 const ListProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -98,6 +99,7 @@ const ListProducts = () => {
           <div className="mb-4">
             <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
               All Products
+              <AddProducts/>
             </h1>
           </div>
           <div className="sm:flex">
