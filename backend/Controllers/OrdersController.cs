@@ -17,43 +17,44 @@ public class OrdersController : Controller
     {
         _dbContext = dbContext;
     }
-
-// Create API to get all orders with pagination.
-    [HttpGet("getAllOrders")]
-    [Authorize(Roles = "Manager")]
-    public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10)
+[HttpGet("getAllOrders")]
+[Authorize(Roles = "Manager")]
+public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, int limit = 10, string orderId = "", string orderStatus = "", string userId = "")
+{
+    try
     {
-        try
+        var totalOrders = await _dbContext.Orders.CountAsync();
+        var totalPages = (int)Math.Ceiling((double)totalOrders / limit);
+
+        // Include User data to get the username
+        var orders = await _dbContext.Orders
+            .Include(o => o.User)
+            .Where(o => (string.IsNullOrEmpty(orderId) || o.OrderId.ToString() == orderId) &&
+                        (string.IsNullOrEmpty(orderStatus) || o.OrderStatus == orderStatus) &&
+                        (string.IsNullOrEmpty(userId) || o.UserId == userId))
+            .OrderByDescending(o => o.OrderId)
+            .Skip((page - 1) * limit)
+            .Take(limit)
+            .ToListAsync();
+
+        var ordersWithUsername = orders.Select(order => new
         {
-            var totalOrders = await _dbContext.Orders.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)totalOrders / limit);
+            OrderId = order.OrderId,
+            OrderDate = order.OrderDate,
+            OrderTotalAmount = order.OrderTotalAmount,
+            OrderStatus = order.OrderStatus,
+            UserId = order.UserId,
+            UserName = order.User.UserName
+        });
 
-            // Include User data to get the username
-            var orders = await _dbContext.Orders
-                .Include(o => o.User)
-                .OrderByDescending(o => o.OrderId)
-                .Skip((page - 1) * limit)
-                .Take(limit)
-                .ToListAsync();
-
-            var ordersWithUsername = orders.Select(order => new
-            {
-                OrderId = order.OrderId,
-                OrderDate = order.OrderDate,
-                OrderTotalAmount = order.OrderTotalAmount,
-                OrderStatus = order.OrderStatus,
-                UserId = order.UserId,
-                UserName = order.User.UserName
-            });
-
-            return Ok(new { orders, ordersWithUsername, totalPages });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error fetching orders: " + ex.Message);
-            return StatusCode(500, "Internal server error");
-        }
+        return Ok(new { orders, ordersWithUsername, totalPages });
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Error fetching orders: " + ex.Message);
+        return StatusCode(500, "Internal server error");
+    }
+}
 
     // Create API to add an order.
     [HttpPost("addOrder")]
@@ -115,8 +116,6 @@ public class OrdersController : Controller
         try
         {
             var orders = await _dbContext.Orders
-                .Include(o => o.User)
-                .Include(o => o.Product)
                 .Where(o => o.UserId == userId)
                 .Select(o => new OrderDTO
                 {

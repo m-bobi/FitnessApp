@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace backend.Models;
     public class Orders
@@ -18,7 +19,7 @@ namespace backend.Models;
 
         [ForeignKey("Id")]
         public String UserId { get; set; }
-
+        [JsonIgnore]
         public User User { get; set; }
 
         [ForeignKey("ProductId")]
