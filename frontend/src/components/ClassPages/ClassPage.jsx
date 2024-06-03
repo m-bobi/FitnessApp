@@ -31,6 +31,7 @@ const ClassPage = () => {
       await api.post(`api/Class/enrollUserInClass/${userId}/${id}`);
       toast.success("Enrolled in " + id + "successfully!");
       setEnrolled(true);
+      localStorage.setItem("enrolledIn", id);
     } catch (error) {
       toast.error("You're already enrolled in this class!");
     }

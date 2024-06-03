@@ -26,6 +26,8 @@ function App() {
   const ContactDashboard = lazy(()=> import("./pages/ContactDashboard/ContactDashboard"));
   const ClassesDashboard = lazy(()=> import("./pages/ClassesDashboard/ClassesDashboard"));
   const OrdersDashboard = lazy(()=> import("./pages/OrdersDashboard/OrdersDashboard"));
+  const OffersDashboard = lazy(()=> import("./pages/OfferDashboard/OfferDashboard"));
+  const WorkoutsDashboard = lazy(()=> import("./pages/WorkoutsDashboard/WorkoutsDashboard"));
 
   useEffect(() => {
     Aos.init({
@@ -72,6 +74,16 @@ function App() {
               exact
               path="/ordersdashboard"
               element={<OrdersDashboard />}
+            />
+            <Route
+              exact
+              path="/offerdashboard"
+              element={<OffersDashboard />}
+            />
+            <Route
+              exact
+              path="/workoutsdashboard"
+              element={<WorkoutsDashboard />}
             />
 
             <Route

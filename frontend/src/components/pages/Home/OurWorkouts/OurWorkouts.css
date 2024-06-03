@@ -1,0 +1,12 @@
+.ourWorkouts{
+    padding: 4%;
+    background-color: lightcoral;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.ourWorkouts h1{
+    color: #ffffff;
+    font-size: max(30px,2vw);
+}

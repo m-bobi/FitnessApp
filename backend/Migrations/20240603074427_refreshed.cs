@@ -477,31 +477,6 @@ namespace backend.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    OrderDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    OrderTotalAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    OrderStatus = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
-                    table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "UserClasses",
                 columns: table => new
                 {
@@ -527,10 +502,42 @@ namespace backend.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    OrderDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    OrderTotalAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    OrderStatus = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Birthdate", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "Gender", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "8a62fa53-a4b7-42e1-9f6c-81f4ae317efe", new DateTime(2024, 5, 31, 17, 24, 14, 990, DateTimeKind.Utc).AddTicks(482), "root@email.com", false, "Male", null, false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAEAtzVSl5hKBk4ZHSld41vVRi8uqUeMVJgG0tTbaf9s+Qqc1ML2IOGq6GretrwtbPqQ==", "044234234", false, "f3e1QfQ6UYy3Qec6S0YHYCIBJr650EnapwAOeqs6FtTnCjcBePrZoXaLL7EqzXCwjX2imH01FRPKKQASPPOluCTuOhZBfmWHK5wMYkh6TchNIFsliyl3mw0ArEw9nFBjYkJKZougaMD7SziOGhq5WUbKusE2akIMJUvCiQkxEuZ3D9rMc5tYp7kwU2m4NRkgfkqqPcUPTKOMyaj3w2wkQIxwG3cT6IKTIDaL7ayx0zentz4oZclxCuKmtGvXkYSSJjWd4Edn75HIGZ1o1Kc8NjdkNLsKcddVf7wOCcKdQQHVuHFbcPzibZHMpsYmQK6T", 1, "86158c37-8f45-451c-9257-281998c91163", false, "admin" });
+                values: new object[] { "80c8b6b1-e2b6-45e8-b044-8f2178a90111", 0, "admin street", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "318c4a58-d040-43ff-ae07-fba281b7985d", new DateTime(2024, 6, 3, 7, 44, 26, 463, DateTimeKind.Utc).AddTicks(619), "root@email.com", false, "Male", null, false, null, "Admin", "ROOT@EMAIL.COM", "ROOT@EMAIL.COM", "AQAAAAIAAYagAAAAENHB6L8gX+8ZUJkmCJpNqAm6FlKI61KkFEDBRHc1Rddt/uTB15/4j7hj/4fF2eFbqQ==", "044234234", false, "f3e1QfQ6UYy3Qec6S0YHYCIBJr650EnapwAOeqs6FtTnCjcBePrZoXaLL7EqzXCwjX2imH01FRPKKQASPPOluCTuOhZBfmWHK5wMYkh6TchNIFsliyl3mw0ArEw9nFBjYkJKZougaMD7SziOGhq5WUbKusE2akIMJUvCiQkxEuZ3D9rMc5tYp7kwU2m4NRkgfkqqPcUPTKOMyaj3w2wkQIxwG3cT6IKTIDaL7ayx0zentz4oZclxCuKmtGvXkYSSJjWd4Edn75HIGZ1o1Kc8NjdkNLsKcddVf7wOCcKdQQHVuHFbcPzibZHMpsYmQK6T", 1, "a95a64b1-730f-4727-a3e4-7bb7ee02f0f3", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -568,6 +575,11 @@ namespace backend.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ProductId",
+                table: "Orders",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
@@ -626,9 +638,6 @@ namespace backend.Migrations
                 name: "PerWorkouts");
 
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
                 name: "Sponsors");
 
             migrationBuilder.DropTable(
@@ -645,6 +654,9 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

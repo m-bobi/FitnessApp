@@ -5,6 +5,8 @@ import AboutGym from '../../components/pages/Home/AboutGym/AboutGym';
 import OurFeaturedClass from '../../components/pages/Home/OurFeaturedClass/OurFeaturedClass';
 import OurOffers from '../../components/pages/Home/OurOffers/OurOffers';
 import OurBestTrainers from '../../components/pages/Home/OurBestTrainers/OurBestTrainers';
+import OurWorkouts from '../../components/pages/Home/OurWorkouts/OurWorkouts';
+import Footer from '../../components/shared/Footer/Footer';
 
 
 const Home = () => {
@@ -16,6 +18,8 @@ const Home = () => {
         <OurFeaturedClass/>
         <OurOffers/>
         <OurBestTrainers/>
+        <OurWorkouts/>
+        <Footer/>
       </div>
   );
 }

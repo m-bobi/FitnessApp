@@ -1,41 +1,85 @@
 import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import api from "../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
-import AddOffers from "./AddOffers";
+import AddWorkouts from "./AddWorkouts";
+import api, {setAuthToken} from "../../../Auth/api";
 
-
-const ListOffers = () => {
-  const [allOffers, setAllOffers] = useState([]);
-
-  const token = Cookies.get("token");
+const ListWorkouts = () => {
+  const [allWorkouts, setallWorkouts] = useState([]);
 
   const [openmodal, setOpenModal] = useState(false);
 
-  useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        const response = await api.get(
-          "api/Offers/getAllOffers",
-        );
-        setAllOffers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [editedProduct, setEditedProduct] = useState({
+    workoutId: "",
+    workoutType: "",
+    workoutStartTime: "",
+    workoutEndTime: ""
+  });
 
-    fetchOffers();
-  }, [token]);
+
+
+  const handleEditField = (field, value) => {
+    setEditedProduct({ ...editedProduct, [field]: value });
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const productEditing = {
+        workoutType: editedProduct.workoutType,
+        workoutStartTime: editedProduct.workoutStartTime,
+        workoutEndTime: editedProduct.workoutEndTime
+      };
+      await api.put(
+        `api/Workouts/updateWorkout/${selectedProduct.workoutId}`,
+        productEditing
+      );
+      setallWorkouts(
+        allWorkouts.map((product) =>
+          product.productId === selectedProduct.workoutId
+            ? { ...product, ...productEditing }
+            : product
+        )
+      );
+      setSelectedProduct(null);
+      setEditedProduct({});
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setEditedProduct({
+        workoutType: product.workoutType,
+        workoutStartTime: product.workoutStartTime,
+        workoutEndTime: product.workoutEndTime
+    });
+  };
+
+  const fetchWorkouts = async () => {
+    try {
+      const response = await api.get("api/Workouts/getAllWorkouts");
+      setallWorkouts(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWorkouts();
+  },[])
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await api.delete(`api/Offers/deleteOffer/${id}`);
-        setAllOffers(allOffers.filter((o) => o.offerId !== id));
-        toast.success("Offer deleted successfully");
+        await api.delete(
+          `api/Workouts/deleteWorkout/${id}`,
+          setallWorkouts(allWorkouts.filter((p) => p.workoutId !== id))
+        );
+        toast.success("Product deleted successfully!")
       } catch (error) {
         console.error("Error deleting product:", error);
-        toast.error("Error deleting product.")
+        toast.error("Error deleting product!")
       }
     }
   };
@@ -47,8 +91,8 @@ const ListOffers = () => {
         <div className="w-full mb-1">
           <div className="mb-4">
             <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-              All Offers
-              <AddOffers/>
+              All Workouts
+              <AddWorkouts/>
             </h1>
           </div>
           <div className="sm:flex">
@@ -63,7 +107,7 @@ const ListOffers = () => {
                     name="email"
                     id="users-search"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Search for offers"
+                    placeholder="Search for users"
                   />
                 </div>
               </form>
@@ -197,45 +241,86 @@ const ListOffers = () => {
                         </label>
                       </div>
                     </th>
-
+                   
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
                     >
-                      Type
+                      
                     </th>
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
                     >
-                      Description
+                      Workout Type
                     </th>
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
                     >
-                      Price
+                      Start Time
+                    </th>
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
+                    >
+                      End Time
+                    </th>
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
+                    >
+                      Class Id
+                    </th>
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
+                    >
+                      Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                  {allOffers && allOffers.length > 0 ? (
-                    allOffers.map((o) => (
+                  {allWorkouts && allWorkouts.length > 0 ? (
+                    allWorkouts.map((p) => (
                       <tr className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <td className="w-4 p-4"></td>
+                        <td className="w-4 p-4">
+                          <div className="flex items-center">
+                            <input
+                              id=""
+                              aria-describedby="checkbox-1"
+                              type="checkbox"
+                              className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                            />
+                            <label for="" className="sr-only">
+                              checkbox
+                            </label>
+                          </div>
+                        </td>
                         <td className="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
-                          {o.offerType}
+                       
+                          <div className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                            <div className="text-base font-semibold text-gray-900 dark:text-white"></div>
+                            <div className="text-sm font-normal text-gray-500 dark:text-gray-400"></div>
+                          </div>
+                        </td>
+                        <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                          {p.workoutType}
                         </td>
                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          {o.offerDescription}
+                          {p.workoutStartTime}
                         </td>
                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          ${o.offerPrice}
+                          {p.workoutEndTime}
                         </td>
-                        <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white"></td>
+                        <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          <div className="flex items-center">
+                            {p.classId}
+                          </div>
+                        </td>
                         <td className="p-4 space-x-2 whitespace-nowrap">
                           <button
-                            onClick={() => setOpenModal(true)}
+                            onClick={() => handleEdit(p)}
                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-black rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                           >
                             <svg
@@ -251,10 +336,10 @@ const ListOffers = () => {
                                 clipRule="evenodd"
                               ></path>
                             </svg>
-                            Edit Offer
+                            Edit product
                           </button>
                           <button
-                            onClick={() => handleDelete(o.offerId)}
+                            onClick={() => handleDelete(p.workoutId)}
                             data-modal-target="delete-user-modal"
                             data-modal-toggle="delete-user-modal"
                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900"
@@ -271,14 +356,14 @@ const ListOffers = () => {
                                 clipRule="evenodd"
                               ></path>
                             </svg>
-                            Delete Offer
+                            Delete product
                           </button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="2">No Offers for the moment</td>
+                      <td colSpan="2">No products at the moment!</td>
                     </tr>
                   )}
                 </tbody>
@@ -373,169 +458,26 @@ const ListOffers = () => {
         </div>
       </div>
 
-      {openmodal && (
+      {selectedProduct && (
         <div className="relative w-full h-full max-w-2xl px-4 md:h-auto">
-          {/* <!-- Modal content --> */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-800">
-            {/* <!-- Modal header --> */}
-            <div className="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
-              <h3 className="text-xl font-semibold dark:text-white">
-                Edit Products
-              </h3>
-              <button
-                onClick={() => setOpenModal(false)}
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
-                data-modal-toggle="edit-user-modal"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
+          {Object.keys(editedProduct).map((field) => (
+            <div key={field} className="mb-2">
+              <label className="block mb-1 text-sm font-medium ">{field}</label>
+              <input
+                type="text"
+                value={editedProduct[field]}
+                onChange={(e) => handleEditField(field, e.target.value)}
+                className="border rounded-lg px-2 py-1 w-full text-slate-700"
+                readOnly={field === "productId"}
+              />
             </div>
-            {/* <!-- Modal body --> */}
-            <div className="p-6 space-y-6">
-              <form action="#">
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      for="first-name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      name="first-name"
-                      value="Bonnie"
-                      id="first-name"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Bonnie"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      for="last-name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      name="last-name"
-                      value="Green"
-                      id="last-name"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Green"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      for="email"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value="bonnie@flowbite.com"
-                      id="email"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="example@company.com"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      for="position"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Position
-                    </label>
-                    <input
-                      type="text"
-                      name="position"
-                      value="React Developer"
-                      id="position"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="e.g. React developer"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      for="current-password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Current Password
-                    </label>
-                    <input
-                      type="password"
-                      name="current-password"
-                      value="••••••••"
-                      id="current-password"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="••••••••"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      for="new-password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      New Password
-                    </label>
-                    <input
-                      type="password"
-                      name="new-password"
-                      value="••••••••"
-                      id="new-password"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="••••••••"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-6">
-                    <label
-                      for="biography"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Biography
-                    </label>
-                    <textarea
-                      id="biography"
-                      rows="4"
-                      className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="👨‍💻Full-stack web developer. Open-source contributor."
-                    >
-                      👨‍💻Full-stack web developer. Open-source contributor.
-                    </textarea>
-                  </div>
-                </div>
-
-                <div className="items-center p-6 border-t border-red-200 rounded-b dark:border-red-700">
-                  <button
-                    className="text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                    type="submit"
-                  >
-                    Save all
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+          ))}
+          <button
+            className="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded"
+            onClick={handleUpdate}
+          >
+            Update Workout
+          </button>
         </div>
       )}
 
@@ -716,7 +658,7 @@ const ListOffers = () => {
                 ></path>
               </svg>
               <h3 className="mt-5 mb-6 text-lg text-gray-500 dark:text-gray-400">
-                Are you sure you want to delete this user?
+                Are you sure you want to delete this product?
               </h3>
               <a
                 href="#"
@@ -739,4 +681,4 @@ const ListOffers = () => {
   );
 };
 
-export default ListOffers;
+export default ListWorkouts;

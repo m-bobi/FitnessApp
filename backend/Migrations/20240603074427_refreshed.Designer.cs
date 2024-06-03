@@ -12,7 +12,7 @@ using backend.DbContext;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240531172416_refreshed")]
+    [Migration("20240603074427_refreshed")]
     partial class refreshed
     {
         /// <inheritdoc />
@@ -332,11 +332,16 @@ namespace backend.Migrations
                     b.Property<decimal>("OrderTotalAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -616,8 +621,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "8a62fa53-a4b7-42e1-9f6c-81f4ae317efe",
-                            CreatedAt = new DateTime(2024, 5, 31, 17, 24, 14, 990, DateTimeKind.Utc).AddTicks(482),
+                            ConcurrencyStamp = "318c4a58-d040-43ff-ae07-fba281b7985d",
+                            CreatedAt = new DateTime(2024, 6, 3, 7, 44, 26, 463, DateTimeKind.Utc).AddTicks(619),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -625,12 +630,12 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAtzVSl5hKBk4ZHSld41vVRi8uqUeMVJgG0tTbaf9s+Qqc1ML2IOGq6GretrwtbPqQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENHB6L8gX+8ZUJkmCJpNqAm6FlKI61KkFEDBRHc1Rddt/uTB15/4j7hj/4fF2eFbqQ==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "f3e1QfQ6UYy3Qec6S0YHYCIBJr650EnapwAOeqs6FtTnCjcBePrZoXaLL7EqzXCwjX2imH01FRPKKQASPPOluCTuOhZBfmWHK5wMYkh6TchNIFsliyl3mw0ArEw9nFBjYkJKZougaMD7SziOGhq5WUbKusE2akIMJUvCiQkxEuZ3D9rMc5tYp7kwU2m4NRkgfkqqPcUPTKOMyaj3w2wkQIxwG3cT6IKTIDaL7ayx0zentz4oZclxCuKmtGvXkYSSJjWd4Edn75HIGZ1o1Kc8NjdkNLsKcddVf7wOCcKdQQHVuHFbcPzibZHMpsYmQK6T",
                             Role = 1,
-                            SecurityStamp = "86158c37-8f45-451c-9257-281998c91163",
+                            SecurityStamp = "a95a64b1-730f-4727-a3e4-7bb7ee02f0f3",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -754,11 +759,19 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Orders", b =>
                 {
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.Models.Products", "Product")
                         .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
@@ -789,6 +802,8 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.User", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("UserClasses");
                 });
 #pragma warning restore 612, 618

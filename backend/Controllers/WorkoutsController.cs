@@ -18,8 +18,7 @@ public class WorkoutsController : Controller
         _dbContext = dbContext;
     }
 
-    // Create API to get all orders.
-    // [EnableCors("_myAllowSpecificOrigins")]
+    
     [HttpGet("getAllWorkouts")]
     public async Task<List<Workouts>> GetAllWorkouts()
     {
@@ -75,7 +74,7 @@ public class WorkoutsController : Controller
     // Create API to update an existing order.
     [HttpPut("updateWorkout/{id}")]
     // [EnableCors("_myAllowSpecificOrigins")]
-    public async Task<IActionResult> UpdateWorkout([FromBody] Workouts workout)
+    public async Task<IActionResult> UpdateWorkout(int id, [FromBody] Workouts workout)
     {
         if (workout is null || workout.WorkoutId == 0)
         {

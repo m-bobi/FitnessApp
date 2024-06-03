@@ -86,11 +86,9 @@ const SignIn = () => {
     Cookies.remove("refreshToken");
     localStorage.removeItem("cart");
 
-    toast.error("Session expired. You have been signed out.");
 
     navigate("/signin");
   };
-
   const checkTokenAndRefresh = async () => {
     try {
       const token = Cookies.get("token");
@@ -99,22 +97,19 @@ const SignIn = () => {
         handleSignOut();
         return;
       }
-
+  
       const decodedToken = jwtDecode(token);
       const currentTime = Date.now() / 1000;
-
-      if (decodedToken.exp < currentTime) {
-        const response = await api.post("api/User/refresh-token", {
+  
+      if (decodedToken.exp < currentTime + 60) { 
+        const responseToken = await api.post("api/User/refresh-token", {
           refreshToken: refreshToken,
         });
-
-        if (response.status === 200) {
-          const { accessToken, refreshToken } = response.data;
+  
+        if (responseToken.status === 200) {
+          const { accessToken, refreshToken } = responseToken.data;
           Cookies.set("token", accessToken, { expires: 7, secure: true });
-          Cookies.set("refreshToken", refreshToken, {
-            expires: 7,
-            secure: true,
-          });
+          Cookies.set("refreshToken", refreshToken, { expires: 7, secure: true });
           setAuthToken(accessToken);
           toast.success("Token refreshed successfully!");
         } else {
@@ -123,6 +118,15 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Error checking and refreshing token:", error);
+      for (let i = 0; i < 3; i++) {
+        try {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          await checkTokenAndRefresh();
+          return;
+        } catch (error) {
+          console.error(`Retry ${i + 1} failed:`, error);
+        }
+      }
       handleSignOut();
     }
   };
@@ -132,7 +136,7 @@ const SignIn = () => {
 
     const intervalId = setInterval(() => {
       checkTokenAndRefresh();
-    }, 30000);
+    }, 3000);
 
     return () => clearInterval(intervalId);
   }, []);

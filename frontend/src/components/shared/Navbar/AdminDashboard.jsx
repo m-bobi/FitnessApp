@@ -41,7 +41,7 @@ const AdminDashboard = () => {
       setUserName(name);
       setRole(role);
 
-      const userId = localStorage.getItem("id");
+      const userId = Cookies.get("id");
 
       api
         .get(`api/User/getUser/${userId}`)
