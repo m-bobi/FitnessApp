@@ -25,7 +25,7 @@ const ClassPage = () => {
   }, [id]);
 
   const enrollUserInClass = async () => {
-    const userId = localStorage.getItem("id");
+    const userId = Cookies.get("id");
 
     try {
       await api.post(`api/Class/enrollUserInClass/${userId}/${id}`);

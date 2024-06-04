@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import api from "../Auth/api";
+import api, {setAuthToken} from "../Auth/api";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const AddProducts = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     productName: "",
     productDescription: "",
@@ -91,6 +96,10 @@ const AddProducts = () => {
         );
       });
   }
+
+  const refreshToken = Cookies.get("refreshToken");
+
+
 
   const [isOpen, setIsOpen] = useState(false);
 

@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 const Profile = () => {
   const [user, setUser] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [enrolledIn, setEnrolledIn] = useState("");
   const token = Cookies.get("token");
   const userId = Cookies.get("id");
 
@@ -46,6 +47,23 @@ const Profile = () => {
       .catch((error) => {
         console.error("Error fetching orders data:", error);
       });
+    }
+  }, [token]);
+
+  const classEnrolledId = localStorage.getItem("enrolledIn");
+
+  useEffect(() => {
+    if (token) {
+      api
+        .get(`api/Class/getClass/${classEnrolledId}`)
+        .then((response) => {
+          if (response.data) {
+            setEnrolledIn(response.data.classType);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching users data:", error);
+        });
     }
   }, [token]);
 
@@ -122,6 +140,10 @@ const Profile = () => {
                   <li className="flex items-center py-3">
                     <span>Member since</span>
                     <span className="ml-auto">{memberSince()}</span>
+                  </li>
+                  <li className="flex items-center py-3">
+                    <span>Enrolled in</span>
+                    <span className="ml-auto">{enrolledIn}</span>
                   </li>
                 </ul>
               </div>

@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using backend.DbContext;
+using backend.DTO;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -86,7 +87,59 @@ public class WorkoutsController : Controller
         await _dbContext.SaveChangesAsync();
         return Ok("Workout updated successfully");
     }
+    
+    [HttpPost("addUserWorkout/{userId}")]
+    public async Task<IActionResult> AddUserWorkout(string userId, [FromBody] WorkoutDTO workoutDto)
+    {
+        var user = await _dbContext.Users.FindAsync(userId);
 
+        if (user == null)
+        {
+            return BadRequest("User does not exist");
+        }
+        
+        if (workoutDto == null)
+        {
+            return BadRequest("Workout data is required");
+        }
+
+        var workout = new Workouts
+        {
+            UserId = userId,
+            WorkoutType = workoutDto.WorkoutType,
+            WorkoutStartTime = workoutDto.WorkoutStartTime,
+            WorkoutEndTime = workoutDto.WorkoutEndTime,
+        };
+
+        await _dbContext.Workouts.AddAsync(workout);
+        await _dbContext.SaveChangesAsync();
+
+        return Ok();
+    }
+    
+    
+    [HttpGet("getUserWorkouts/{userId}")]
+    public async Task<IActionResult> GetUserWorkouts(string userId)
+    {
+        var user = await _dbContext.Users
+            .Include(u => u.Workouts)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user == null)
+        {
+            return NotFound("User does not exist");
+        }
+
+        var workoutsDto = user.Workouts.Select(w => new WorkoutDTO
+        {
+            WorkoutId = w.WorkoutId,
+            WorkoutType = w.WorkoutType,
+            WorkoutStartTime = w.WorkoutStartTime,
+            WorkoutEndTime = w.WorkoutEndTime,
+        }).ToList();
+
+        return Ok(workoutsDto);
+    }
 
 
 }

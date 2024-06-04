@@ -618,8 +618,8 @@ namespace backend.Migrations
                             AccessFailedCount = 0,
                             Address = "admin street",
                             Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "dff782c1-bc4d-40b1-bd5d-106fb1acfd26",
-                            CreatedAt = new DateTime(2024, 6, 3, 11, 36, 50, 152, DateTimeKind.Utc).AddTicks(114),
+                            ConcurrencyStamp = "168a0102-b290-4161-926d-6b1222fdee3d",
+                            CreatedAt = new DateTime(2024, 6, 4, 13, 10, 6, 359, DateTimeKind.Utc).AddTicks(3754),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -627,12 +627,12 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPk2CV2HimNnGSZc0NdzWWfJp2uEBkP5QlIRhqVHZG7Cu9X6fIv9lgKWtLzVK0XT3A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECcOWKeF1+KrtCrI/UA9VoS6B/yIRoZNLPAxJyf0dJc7ICJzIt5eoCxynq5v3cPotw==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "f3e1QfQ6UYy3Qec6S0YHYCIBJr650EnapwAOeqs6FtTnCjcBePrZoXaLL7EqzXCwjX2imH01FRPKKQASPPOluCTuOhZBfmWHK5wMYkh6TchNIFsliyl3mw0ArEw9nFBjYkJKZougaMD7SziOGhq5WUbKusE2akIMJUvCiQkxEuZ3D9rMc5tYp7kwU2m4NRkgfkqqPcUPTKOMyaj3w2wkQIxwG3cT6IKTIDaL7ayx0zentz4oZclxCuKmtGvXkYSSJjWd4Edn75HIGZ1o1Kc8NjdkNLsKcddVf7wOCcKdQQHVuHFbcPzibZHMpsYmQK6T",
                             Role = 1,
-                            SecurityStamp = "489dacd8-c8b8-4e3b-a907-078e299cbd0a",
+                            SecurityStamp = "717be987-2025-4f45-be31-1a22a177a4a1",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -688,6 +688,9 @@ namespace backend.Migrations
                     b.Property<int?>("ClassId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("WorkoutEndTime")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -704,6 +707,8 @@ namespace backend.Migrations
                         .HasColumnType("varchar(12)");
 
                     b.HasKey("WorkoutId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Workouts");
                 });
@@ -797,6 +802,15 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backend.Models.Workouts", b =>
+                {
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany("Workouts")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("backend.Models.Class", b =>
                 {
                     b.Navigation("UserClasses");
@@ -807,6 +821,8 @@ namespace backend.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("UserClasses");
+
+                    b.Navigation("Workouts");
                 });
 #pragma warning restore 612, 618
         }

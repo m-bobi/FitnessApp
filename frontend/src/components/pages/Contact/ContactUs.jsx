@@ -7,30 +7,29 @@ const ContactUs = () => {
     
     const userId = Cookies.get("id");
 
-    const [formData, setFormData] = useState({
-        email: "",
-        subject: "",
-        message : ""
-      });
+    // const [formData, setFormData] = useState({
+    //     email: "",
+    //     subject: "",
+    //     message : ""
+    //   });
 
-      const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-      };
+    const [email,setEmail] = useState("");
+    const [subject,setSubject] = useState("");
+    const [message,setMessage] = useState("");
+
+
 
       const handleSubmit = async (event) => {
         event.preventDefault();
         try {
           const response = await api.post(`api/Contact/addContact`, {
-            email: formData.email,
-            subject: formData.subject,
-            message : formData.message,
+            email: email,
+            subject: subject,
+            message : message,
             userId: userId
           }).then(() => {
-            toast.success("Succesfuly sended");
+            toast.success("Succesfuly sent");
+            console.log(response);
           });
         } catch (error) {
           toast.error(
@@ -59,19 +58,25 @@ const ContactUs = () => {
             <div>
                 <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your email</label>
                 <input
-                onChange={handleChange}
+                   onChange={(event) => {
+                    setEmail(event.target.value);
+                  }}
                  type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="name@flowbite.com" required />
             </div>
             <div>
                 <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Subject</label>
                 <input
-                onChange={handleChange}
+                   onChange={(event) => {
+                    setSubject(event.target.value);
+                  }}
                 type="text" id="subject" class="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="Let us know how we can help you" required />
             </div>
             <div class="sm:col-span-2">
                 <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your message</label>
                 <textarea
-                onChange={handleChange}
+                  onChange={(event) => {
+                    setMessage(event.target.value);
+                  }}
                 id="message" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Leave a comment..."></textarea>
             </div>
             <button 
