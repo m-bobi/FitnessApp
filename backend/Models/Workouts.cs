@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace backend.Models;
 
@@ -22,4 +23,10 @@ public class Workouts
     
     [ForeignKey("ClassId")]
     public int? ClassId { get; init; }
+    
+    
+    [ForeignKey("Id")]
+    public String? UserId { get; set; }
+    [JsonIgnore]
+    public User? User { get; set; }
 }

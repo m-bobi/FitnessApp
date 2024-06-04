@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using backend.DbContext;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
@@ -52,6 +53,8 @@ public class ProductsController : Controller
 
     // Create API to add an Product.
     [HttpPost("addProduct")]
+    [Authorize(Roles = "Manager")]
+
     public async Task<IActionResult> AddProduct([FromBody] Products product)
     {
         if (product is null)

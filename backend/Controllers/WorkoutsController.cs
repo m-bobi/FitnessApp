@@ -39,11 +39,6 @@ public class WorkoutsController : Controller
         return Ok();
     }
 
-
-
-
-
-
     [HttpGet("getWorkout/{id}")]
     // [EnableCors("_myAllowSpecificOrigins")]
     public async Task<IActionResult> GetWorkoutById(int id)

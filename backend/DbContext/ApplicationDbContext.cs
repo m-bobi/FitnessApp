@@ -85,7 +85,11 @@ namespace backend.DbContext
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
-            
+
+            modelBuilder.Entity<Workouts>()
+                .HasOne(w => w.User)
+                .WithMany(u => u.Workouts)
+                .HasForeignKey(w => w.UserId);
         }
     }
 }
