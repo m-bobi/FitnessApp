@@ -29,7 +29,7 @@ const ClassPage = () => {
 
     try {
       await api.post(`api/Class/enrollUserInClass/${userId}/${id}`);
-      toast.success("Enrolled in " + id + "successfully!");
+      toast.success("Enrolled successfully!");
       setEnrolled(true);
       localStorage.setItem("enrolledIn", id);
     } catch (error) {
