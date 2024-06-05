@@ -26,7 +26,7 @@ const ClassesList = () => {
       setUserName(name);
       setRole(role);
 
-      const userId = localStorage.getItem("id");
+      const userId = Cookies.get("id");
 
       api
         .get(`api/User/getUser/${userId}`)
@@ -60,7 +60,7 @@ const ClassesList = () => {
       <SideBar />
 
       <div className="h-full ml-14 mt-14 mb-10 md:ml-64">
-        <AddClass/>
+        <AddClass />
         <ListClasses />
       </div>
     </div>

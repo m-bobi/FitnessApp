@@ -32,4 +32,5 @@ public class User : IdentityUser
     public ICollection<Workouts> Workouts { get; set; }
     public ICollection<Orders> Orders { get; set; }
     public string RefreshToken { get; set; }
+    public ICollection<TrainerClass> TrainerClasses { get; set; }
 }

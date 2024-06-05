@@ -46,4 +46,12 @@ public class StatisticsController : Controller
         var totalClasses = await _statisticsService.GetClassesAsync();
         return Ok(totalClasses);
     }
+    
+    [HttpGet("revenueOverTime")]
+    [Authorize(Roles = "Manager")]
+    public async Task<IActionResult> GetRevenueOverTime()
+    {
+        var data = await _statisticsService.GetRevenueOverTimeAsync();
+        return Ok(data);
+    }
 }

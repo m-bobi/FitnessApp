@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./ClassPage.css";
-import api from "../Auth/api";
-import Cookies from 'js-cookie';
+import api, { setAuthToken } from "../Auth/api";
+import Cookies from "js-cookie";
 import { toast, ToastContainer } from "react-toastify";
 
 const ClassPage = () => {
   const { id } = useParams();
   const [classItem, setClassItem] = useState(null);
+  const [trainers, setTrainers] = useState([]);
+
   const [enrolled, setEnrolled] = useState(false);
   const token = Cookies.get("token");
 
@@ -22,7 +24,23 @@ const ClassPage = () => {
     };
 
     fetchClass();
+    fetchTrainers();
   }, [id]);
+
+  const fetchTrainers = async () => {
+    const token = Cookies.get("token");
+    setAuthToken(token);
+
+    try {
+      const response = await api.get("api/User/getAllUsers");
+      const users = response.data;
+
+      const trainers = users.filter((user) => user.role === "Trainer");
+      setTrainers(trainers);
+    } catch (error) {
+      toast.error("Error fetching trainers");
+    }
+  };
 
   const enrollUserInClass = async () => {
     const userId = Cookies.get("id");
@@ -40,10 +58,32 @@ const ClassPage = () => {
   if (!classItem) {
     return <div>Loading...</div>;
   }
+  const matchingTrainers = trainers.filter(
+    (trainer) => trainer.id === classItem.trainerId
+  );
+
+  const trainerDisplay =
+    matchingTrainers.length > 0 ? (
+      matchingTrainers.map((trainer) => (
+        <h3 className=" text-sm font-semibold text-gray-700 sm:text-xl dark:text-gray-300">
+          Coached by -
+          <span className="text-lg font-light text-red-700 sm:text-xl dark:text-gray-300 underline p-2">
+            {trainer.name}
+          </span>
+        </h3>
+      ))
+    ) : (
+      <h3 className=" text-sm font-semibold text-gray-700 sm:text-xl dark:text-gray-300">
+        Coached by -
+        <span className="text-lg font-light text-red-700 sm:text-xl dark:text-gray-300 underline p-2">
+          No trainer assigned.
+        </span>
+      </h3>
+    );
 
   return (
     <div className="classDetail">
-      <ToastContainer/>
+      <ToastContainer />
       <section className="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
         <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
@@ -59,6 +99,7 @@ const ClassPage = () => {
               <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
                 {classItem.classType}
               </h1>
+              {trainerDisplay}
               <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
                 <div className="flex items-center gap-2 mt-2 sm:mt-0">
                   <div className="flex items-center gap-1">
@@ -130,34 +171,35 @@ const ClassPage = () => {
                 </div>
               </div>
 
-            {
-              token ? (
+              {token ? (
                 <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                {enrolled ? (
-                  <button
-                    title=""
-                    className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    role="button"
-                  >
-                    Enrolled
-                  </button>
-                ) : (
-                  <button
-                    onClick={enrollUserInClass}
-                    title=""
-                    className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-green rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    role="button"
-                  >
-                    Enroll to this class
-                  </button>
-                )}
-              </div>
+                  {enrolled ? (
+                    <button
+                      title=""
+                      className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      role="button"
+                    >
+                      Enrolled
+                    </button>
+                  ) : (
+                    <button
+                      onClick={enrollUserInClass}
+                      title=""
+                      className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-green rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      role="button"
+                    >
+                      Enroll
+                    </button>
+                  )}
+                </div>
               ) : (
                 <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                  <p>If you want to enroll to this class, please sign in</p><Link to="/signin" className="font-medium text-blue-600" >here</Link>
+                  <p>If you want to enroll to this class, please sign in</p>
+                  <Link to="/signin" className="font-medium text-blue-600">
+                    here
+                  </Link>
                 </div>
-              )
-            }
+              )}
 
               <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
 

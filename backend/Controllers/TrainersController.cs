@@ -1,6 +1,9 @@
 using Asp.Versioning;
 using backend.DbContext;
+using backend.DTO;
+using backend.Enums;
 using backend.Models;
+using backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +14,12 @@ namespace backend.Controllers;
 public class TrainersController : Controller
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly TrainerService _trainerService;
 
     // Database Injection
-    public TrainersController(ApplicationDbContext dbContext)
+    public TrainersController(ApplicationDbContext dbContext, TrainerService trainerService)
     {
+        _trainerService = trainerService;
         _dbContext = dbContext;
     }
 
@@ -94,8 +99,26 @@ public class TrainersController : Controller
         return Ok("Trainer updated successfully");
     }
 
+    // FOR FUTURE USES.
+    [HttpPut("assignTrainerToClass")]
+    public async Task<IActionResult> AssignTrainerToClass(string trainerId, int classId)
+    {
+        var trainer = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == trainerId && u.Role == Roles.Trainer);
+        if (trainer == null)
+        {
+            return NotFound("Trainer not found or not assigned as trainer.");
+        }
 
+        var existingClass = await _dbContext.Class.FirstOrDefaultAsync(c => c.ClassId == classId);
+        if (existingClass == null)
+        {
+            return NotFound("Class not found.");
+        }
 
+        existingClass.TrainerId = trainerId;
+        await _dbContext.SaveChangesAsync();
+        return Ok("Trainer assigned to class successfully!");
+    }
 }
 
 

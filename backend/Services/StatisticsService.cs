@@ -1,6 +1,7 @@
 using backend.DbContext;
 using Microsoft.EntityFrameworkCore;
 using backend.DTO;
+using backend.Models;
 
 namespace backend.Services;
 
@@ -32,5 +33,17 @@ public class StatisticsService : IStatisticsService
     public async Task<int> GetClassesAsync()
     {
         return await _context.Class.CountAsync();
+    }
+    
+    public async Task<List<RevenueData>> GetRevenueOverTimeAsync()
+    {
+        return await _context.Orders
+            .GroupBy(o => o.OrderDate.Date)
+            .Select(g => new RevenueData
+            {
+                Date = g.Key,
+                Revenue = g.Sum(o => o.OrderTotalAmount)
+            })
+            .ToListAsync();
     }
 }

@@ -131,9 +131,9 @@ public class ClassController : Controller
     }
 
     [HttpPut("updateClass/{id}")]
-    public async Task<IActionResult> UpdateClass(int id, [FromBody] Class uclass)
+    public async Task<IActionResult> UpdateClass(int id, [FromBody] Class updatedClass)
     {
-        if (uclass is null)
+        if (updatedClass == null)
         {
             return BadRequest("Invalid Class data");
         }
@@ -144,9 +144,9 @@ public class ClassController : Controller
             return NotFound();
         }
 
-        existingClass.ClassType = uclass.ClassType;
-        existingClass.ClassDescription= uclass.ClassType;
-
+        existingClass.ClassType = updatedClass.ClassType;
+        existingClass.ClassDescription = updatedClass.ClassDescription;
+        existingClass.TrainerId = updatedClass.TrainerId;
 
         await _dbContext.SaveChangesAsync();
         return Ok("Class updated successfully!");

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import api from "../Auth/api";
+import api, { setAuthToken } from "../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 const ListClass = () => {
   const [selectedClass, setSelectedClass] = useState(null);
   const [editedClass, setEditedClass] = useState({});
+  const [selectedTrainer, setSelectedTrainer] = useState(null);
 
   const [classes, setClasses] = useState([]);
+  const [trainers, setTrainers] = useState([]);
 
   const fetchclasses = async () => {
     try {
@@ -16,8 +19,23 @@ const ListClass = () => {
       console.error("Error fetching Trainers:", error);
     }
   };
+  const fetchTrainers = async () => {
+    const token = Cookies.get("token");
+    setAuthToken(token);
+
+    try {
+      const response = await api.get("api/User/getAllUsers");
+      const users = response.data;
+
+      const trainers = users.filter((user) => user.role === "Trainer");
+      setTrainers(trainers);
+    } catch (error) {
+      toast.error("Error fetching trainers");
+    }
+  };
 
   useEffect(() => {
+    fetchTrainers();
     fetchclasses();
   }, []);
 
@@ -26,6 +44,7 @@ const ListClass = () => {
       try {
         await api.delete(`api/Class/deleteClass/${classId}`);
         setClasses(classes.filter((Class) => Class.classId !== classId));
+        setSelectedTrainer(null);
         toast.success("Class deleted successfully!");
       } catch (error) {
         toast.error("Error deleting class!");
@@ -39,6 +58,7 @@ const ListClass = () => {
       const classEditing = {
         classType: editedClass.classType,
         classDescription: editedClass.classDescription,
+        trainerId: editedClass.trainerId,
       };
       await api.put(
         `api/Class/updateClass/${selectedClass.classId}`,
@@ -58,17 +78,35 @@ const ListClass = () => {
     }
   };
 
-  const handleEdit = (classes) => {
-    setSelectedClass(classes);
+  const handleEdit = (selectedClass) => {
+    setSelectedClass(selectedClass);
     setEditedClass({
-      classType: classes.classType,
-      classDescription: classes.classDescription,
+      classType: selectedClass.classType,
+      classDescription: selectedClass.classDescription,
+      trainerId: selectedClass.trainerId,
     });
   };
 
   const handleEditField = (field, value) => {
     setEditedClass({ ...editedClass, [field]: value });
   };
+
+  const matchingTrainers = trainers.filter(
+    (trainer) => trainer.id === classes.trainerId
+  );
+
+  const trainerDisplay =
+    matchingTrainers.length > 0 ? (
+      matchingTrainers.map((trainer) => (
+        <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          {trainer.name}
+        </td>
+      ))
+    ) : (
+      <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        No trainers assigned
+      </td>
+    );
 
   return (
     <>
@@ -291,11 +329,7 @@ const ListClass = () => {
                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           {p.classType}
                         </td>
-                        <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                          <div className="flex items-center">
-                            {p.classesTrainer}
-                          </div>
-                        </td>
+                        {trainerDisplay}
                         <td className="p-4 space-x-2 whitespace-nowrap">
                           <button
                             onClick={() => handleEdit(p)}
@@ -475,20 +509,37 @@ const ListClass = () => {
               <div className="p-4 md:p-5">
                 <form className="space-y-4">
                   {Object.keys(editedClass).map((field) => (
-                    <div key={field} className="relative  w-full max-w-md">
+                    <div key={field} className="relative w-full max-w-md">
                       <div className="p-4 md:p-5">
                         <label htmlFor="">
                           {field.charAt(0).toUpperCase() + field.slice(1)}
                         </label>
-                        <input
-                          type="text"
-                          placeholder={editedClass[field]}
-                          onChange={(e) =>
-                            handleEditField(field, e.target.value)
-                          }
-                          className="border rounded-lg px-2 py-1 w-full text-slate-700"
-                          readOnly={field === "id"}
-                        />
+                        {field === "trainerId" ? (
+                          <select
+                            value={editedClass.trainerId || ""}
+                            onChange={(e) =>
+                              handleEditField(field, e.target.value)
+                            }
+                            className="border rounded-lg px-2 py-1 w-full text-slate-700"
+                          >
+                            <option value="">Select Trainer</option>
+                            {trainers.map((trainer) => (
+                              <option key={trainer.id} value={trainer.id}>
+                                {trainer.name}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            type="text"
+                            placeholder={editedClass[field]}
+                            onChange={(e) =>
+                              handleEditField(field, e.target.value)
+                            }
+                            className="border rounded-lg px-2 py-1 w-full text-slate-700"
+                            readOnly={field === "id"}
+                          />
+                        )}
                       </div>
                     </div>
                   ))}

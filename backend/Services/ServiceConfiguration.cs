@@ -50,6 +50,7 @@ namespace backend.Services;
             });
 
             builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+            builder.Services.AddScoped<TrainerService>();
             builder.Services.AddScoped<TokenService, TokenService>();
             builder.Services.AddScoped<IStripeClient, StripeClient>(sp =>
                 new StripeClient(StripeConfiguration.ApiKey));
