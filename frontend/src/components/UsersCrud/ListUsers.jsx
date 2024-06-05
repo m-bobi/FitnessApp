@@ -94,6 +94,16 @@ const fetchUsers = async () => {
     });
   };
 
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const handleSearchInputChange = (event) => {
+  setSearchQuery(event.target.value);
+};
+
+const filteredUsers = allUsers.filter(user =>
+  (user.name?.toLowerCase() ?? '').includes(searchQuery.toLowerCase())
+);
+
   return (
     <>
       <ToastContainer />
@@ -112,6 +122,7 @@ const fetchUsers = async () => {
                 </label>
                 <div className="relative mt-1 lg:w-64 xl:w-96">
                   <input
+                  onChange={handleSearchInputChange}
                     type="text"
                     name="email"
                     id="users-search"
@@ -289,8 +300,8 @@ const fetchUsers = async () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                  {allUsers && allUsers.length > 0 ? (
-                    allUsers.map((user) => (
+                  {filteredUsers && filteredUsers.length > 0 ? (
+                    filteredUsers.map((user) => (
                       <tr className="hover:bg-gray-100 dark:hover:bg-gray-700">
                         <td className="w-4 p-4">
                           <div className="flex items-center">

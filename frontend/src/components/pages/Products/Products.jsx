@@ -25,7 +25,7 @@ const Products = () => {
     };
 
     fetchProducts();
-  });
+  },[]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -192,7 +192,14 @@ const Products = () => {
                 <div className="px-5 pb-5">
                   <Link href="#">
                     <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                      {p.productName}
+                    {[...p.productName].map((letter, index) => (
+                        <span
+                          key={index}
+                          style={{ fontWeight: searchTerm.includes(letter) ? 'bold' : 'normal' }}
+                        >
+                          {letter}
+                        </span>
+                      ))}
                     </h5>
                   </Link>
                   <div className="flex items-center mt-2.5 mb-5">
