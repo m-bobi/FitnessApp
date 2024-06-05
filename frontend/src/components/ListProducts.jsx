@@ -7,6 +7,7 @@ const ListProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
 
   const [openmodal, setOpenModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [editedProduct, setEditedProduct] = useState({
@@ -91,6 +92,15 @@ const ListProducts = () => {
     }
   };
 
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredProducts = allProducts.filter(product =>
+    (product.productName?.toLowerCase() ?? '').includes(searchQuery.toLowerCase())
+  );
+
+
   return (
     <>
     <ToastContainer/>
@@ -110,11 +120,12 @@ const ListProducts = () => {
                 </label>
                 <div className="relative mt-1 lg:w-64 xl:w-96">
                   <input
+                  onChange={handleSearchInputChange}
                     type="text"
                     name="email"
                     id="users-search"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Search for users"
+                    placeholder="Search for products by category"
                   />
                 </div>
               </form>
@@ -287,8 +298,8 @@ const ListProducts = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                  {allProducts && allProducts.length > 0 ? (
-                    allProducts.map((p) => (
+                  {filteredProducts  && filteredProducts .length > 0 ? (
+                    filteredProducts .map((p) => (
                       <tr className="hover:bg-gray-100 dark:hover:bg-gray-700">
                         <td className="w-4 p-4">
                           <div className="flex items-center">
@@ -314,7 +325,14 @@ const ListProducts = () => {
                           </div>
                         </td>
                         <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                          {p.productName}
+                        {[...p.productName].map((letter, index) => (
+                        <span
+                          key={index}
+                          style={{ fontWeight: searchQuery.includes(letter) ? 'bold' : 'normal' }}
+                        >
+                          {letter}
+                        </span>
+                      ))}
                         </td>
                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           {p.productPrice}$

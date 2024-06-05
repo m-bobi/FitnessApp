@@ -40,6 +40,16 @@ const ListOffers = () => {
     }
   };
 
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const handleSearchInputChange = (event) => {
+  setSearchQuery(event.target.value);
+};
+
+const filteredOffers = allOffers.filter(offer =>
+  (offer.offerType?.toLowerCase() ?? '').includes(searchQuery.toLowerCase())
+);
+
   return (
     <>
     <ToastContainer/>
@@ -59,6 +69,7 @@ const ListOffers = () => {
                 </label>
                 <div className="relative mt-1 lg:w-64 xl:w-96">
                   <input
+                  onChange={handleSearchInputChange}
                     type="text"
                     name="email"
                     id="users-search"
@@ -219,8 +230,8 @@ const ListOffers = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                  {allOffers && allOffers.length > 0 ? (
-                    allOffers.map((o) => (
+                  {filteredOffers && filteredOffers.length > 0 ? (
+                    filteredOffers.map((o) => (
                       <tr className="hover:bg-gray-100 dark:hover:bg-gray-700">
                         <td className="w-4 p-4"></td>
                         <td className="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
