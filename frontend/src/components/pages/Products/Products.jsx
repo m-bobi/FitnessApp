@@ -8,6 +8,9 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const token = Cookies.get("token");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,6 +27,10 @@ const Products = () => {
     fetchProducts();
   });
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   const addToCart = (product) => {
     const savedProducts = JSON.parse(localStorage.getItem("cart")) || [];
     const newProduct = product;
@@ -37,7 +44,51 @@ const Products = () => {
       localStorage.setItem("cart", JSON.stringify(savedProducts));
     }
   };
+  
 
+  const handleCategoryChange = (event) => {
+    const category = event.target.value;
+    if (category === "All") {
+      setSelectedCategories([]);
+    } else {
+    setSelectedCategories((prevCategories) =>
+      prevCategories.includes(category)
+        ? prevCategories.filter((cat) => cat !== category)
+        : [...prevCategories, category]
+    );
+  }
+  };
+
+  // Filter products based on the selected categories
+  // const filteredProducts =
+  //   selectedCategories.length > 0
+  //     ? products.filter((product) =>
+  //         selectedCategories.includes(product.productCategory)
+  //       )
+  //     : products;
+
+  const filteredProducts = products.filter((product) => {
+    const matchCategory =
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(product.productCategory);
+    const matchSearch =
+      searchTerm === "" ||
+      product.productName.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchCategory && matchSearch;
+  });
+
+      const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+      };
+
+
+      const categoryCounts = products.reduce((acc, product) => {
+        acc[product.productCategory] = (acc[product.productCategory] || 0) + 1;
+        return acc;
+      }, {});
+
+      const totalCount = products.length;
+  
   return (
     <>
       <div className="productBanner">
@@ -46,9 +97,90 @@ const Products = () => {
         </div>
       </div>
 
+ 
+
+      <div className="filterContainer flex items-center justify-center p-4 flex-col gap-2.5">
+        <button
+          id="dropdownDefault"
+          data-dropdown-toggle="dropdown"
+          className="text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          type="button"
+          onClick={toggleDropdown}
+        >
+          Filter by category
+          <svg
+            className="w-4 h-4 ml-2"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+
+        <div
+          id="dropdown"
+          className={`z-10 w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700 ${
+            isDropdownOpen ? "flex flex-col" : "hidden"
+          }`}
+        >
+          <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+            Category
+          </h6>
+          <ul className="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+            {[
+              "Suplements",
+              "Equipments",
+              "All"
+            ].map((category) => (
+              <li key={category} className="flex items-center">
+                <input
+                  id={category}
+                  type="checkbox"
+                  value={category}
+                  className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  onChange={handleCategoryChange}
+                />
+                <label
+                  htmlFor={category}
+                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                >
+                {category === "All" ? `All (${totalCount})` : `${category} (${categoryCounts[category] || 0})`}
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+<div className="flex justify-center">
+      <form className="p-5 w-4/5">   
+    <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input
+          onChange={handleSearchChange}
+        type="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by product name" required />
+        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+</form>
+</div>
+      
+
       <div className="productContainer">
-        {products && products.length > 0 ? (
-          products.map((p) => {
+        {filteredProducts && filteredProducts.length > 0 ? (
+          filteredProducts.map((p) => {
             return (
               <Link
                 to={`/productDetails/${p.productId}`}
