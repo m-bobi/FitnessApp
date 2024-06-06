@@ -9,6 +9,7 @@ import Unauthorized from './components/Auth/Unauthorized';
 import AllClasses from './pages/Classes/AllClasses';
 import UserDashboard from './pages/UserDashboard/UserDashboard';
 import ProductsDashboard from './pages/ProductsDashboard/ProductsDashboard';
+import AuthProvider from './components/Auth/AuthProvider';
 function App() {
 
 
@@ -38,6 +39,7 @@ function App() {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
+      <AuthProvider>
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
@@ -95,6 +97,7 @@ function App() {
             <Route exact path="*" element={<Unauthorized />} />
           </Routes>
         </Router>
+        </AuthProvider>
       </Suspense>
     </div>
   );

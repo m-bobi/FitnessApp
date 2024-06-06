@@ -6,6 +6,7 @@ import api, {setAuthToken} from '../../../Auth/api';
 const OurWorkouts = () => {
 
     const token = Cookies.get("token");
+    const userId = Cookies.get("id");
 
     const [workouts, setWorkouts] = useState([]);
     const fetchWorkouts = async () => {
@@ -20,6 +21,24 @@ const OurWorkouts = () => {
       useEffect(() => {
         fetchWorkouts();
       }, []);
+
+      const handleAddWorkout = async (workout) => {
+        try {
+          await api.post(
+            `api/Workouts/addUserWorkout/${userId}`,
+            {
+              workoutType: workout.workoutType,
+              workoutStartTime: workout.workoutStartTime,
+              workoutEndTime: workout.workoutEndTime,
+              classId: workout.classId,
+            }
+          );
+          alert('Workout added successfully!');
+        } catch (error) {
+          console.error('Error adding Workout:', error);
+          alert('Failed to add workout.');
+        }
+      };
 
   return (
     <div className='ourWorkouts'>
@@ -64,7 +83,9 @@ const OurWorkouts = () => {
                             {w.classId}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Add</a>
+                            <button 
+                            onClick={() => handleAddWorkout(w)}
+                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Add</button>
                         </td>
                     </tr>
                     )
