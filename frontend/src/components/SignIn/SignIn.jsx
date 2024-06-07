@@ -89,57 +89,6 @@ const SignIn = () => {
 
     navigate("/signin");
   };
-  const checkTokenAndRefresh = async () => {
-    try {
-      const token = Cookies.get("token");
-      const refreshToken = Cookies.get("refreshToken");
-      if (!token || !refreshToken) {
-        handleSignOut();
-        return;
-      }
-  
-      const decodedToken = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
-  
-      if (decodedToken.exp < currentTime + 60) { 
-        const responseToken = await api.post("api/User/refresh-token", {
-          refreshToken: refreshToken,
-        });
-  
-        if (responseToken.status === 200) {
-          const { accessToken, refreshToken } = responseToken.data;
-          Cookies.set("token", accessToken, { expires: 7, secure: true });
-          Cookies.set("refreshToken", refreshToken, { expires: 7, secure: true });
-          setAuthToken(accessToken);
-          toast.success("Token refreshed successfully!");
-        } else {
-          throw new Error("Failed to refresh token");
-        }
-      }
-    } catch (error) {
-      console.error("Error checking and refreshing token:", error);
-      for (let i = 0; i < 3; i++) {
-        try {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          await checkTokenAndRefresh();
-          return;
-        } catch (error) {
-          console.error(`Retry ${i + 1} failed:`, error);
-        }
-      }
-      handleSignOut();
-    }
-  };
-
-  useEffect(() => {
-    checkTokenAndRefresh();
-
-    const intervalId = setInterval(() => {
-      checkTokenAndRefresh();
-    }, 3000);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   return (
     <div className="fix">
