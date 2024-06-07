@@ -88,19 +88,53 @@ public class WorkoutsController : Controller
         return Ok("Workout updated successfully");
     }
     
+    // [HttpPost("addUserWorkout/{userId}")]
+    // public async Task<IActionResult> AddUserWorkout(string userId, [FromBody] WorkoutDTO workoutDto)
+    // {
+    //     // var user = await _dbContext.Users.FindAsync(userId);
+    //
+    //     var user = await _dbContext.Users
+    //         .Include(u => u.Workouts)
+    //         .FirstOrDefaultAsync(u => u.Id == userId);
+    //     
+    //     if (user == null)
+    //     {
+    //         return BadRequest("User does not exist");
+    //     }
+    //   
+    //     if (workoutDto == null)
+    //     {
+    //         return BadRequest("Workout data is required");
+    //     }
+    //
+    //     var workout = new Workouts
+    //     {
+    //         UserId = userId,
+    //         WorkoutType = workoutDto.WorkoutType,
+    //         WorkoutStartTime = workoutDto.WorkoutStartTime,
+    //         WorkoutEndTime = workoutDto.WorkoutEndTime,
+    //     };
+    //
+    //     user.Workouts.Add(workout); 
+    //     await _dbContext.Workouts.AddAsync(workout);
+    //     await _dbContext.SaveChangesAsync();
+    //
+    //     return Ok();
+    // }
+    
     [HttpPost("addUserWorkout/{userId}")]
     public async Task<IActionResult> AddUserWorkout(string userId, [FromBody] WorkoutDTO workoutDto)
     {
-        var user = await _dbContext.Users.FindAsync(userId);
-
-        if (user == null)
-        {
-            return BadRequest("User does not exist");
-        }
-        
         if (workoutDto == null)
         {
             return BadRequest("Workout data is required");
+        }
+
+        var user = await _dbContext.Users.FindAsync(userId);
+    
+        if (user == null)
+        {
+            return BadRequest("User does not exist");
         }
 
         var workout = new Workouts
@@ -109,12 +143,32 @@ public class WorkoutsController : Controller
             WorkoutType = workoutDto.WorkoutType,
             WorkoutStartTime = workoutDto.WorkoutStartTime,
             WorkoutEndTime = workoutDto.WorkoutEndTime,
+            ClassId = workoutDto.ClassId // Ensure ClassId is set if it's required
         };
 
-        await _dbContext.Workouts.AddAsync(workout);
-        await _dbContext.SaveChangesAsync();
+        // Check if workout properties are correctly set
+        if (string.IsNullOrEmpty(workout.WorkoutType) ||
+            string.IsNullOrEmpty(workout.WorkoutStartTime) ||
+            string.IsNullOrEmpty(workout.WorkoutEndTime))
+        {
+            return BadRequest("All workout details are required");
+        }
 
-        return Ok();
+        user.Workouts.Add(workout);
+        await _dbContext.Workouts.AddAsync(workout);
+
+        try
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception for debugging purposes
+            // Log.Error(ex, "An error occurred while saving the workout");
+            return StatusCode(500, $"An error occurred while saving the workout: {ex.Message}");
+        }
+
+        return Ok(workout); // Return the created workout for confirmation
     }
     
     

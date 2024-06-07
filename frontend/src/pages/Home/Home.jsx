@@ -7,6 +7,7 @@ import OurOffers from '../../components/pages/Home/OurOffers/OurOffers';
 import OurBestTrainers from '../../components/pages/Home/OurBestTrainers/OurBestTrainers';
 import OurWorkouts from '../../components/pages/Home/OurWorkouts/OurWorkouts';
 import Footer from '../../components/shared/Footer/Footer';
+import Mbrojtja from '../../components/Test/Mbrojtja';
 
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
         <OurBestTrainers/>
         <OurWorkouts/>
         <Footer/>
+        {/* <Mbrojtja/> */}
       </div>
   );
 }
