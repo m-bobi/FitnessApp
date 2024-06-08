@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import AddOffers from "./AddOffers";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import showConfirm from '../../utils/Confirm';
 
 
 const ListOffers = () => {
@@ -72,15 +73,29 @@ const ListOffers = () => {
     fetchOffers();
   }, [token]);
 
+  // const handleDelete = async (id) => {
+  //   if (window.confirm("Are you sure you want to delete this user?")) {
+  //     try {
+  //       await api.delete(`api/Offers/deleteOffer/${id}`);
+  //       setAllOffers(allOffers.filter((o) => o.offerId !== id));
+  //       toast.success("Offer deleted successfully");
+  //     } catch (error) {
+  //       console.error("Error deleting product:", error);
+  //       toast.error("Error deleting product.")
+  //     }
+  //   }
+  // };
+
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
+    const result = await showConfirm("Are you sure you want to delete this offer?");
+    if (result) {
       try {
         await api.delete(`api/Offers/deleteOffer/${id}`);
         setAllOffers(allOffers.filter((o) => o.offerId !== id));
         toast.success("Offer deleted successfully");
       } catch (error) {
         console.error("Error deleting product:", error);
-        toast.error("Error deleting product.")
+        toast.error("Error deleting product.");
       }
     }
   };
