@@ -12,7 +12,7 @@ public class TokenService
     // private const int ExpirationMinutes = 30;
     // private const int RefreshTokenExpirationMinutes = 10080;
     
-    private const int ExpirationMinutes = 60;
+    private const int ExpirationMinutes = 2;
     private const int RefreshTokenExpirationMinutes = 10080;
     private readonly IConfiguration _configuration;
     private readonly ApplicationDbContext _context;
@@ -52,21 +52,31 @@ public class TokenService
         return tokenHandler.WriteToken(token);
     }
     
-    public string RefreshAccessToken(string refreshToken)
-    {
-        var user = _context.Users.SingleOrDefault(u => u.RefreshToken == refreshToken);
-        if (user == null)
-        {
-            throw new Exception("Invalid refresh token");
-        }
-
-        var newAccessToken = CreateToken(user);
-
-        var newRefreshToken = CreateRefreshToken(user);
-        user.RefreshToken = newRefreshToken;
-
-        return newAccessToken;
-    }
+ public string RefreshAccessToken(string refreshToken)
+ {
+     var tokenHandler = new JwtSecurityTokenHandler();
+     var key = Encoding.ASCII.GetBytes(_configuration["JwtTokenSettings:SymmetricSecurityKey"]);
+     var principal = tokenHandler.ValidateToken(refreshToken, new TokenValidationParameters
+     {
+         ValidateIssuerSigningKey = true,
+         IssuerSigningKey = new SymmetricSecurityKey(key),
+         ValidateIssuer = false,
+         ValidateAudience = false
+     }, out SecurityToken validatedToken);
+ 
+     var jwtToken = (JwtSecurityToken)validatedToken;
+     var userId = jwtToken.Claims.First(x => x.Type == "refreshTokenId").Value;
+ 
+     var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+     if (user == null)
+     {
+         throw new Exception("Invalid refresh token");
+     }
+ 
+     var newAccessToken = CreateToken(user);
+ 
+     return newAccessToken;
+ }
     
     public (string AccessToken, string RefreshToken) CreateTokens(User user)
     {
