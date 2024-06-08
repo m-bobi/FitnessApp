@@ -9,9 +9,6 @@ namespace backend.Services;
 
 public class TokenService
 {
-    // private const int ExpirationMinutes = 30;
-    // private const int RefreshTokenExpirationMinutes = 10080;
-    
     private const int ExpirationMinutes = 2;
     private const int RefreshTokenExpirationMinutes = 10080;
     private readonly IConfiguration _configuration;

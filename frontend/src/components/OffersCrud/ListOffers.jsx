@@ -3,9 +3,54 @@ import Cookies from "js-cookie";
 import api from "../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
 import AddOffers from "./AddOffers";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 
 const ListOffers = () => {
+
+  const exportToPdf = async () => {
+    const input = document.getElementById('contacts-table');
+    if (!input) {
+      console.error('Element not found!');
+      return;
+    }
+
+    try {
+    
+      const canvas = await html2canvas(input, {
+        scale: 2,       
+        useCORS: true,  
+        logging: true,  
+        scrollX: 0,     
+        scrollY: 0
+      });
+      
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210; 
+      const pageHeight = 297; 
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save('Offers.pdf');
+    } catch (error) {
+      console.error('Error generating PDF', error);
+    }
+  };
+
   const [allOffers, setAllOffers] = useState([]);
 
   const token = Cookies.get("token");
@@ -166,8 +211,8 @@ const filteredOffers = allOffers.filter(offer =>
                 </svg>
                 Add user
               </button>
-              <a
-                href="#"
+              <button
+                onClick={exportToPdf}
                 className="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700"
               >
                 <svg
@@ -183,7 +228,7 @@ const filteredOffers = allOffers.filter(offer =>
                   ></path>
                 </svg>
                 Export
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -192,7 +237,7 @@ const filteredOffers = allOffers.filter(offer =>
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow">
-              <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+              <table id = "contacts-table" className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
                 <thead className="bg-gray-100 dark:bg-gray-700">
                   <tr>
                     <th scope="col" className="p-4">
