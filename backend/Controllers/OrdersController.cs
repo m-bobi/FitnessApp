@@ -28,7 +28,6 @@ public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, 
 
         // Include User data to get the username
         var orders = await _dbContext.Orders
-            .Include(o => o.User)
             .Where(o => (string.IsNullOrEmpty(orderId) || o.OrderId.ToString() == orderId) &&
                         (string.IsNullOrEmpty(orderStatus) || o.OrderStatus == orderStatus) &&
                         (string.IsNullOrEmpty(userId) || o.UserId == userId))
@@ -48,6 +47,34 @@ public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, 
         });
 
         return Ok(new { orders, ordersWithUsername, totalPages });
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Error fetching orders: " + ex.Message);
+        return StatusCode(500, "Internal server error");
+    }
+}
+
+[HttpGet("getAllOrdersSimple")]
+[Authorize(Roles = "Manager")]
+
+public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrdersSimple()
+{
+    try
+    {
+        var orders = await _dbContext.Orders
+            .Select(o => new OrderDTO
+            {
+                OrderId = o.OrderId,
+                OrderDate = o.OrderDate,
+                OrderTotalAmount = o.OrderTotalAmount,
+                OrderStatus = o.OrderStatus,
+                UserId = o.UserId,
+                ProductId = o.ProductId,
+            })
+            .ToListAsync();
+
+        return Ok(orders);
     }
     catch (Exception ex)
     {
@@ -95,22 +122,36 @@ public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, 
         return Ok("Order deleted successfully");
     }
 
-    // Create API to update an existing order.
     [HttpPut("updateOrder/{id}")]
     [Authorize(Roles = "Manager")]
-    public async Task<IActionResult> UpdateOrder([FromBody] Orders order)
+    public async Task<IActionResult> UpdateOrder(int id, [FromBody]OrderDTO orderDto)
     {
-        if (order is null || order.OrderId == 0) return BadRequest("Invalid order data");
+        if (orderDto is null)
+        {
+            return BadRequest("Invalid order data");
+        }
 
-        var existingOrder = await _dbContext.Orders.FindAsync(order.OrderId);
-        if (existingOrder == null) return NotFound();
+        var existingOrder = await _dbContext.Orders.FindAsync(id);
+        if (existingOrder == null)
+        {
+            return NotFound();
+        }
 
-        _dbContext.Entry(existingOrder).CurrentValues.SetValues(order);
+        
+        existingOrder.OrderStatus = orderDto.OrderStatus;
+        existingOrder.OrderDate = orderDto.OrderDate;
+        existingOrder.UserId = orderDto.UserId;
+        existingOrder.ProductId = orderDto.ProductId;
+        existingOrder.OrderTotalAmount = orderDto.OrderTotalAmount;
+        orderDto.ProductName = orderDto.ProductName;
+        orderDto.ProductDescription = orderDto.ProductDescription;
+        
         await _dbContext.SaveChangesAsync();
-        return Ok("Order updated successfully");
+        return Ok("Order updated successfully!");
     }
     
     [HttpGet("getOrdersByUser/{userId}")]
+    
     public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByUser(string userId)
     {
         try
@@ -124,7 +165,6 @@ public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, 
                     OrderTotalAmount = o.OrderTotalAmount,
                     OrderStatus = o.OrderStatus,
                     UserId = o.UserId,
-                    UserName = o.User.UserName,
                     ProductId = o.ProductId,
                     ProductName = o.Product.ProductName,
                     ProductDescription = o.Product.ProductDescription
@@ -140,7 +180,6 @@ public async Task<ActionResult<IEnumerable<Orders>>> GetAllOrders(int page = 1, 
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error fetching orders: " + ex.Message);
             return StatusCode(500, "Internal server error");
         }
     }

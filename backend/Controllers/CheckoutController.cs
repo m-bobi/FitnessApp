@@ -96,7 +96,6 @@ public async Task<IActionResult> CreateCheckoutSession(int productId, int quanti
             OrderTotalAmount = order.OrderTotalAmount,
             OrderStatus = order.OrderStatus,
             UserId = order.UserId,
-            UserName = currentUser.UserName,
             ProductId = order.ProductId,
             ProductName = product.ProductName,
             ProductDescription = product.ProductDescription

@@ -1,13 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
+import Select from "react-select";
 
 const AddOrders = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [orderTotalAmount, setOrderTotalAmount] = useState("");
-  const [orderStatus, setOrderStatus] = useState("");
-  const [userName, setUserName] = useState("");
-  const [orderDate, setDateTime] = useState("");
+  const [formData, setFormData] = useState({
+    orderTotalAmount: "",
+    orderStatus: "",
+    userId: "",
+    productId: "",
+    orderDate: "",
+  });
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get("api/Users/getAllUsers");
+        setUsers(
+          response.data.map((user) => ({
+            value: user.id,
+            label: user.userName,
+          }))
+        );
+      } catch (error) {
+        toast.error("Error fetching users: " + error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -16,11 +40,14 @@ const AddOrders = () => {
   const addOrder = async (event) => {
     event.preventDefault();
     try {
+      const { orderTotalAmount, orderStatus, userId, productId, orderDate } =
+        formData;
       await api.post(`api/Orders/addOrder`, {
-        orderTotalAmount: orderTotalAmount,
-        orderStatus: orderStatus,
-        userName: userName,
-        orderDate: orderDate,
+        orderTotalAmount,
+        orderStatus,
+        userId,
+        productId,
+        orderDate,
       });
       toast.success("Order added successfully!");
     } catch (error) {
@@ -30,7 +57,18 @@ const AddOrders = () => {
 
   return (
     <div className="relative">
-      <ToastContainer/>
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -90,66 +128,77 @@ const AddOrders = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter order amount"
                       onChange={(event) => {
-                        setOrderTotalAmount(event.target.value);
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          orderTotalAmount: event.target.value,
+                        }));
                       }}
                       required
                     />
-                  </div>
-                  <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Order Status
-                    </label>
-                    <input
-                      type="text"
-                      name="OrderStatus"
-                      placeholder="Enter order status"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      required
-                      onChange={(event) => {
-                        setOrderStatus(event.target.value);
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Username
-                    </label>
-                    <input
-                      type="text"
-                      name="UserName"
-                      placeholder="Enter user"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      required
-                      onChange={(event) => {
-                        setUserName(event.target.value);
-                      }}
-                    />
-                  </div>
-
-                  <div>
                     <div>
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Date
+                        Order Status
                       </label>
                       <input
-                        type="date"
-                        name="DateTime"
-                        placeholder="Enter date"
+                        type="text"
+                        name="OrderStatus"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        required
+                        placeholder="Enter order status"
                         onChange={(event) => {
-                          setDateTime(event.target.value);
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            orderStatus: event.target.value,
+                          }));
                         }}
+                        required
                       />
                     </div>
+
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        User
+                      </label>
+                      <Select
+                        options={users}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(selectedOption) => {
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            userId: selectedOption.value,
+                          }));
+                        }}
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                          Date
+                        </label>
+                        <input
+                          type="date"
+                          name="DateTime"
+                          placeholder="Enter date"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          required
+                          onChange={(selectedOption) => {
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              orderDate: selectedOption.value,
+                            }));
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Add Order
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Add Order
-                  </button>
                 </form>
               </div>
             </div>
