@@ -32,21 +32,21 @@ const Profile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error fetching users data:", error);
+          toast.error("Error fetching the user! Please, contact a staff member.");
         });
 
-    api
-      .get(`api/Orders/getOrdersByUser/${userId}`)
-      .then((response) => {
-        if (response.status === 404) {
-          setOrders([]);
-        } else if (response.data) {
-          setOrders(response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching orders data:", error);
-      });
+      api
+        .get(`api/Orders/getOrdersByUser/${userId}`)
+        .then((response) => {
+          if (response.status === 404) {
+            setOrders([]);
+          } else if (response.data) {
+            setOrders(response.data);
+          }
+        })
+        .catch((error) => {
+          toast.error("Error getting the orders! Please, contact a staff member.");
+        });
     }
   }, [token]);
 
@@ -62,7 +62,7 @@ const Profile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error fetching users data:", error);
+          toast.error("Error fetching the class! Please, contact a staff member.");
         });
     }
   }, [token]);
@@ -103,14 +103,24 @@ const Profile = () => {
         window.location.reload();
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
       toast.error("Error updating profile. :( Please try again later.");
     }
   };
 
   return (
     <div className="bg-gray-100 profile">
-      <ToastContainer />
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="w-full text-white bg-main-color">
         <div className="container mx-auto my-5 p-5">
           <div className="md:flex no-wrap md:-mx-2 ">
@@ -149,8 +159,6 @@ const Profile = () => {
               </div>
 
               <div className="my-4"></div>
-
-
             </div>
 
             <div className="w-full md:w-9/12 mx-2 h-64">
@@ -339,7 +347,7 @@ const Profile = () => {
                 </div>
               </div>
 
-  <div className="my-4"></div>
+              <div className="my-4"></div>
 
               <div className="bg-white p-3 shadow-sm rounded-sm">
                 <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
@@ -391,12 +399,12 @@ const Profile = () => {
                     </table>
                   </div>
                 </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

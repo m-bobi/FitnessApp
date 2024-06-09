@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from 'js-cookie';
-import api ,{setAuthToken} from "../Auth/api";
+import Cookies from "js-cookie";
+import api, { setAuthToken } from "../Auth/api";
 
 const AddOffers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +11,7 @@ const AddOffers = () => {
     setIsOpen(!isOpen);
   };
 
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
 
   const [offerType, setOfferType] = useState("");
   const [offerDescription, setOfferDescription] = useState("");
@@ -35,7 +35,6 @@ const AddOffers = () => {
         })
         .catch((error) => {
           console.error("Error:", error);
-          console.log(event);
         });
     } catch (error) {
       console.error("Error:", error);
@@ -44,18 +43,18 @@ const AddOffers = () => {
 
   return (
     <div className="relative">
-          <ToastContainer
-          position="bottom-right"
-          padding="5%"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"

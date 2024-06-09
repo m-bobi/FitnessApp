@@ -1,7 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cancelled = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate("/");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
@@ -10,10 +20,11 @@ const Cancelled = () => {
             404
           </h1>
           <p className="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">
-            Something went wrong..
+            Payment Cancelled
           </p>
           <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-          Sorry, something failed, please go back to the home page.
+            Sorry, your payment was cancelled. You will be redirected to the
+            home page shortly.
           </p>
           <Link
             to="/"

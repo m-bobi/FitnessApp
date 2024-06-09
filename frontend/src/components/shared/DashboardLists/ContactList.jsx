@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import ListProducts from '../../ListProducts'
 import Cookies from "js-cookie";
 import api from "../../Auth/api";
 import { decodeToken } from "../../../utils/Decode";
@@ -10,25 +9,25 @@ const ContactList = () => {
 
     const [userName, setUserName] = useState("");
     const [role, setRole] = useState("");
-  
+
     const token = Cookies.get("token");
-  
+
     const [userImage, setUserImage] = useState("");
-  
+
     const handleSignOut = () => {
       Cookies.remove("token");
       Cookies.remove("id");
     };
-  
+
     useEffect(() => {
       if (token) {
         const { name, role } = decodeToken(token);
-  
+
         setUserName(name);
         setRole(role);
-  
+
         const userId = localStorage.getItem("id");
-  
+
         api
           .get(`api/User/getUser/${userId}`)
           .then((response) => {

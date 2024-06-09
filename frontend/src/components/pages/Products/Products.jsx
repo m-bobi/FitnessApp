@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import Cookies from "js-cookie";
 import api from "../../Auth/api";
+import {toast, ToastContainer} from "react-toastify";
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
@@ -20,7 +22,7 @@ const Products = () => {
         );
         setProducts(response.data);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        toast.error("Error fetching products! Please, contact a staff member!")
       }
     };
 
@@ -44,7 +46,7 @@ const Products = () => {
       localStorage.setItem("cart", JSON.stringify(savedProducts));
     }
   };
-  
+
 
   const handleCategoryChange = (event) => {
     const category = event.target.value;
@@ -58,14 +60,6 @@ const Products = () => {
     );
   }
   };
-
-  // Filter products based on the selected categories
-  // const filteredProducts =
-  //   selectedCategories.length > 0
-  //     ? products.filter((product) =>
-  //         selectedCategories.includes(product.productCategory)
-  //       )
-  //     : products;
 
   const filteredProducts = products.filter((product) => {
     const matchCategory =
@@ -88,16 +82,26 @@ const Products = () => {
       }, {});
 
       const totalCount = products.length;
-  
+
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="productBanner">
         <div className="homeBannerContainer" data-aos="fade-right">
           <p className="firstText">Our Products</p>
         </div>
       </div>
-
- 
 
       <div className="filterContainer flex items-center justify-center p-4 flex-col gap-2.5">
         <button
@@ -135,11 +139,7 @@ const Products = () => {
             Category
           </h6>
           <ul className="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-            {[
-              "Suplements",
-              "Equipments",
-              "All"
-            ].map((category) => (
+            {["Suplements", "Equipments", "All"].map((category) => (
               <li key={category} className="flex items-center">
                 <input
                   id={category}
@@ -152,7 +152,9 @@ const Products = () => {
                   htmlFor={category}
                   className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                 >
-                {category === "All" ? `All (${totalCount})` : `${category} (${categoryCounts[category] || 0})`}
+                  {category === "All"
+                    ? `All (${totalCount})`
+                    : `${category} (${categoryCounts[category] || 0})`}
                 </label>
               </li>
             ))}
@@ -160,23 +162,49 @@ const Products = () => {
         </div>
       </div>
 
-<div className="flex justify-center">
-      <form className="p-5 w-4/5">   
-    <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-        </div>
-        <input
-          onChange={handleSearchChange}
-        type="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search by product name" required />
-        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-    </div>
-</form>
-</div>
-      
+      <div className="flex justify-center">
+        <form className="p-5 w-4/5">
+          <label
+            for="search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          >
+            Search
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg
+                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              onChange={handleSearchChange}
+              type="search"
+              id="search"
+              class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search by product name"
+              required
+            />
+            <button
+              type="submit"
+              class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
 
       <div className="productContainer">
         {filteredProducts && filteredProducts.length > 0 ? (
@@ -192,10 +220,14 @@ const Products = () => {
                 <div className="px-5 pb-5">
                   <Link href="#">
                     <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    {[...p.productName].map((letter, index) => (
+                      {[...p.productName].map((letter, index) => (
                         <span
                           key={index}
-                          style={{ fontWeight: searchTerm.includes(letter) ? 'bold' : 'normal' }}
+                          style={{
+                            fontWeight: searchTerm.includes(letter)
+                              ? "bold"
+                              : "normal",
+                          }}
                         >
                           {letter}
                         </span>
@@ -245,7 +277,7 @@ const Products = () => {
             );
           })
         ) : (
-          <div>No products for the moment! Sorry</div>
+          <p className="text-center text-gray-500">No products available yet.</p>
         )}
       </div>
     </>

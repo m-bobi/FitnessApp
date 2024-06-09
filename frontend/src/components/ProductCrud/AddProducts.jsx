@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import api, {setAuthToken} from "../Auth/api";
-import { jwtDecode } from "jwt-decode";
+import { toast, ToastContainer } from "react-toastify";
+import api, { setAuthToken } from "../Auth/api";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import axios from "axios";
 
 const AddProducts = () => {
   const navigate = useNavigate();
@@ -20,7 +18,13 @@ const AddProducts = () => {
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
-
+    if (
+      ["productPrice", "productStock", "productRate"].includes(name) &&
+      value < 0
+    ) {
+      toast.error("Please enter a valid value.");
+      return;
+    }
     if (files) {
       setFormData({
         ...formData,
@@ -98,9 +102,6 @@ const AddProducts = () => {
   }
 
   const refreshToken = Cookies.get("refreshToken");
-
-
-
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
@@ -109,7 +110,6 @@ const AddProducts = () => {
 
   return (
     <div className="relative">
-      {/* Modal Trigger Button */}
       <ToastContainer
         position="bottom-right"
         padding="5%"
@@ -207,6 +207,7 @@ const AddProducts = () => {
                       placeholder="Enter product price"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
+                      min={1}
                       onChange={handleChange}
                     />
                   </div>
@@ -241,6 +242,7 @@ const AddProducts = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
+                      min={0}
                     />
                   </div>
 
@@ -255,6 +257,7 @@ const AddProducts = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
+                      min={0}
                     />
                   </div>
 

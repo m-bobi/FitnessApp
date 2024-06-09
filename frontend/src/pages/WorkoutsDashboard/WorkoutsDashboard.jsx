@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Users from '../../components/shared/DashboardLists/Users'
 import Unauthorized from "../../components/Auth/Unauthorized";
 import Cookies from "js-cookie";
 import api from "../../components/Auth/api";

@@ -48,7 +48,7 @@ const AddClass = () => {
       .catch((error) => {
         console.error(error);
         toast.error(
-          "An error occurred while registering. Please try again later."
+          "An error occurred while adding a class. Please try again later."
         );
       });
   }

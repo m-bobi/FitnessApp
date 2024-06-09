@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./AllClasses.css";
 import { Link } from "react-router-dom";
 import api from "../../Auth/api";
+import { ToastContainer, toast } from "react-toastify";
 
 const Classes = () => {
   const [classes, setClasses] = useState([]);
@@ -11,7 +12,7 @@ const Classes = () => {
       const response = await api.get(`api/Class/getAllClasses`);
       setClasses(response.data);
     } catch (error) {
-      console.error("Error fetching Trainers:", error);
+      toast.error("Error fetching classes! Please, contact a staff member!");
     }
   };
 
@@ -19,16 +20,29 @@ const Classes = () => {
     fetchclasses();
   }, []);
 
-  return (
-    <div className="allClasses">
-      <div className="classesBanner">
-        <div className="homeBannerContainer" data-aos="fade-right">
-          <p className="firstText">Ascend - Classes</p>
-        </div>
+return (
+  <div className="allClasses">
+    <ToastContainer
+      position="bottom-right"
+      padding="5%"
+      autoClose={1500}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
+    <div className="classesBanner">
+      <div className="homeBannerContainer" data-aos="fade-right">
+        <p className="firstText">Ascend - Classes</p>
       </div>
+    </div>
 
-      <div className="bannerCardsUp">
-        {classes.map((classItem, index) => (
+    <div className="bannerCardsUp">
+      {classes.length > 0 ? (
+        classes.map((classItem, index) => (
           <Link
             key={index}
             to={`/className/${classItem.classId}`}
@@ -48,10 +62,12 @@ const Classes = () => {
               </p>
             </div>
           </Link>
-        ))}
-      </div>
+        ))
+      ) : (
+        <p className="text-center text-gray-500">No classes available yet.</p>
+      )}
     </div>
-  );
-};
-
+  </div>
+);
+}
 export default Classes;

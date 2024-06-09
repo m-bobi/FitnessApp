@@ -193,7 +193,9 @@ const OurOffers = () => {
                 );
               })
             ) : (
-              <div>No Offers right now!!</div>
+              <p className="text-gray-500">
+                No offers available yet.
+              </p>
             )}
           </div>
         </div>

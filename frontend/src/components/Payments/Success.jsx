@@ -1,7 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Success = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate("/");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
@@ -10,7 +20,8 @@ const Success = () => {
             Success!
           </h1>
           <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-            Payment has been completed! Go back to home page!
+            Payment has been completed! You will be redirected to the home page
+            shortly.
           </p>
           <Link
             to="/"

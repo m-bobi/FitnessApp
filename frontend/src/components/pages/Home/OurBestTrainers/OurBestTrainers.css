@@ -6,3 +6,15 @@
 .trainersContainer{
     display: flex;
 }
+
+.ourBestTrainers {
+    background: url("../../../../assets/background1.webp");
+    background-size: cover;
+    padding: 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: max(20px, 2vw);
+    width: 100%;
+}

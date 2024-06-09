@@ -19,7 +19,7 @@ const ClassPage = () => {
         const response = await api.get(`api/Class/getClass/${id}`);
         setClassItem(response.data);
       } catch (error) {
-        console.error("Error fetching className:", error);
+        toast.error("Error fetching class");
       }
     };
 
@@ -38,7 +38,7 @@ const ClassPage = () => {
       const trainers = users.filter((user) => user.role === "Trainer");
       setTrainers(trainers);
     } catch (error) {
-      toast.error("Error fetching trainers");
+      toast.error("Error fetching trainers...");
     }
   };
 
@@ -83,7 +83,18 @@ const ClassPage = () => {
 
   return (
     <div className="classDetail">
-      <ToastContainer />
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <section className="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
         <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">

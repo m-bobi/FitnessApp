@@ -31,7 +31,7 @@ const OurBestTrainers = () => {
         <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
           Our Best Trainers
         </h2>
-        <p classNameName="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
+        <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
           Here at ascend we focus on building and growth.
         </p>
       </div>
@@ -115,10 +115,9 @@ const OurBestTrainers = () => {
             );
           })
         ) : (
-          <div>
-            We currently have no available trainers! Contact us to get one as
-            soon as possible!
-          </div>
+          <p className=" text-gray-500">
+            No trainers available yet.
+          </p>
         )}
       </div>
     </div>
