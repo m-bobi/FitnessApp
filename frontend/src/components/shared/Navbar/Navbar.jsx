@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
@@ -9,9 +9,11 @@ import { IoMdMenu } from "react-icons/io";
 import { LuShoppingCart } from "react-icons/lu";
 import Cookies from "js-cookie";
 import api from "../../Auth/api";
+import { AuthContext } from "../../Auth/AuthProvider";
 import { decodeToken } from "../../../utils/Decode";
 
 const Navbar = () => {
+  const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showSearchBar, setShowSearchBar] = useState(false);
 
@@ -30,7 +32,9 @@ const Navbar = () => {
     Cookies.remove("token");
     Cookies.remove("id");
     Cookies.remove("refreshToken")
+    logout();
     localStorage.removeItem("cart");
+    window.location.reload();
     navigate("/signin")
   };
 
