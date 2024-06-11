@@ -32,20 +32,20 @@ const ListContacts = () => {
     }
 
     try {
-    
+
       const canvas = await html2canvas(input, {
-        scale: 2,       
-        useCORS: true,  
-        logging: true,  
-        scrollX: 0,     
+        scale: 2,
+        useCORS: true,
+        logging: true,
+        scrollX: 0,
         scrollY: 0
       });
-      
-      
+
+
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 210; 
-      const pageHeight = 297; 
+      const imgWidth = 210;
+      const pageHeight = 297;
       const imgHeight = canvas.height * imgWidth / canvas.width;
       let heightLeft = imgHeight;
       let position = 0;
@@ -91,13 +91,13 @@ const ListContacts = () => {
         );
         toast.success("Contact deleted successfully!")
       } catch (error) {
-        console.error("Error deleting product:", error);
-        toast.error("Error deleting product!")
+        console.error("Error deleting contact:", error);
+        toast.error("Error deleting contact!")
       }
     }
   };
 
-  
+
 
   return (
     <>
@@ -259,7 +259,7 @@ const ListContacts = () => {
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
                     >
-                      
+
                     </th>
                     <th
                       scope="col"
@@ -279,7 +279,7 @@ const ListContacts = () => {
                     >
                       Message
                     </th>
-             
+
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
@@ -329,9 +329,9 @@ const ListContacts = () => {
                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           {p.userId}
                         </td>
-                       
+
                         <td className="p-4 space-x-2 whitespace-nowrap">
-                      
+
                           <button
                             onClick={() => handleDelete(p.contactId)}
                             data-modal-target="delete-user-modal"
@@ -350,7 +350,7 @@ const ListContacts = () => {
                                 clipRule="evenodd"
                               ></path>
                             </svg>
-                            Delete product
+                            Delete contact
                           </button>
                         </td>
                       </tr>
@@ -452,7 +452,7 @@ const ListContacts = () => {
         </div>
       </div>
 
-    
+
 
       {/* <!-- Add User Modal --> */}
       <div
