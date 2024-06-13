@@ -98,7 +98,6 @@ public class WorkoutsController : Controller
     }
     
     [HttpPost("addUserWorkout/{userId}")]
-    [Authorize(Roles = "Manager")]
 
     public async Task<IActionResult> AddUserWorkout(string userId, [FromBody] WorkoutDTO workoutDto)
     {
@@ -108,10 +107,17 @@ public class WorkoutsController : Controller
         }
 
         var user = await _dbContext.Users.FindAsync(userId);
-    
+
         if (user == null)
         {
             return BadRequest("User does not exist");
+        }
+
+        if (string.IsNullOrEmpty(workoutDto.WorkoutType) ||
+            string.IsNullOrEmpty(workoutDto.WorkoutStartTime) ||
+            string.IsNullOrEmpty(workoutDto.WorkoutEndTime))
+        {
+            return BadRequest("All workout details are required");
         }
 
         var workout = new Workouts
@@ -122,13 +128,6 @@ public class WorkoutsController : Controller
             WorkoutEndTime = workoutDto.WorkoutEndTime,
             ClassId = workoutDto.ClassId
         };
-        
-        if (string.IsNullOrEmpty(workout.WorkoutType) ||
-            string.IsNullOrEmpty(workout.WorkoutStartTime) ||
-            string.IsNullOrEmpty(workout.WorkoutEndTime))
-        {
-            return BadRequest("All workout details are required");
-        }
 
         user.Workouts.Add(workout);
         await _dbContext.Workouts.AddAsync(workout);
@@ -144,7 +143,6 @@ public class WorkoutsController : Controller
 
         return Ok(workout); 
     }
-    
     
     [HttpGet("getUserWorkouts/{userId}")]
     [Authorize(Roles = "Manager")]
