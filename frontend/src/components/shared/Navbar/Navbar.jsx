@@ -298,6 +298,20 @@ const Navbar = () => {
          </Link>
       </li>
         )}
+
+        {token && (
+          <li>
+            <div className="absolute right-0 mt-3 w-40 bg-white rounded-md shadow-lg py-1">
+            <button
+              to="#"
+              className="block px-4 py-2 text-sm text-red-500 "
+              onClick={handleSignOut}
+            >
+              <GoSignOut /> Log Out
+            </button>
+          </div>
+          </li>
+        )}
           
           </ul>
        </div>
