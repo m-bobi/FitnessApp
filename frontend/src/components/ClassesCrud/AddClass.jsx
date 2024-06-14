@@ -10,6 +10,7 @@ const AddClass = () => {
     classImage: null,
   });
 
+
   function handleSubmit(event) {
     event.preventDefault();
     const {

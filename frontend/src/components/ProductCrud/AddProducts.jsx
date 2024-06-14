@@ -3,8 +3,12 @@ import { toast, ToastContainer } from "react-toastify";
 import api, { setAuthToken } from "../Auth/api";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useFetch } from "../Context/FetchContext";
 
 const AddProducts = () => {
+
+  const { triggerFetch } = useFetch();
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     productName: "",
@@ -92,6 +96,7 @@ const AddProducts = () => {
       .post(`api/Products/addProduct`, productData)
       .then((productResponse) => {
         toast.success("You've successfully added a product!");
+        triggerFetch();
       })
       .catch((error) => {
         console.error(error);

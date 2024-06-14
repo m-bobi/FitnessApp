@@ -3,8 +3,10 @@ import api, { setAuthToken } from "../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
 import AddProducts from "./AddProducts";
 import showConfirm from "../../utils/Confirm";
+import { useFetch } from "../Context/FetchContext";
 
 const ListProducts = () => {
+  const { shouldFetch } = useFetch();
   const [allProducts, setAllProducts] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,7 +24,7 @@ const ListProducts = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [shouldFetch]);
 
   const handleEditField = (field, value) => {
     setEditedProduct({ ...editedProduct, [field]: value });

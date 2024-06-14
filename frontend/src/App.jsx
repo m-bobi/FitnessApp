@@ -10,6 +10,7 @@ import AllClasses from './pages/Classes/AllClasses';
 import UserDashboard from './pages/UserDashboard/UserDashboard';
 import ProductsDashboard from './pages/ProductsDashboard/ProductsDashboard';
 import AuthProvider from './components/Auth/AuthProvider';
+import { FetchProvider } from './components/Context/FetchContext';
 function App() {
 
 
@@ -40,6 +41,7 @@ function App() {
     <div>
       <Suspense fallback={<div>Loading...</div>}>
       <AuthProvider>
+      <FetchProvider>
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
@@ -97,6 +99,7 @@ function App() {
             <Route exact path="*" element={<Unauthorized />} />
           </Routes>
         </Router>
+        </FetchProvider>
         </AuthProvider>
       </Suspense>
     </div>

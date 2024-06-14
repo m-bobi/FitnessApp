@@ -14,14 +14,22 @@ const Mbrojtja = () => {
         setIsOpenPlayers(!isOpenPlayers);
     };
 
+    const [shouldFetch, setShouldFetch] = useState(false);
     const [name, setName] = useState("");
     const [teams, setTeams] = useState([]);
     const [players, setPlayers] = useState([]);
+    const [data2,setData2] = useState("Dont loop");
     
     const [playerName, setPlayerName] = useState("");
     const [playerNumber, setPlayerNumber] = useState(0);
     const [playerBirthYear, setPlayerBirthYear] = useState(0);
     const [teamId, setTeamId] = useState(0);
+
+    const [selectedTeam, setSelectedTeam] = useState(null);
+    const [editedTeam, setEditedTeam] = useState({
+      teamId: "",
+      name: ""
+    });
 
 
       const addTeam = (event) => {
@@ -36,6 +44,7 @@ const Mbrojtja = () => {
             )
             .then(() => {
               console.log("Team has been added.");
+              setShouldFetch(prev => !prev);
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -57,7 +66,7 @@ const Mbrojtja = () => {
     
       useEffect(() => {
         fetchTeams();
-      },[])
+      },[shouldFetch])
 
       const fetchPlayers = async () => {
         try {
@@ -70,7 +79,7 @@ const Mbrojtja = () => {
     
       useEffect(() => {
         fetchPlayers();
-      },[])
+      },[shouldFetch])
 
 
       const addPlayer = (event) => {
@@ -87,7 +96,9 @@ const Mbrojtja = () => {
               },
             )
             .then(() => {
-              console.log("Team has been added.");
+              console.log("Player has been added.");
+              setShouldFetch(prev => !prev);
+
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -114,11 +125,7 @@ const Mbrojtja = () => {
       }
 
       
-    const [selectedTeam, setSelectedTeam] = useState(null);
-    const [editedTeam, setEditedTeam] = useState({
-      teamId: "",
-      name: ""
-    });
+
 
       const handleEdit = (team) => {
         setSelectedTeam(team);

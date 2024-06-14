@@ -21,7 +21,7 @@ const Home = () => {
         <OurBestTrainers/>
         <OurWorkouts/>
         <Footer/>
-        {/* <Mbrojtja/> */}
+        <Mbrojtja/>
       </div>
   );
 }
