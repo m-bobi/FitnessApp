@@ -4,8 +4,11 @@ import { toast, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
 import showConfirm from "../../utils/Confirm";
 import AddClass from "./AddClass";
+import { useFetch } from "../Context/FetchContext";
 
 const ListClass = () => {
+  const { shouldFetch } = useFetch();
+
   const [selectedClass, setSelectedClass] = useState(null);
   const [editedClass, setEditedClass] = useState({});
   const [selectedTrainer, setSelectedTrainer] = useState(null);
@@ -40,7 +43,7 @@ const ListClass = () => {
   useEffect(() => {
     fetchTrainers();
     fetchclasses();
-  }, []);
+  }, [shouldFetch]);
 
   const handleDelete = async (classId) => {
     const result = await showConfirm(

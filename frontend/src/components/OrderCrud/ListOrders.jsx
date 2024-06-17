@@ -19,6 +19,7 @@ const ListOrders = () => {
   });
 
   const [orders, setOrders] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const fetchOrders = async () => {
     try {
@@ -98,6 +99,13 @@ const ListOrders = () => {
       });
     };
 
+    const handleStatusFilterChange = (event) => {
+      setStatusFilter(event.target.value);
+    };
+  
+    const filteredOrders = statusFilter === "All"
+      ? orders
+      : orders.filter(order => order.orderStatus === statusFilter);
   return (
     <>
       <ToastContainer
@@ -128,11 +136,12 @@ const ListOrders = () => {
                 </label>
                 <div className="relative mt-1 lg:w-64 xl:w-96">
                   <input
+                  onChange={handleStatusFilterChange}
                     type="text"
                     name="email"
                     id="users-search"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Search for users"
+                    placeholder="Search for orders by status"
                   />
                 </div>
               </form>
@@ -299,8 +308,8 @@ const ListOrders = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                  {orders && orders.length > 0 ? (
-                    orders.map((o) => (
+                  {filteredOrders  && filteredOrders.length > 0 ? (
+                    filteredOrders.map((o) => (
                       <tr className="hover:bg-gray-100 dark:hover:bg-gray-700">
                         <td className="w-4 p-4">
                           <div className="flex items-center">

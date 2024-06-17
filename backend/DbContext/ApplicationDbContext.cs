@@ -32,6 +32,9 @@ namespace backend.DbContext
         
         public DbSet<Team> Team { get; set; }
         public DbSet<Player> Player { get; set; }
+        
+        public DbSet<Planet> Planets { get; set; }
+        public DbSet<Satellite> Satellites { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

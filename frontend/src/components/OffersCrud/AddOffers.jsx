@@ -3,8 +3,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import api, { setAuthToken } from "../Auth/api";
+import { useFetch } from "../Context/FetchContext";
 
 const AddOffers = () => {
+
+  const { triggerFetch } = useFetch();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
@@ -31,6 +34,7 @@ const AddOffers = () => {
           setAuthToken(token)
         )
         .then(() => {
+          triggerFetch();
           toast.success("Offer has been added.");
         })
         .catch((error) => {
