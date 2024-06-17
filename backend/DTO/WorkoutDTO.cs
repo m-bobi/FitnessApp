@@ -22,13 +22,5 @@ public class WorkoutDTO
     [StringLength(20)]
     public string? WorkoutEndTime { get; set; }
     
-    [ForeignKey("ClassId")]
-    public int? ClassId { get; init; }
-    
-    
-    [ForeignKey("Id")]
-    public String? UserId { get; set; }
-    
-    [JsonIgnore]
-    public User? User { get; set; }
+
 }

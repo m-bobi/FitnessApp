@@ -9,6 +9,7 @@ const Profile = () => {
   const [user, setUser] = useState([]);
   const [orders, setOrders] = useState([]);
   const [enrolledIn, setEnrolledIn] = useState("");
+  const [workouts, setWorkouts] = useState([]);
   const token = Cookies.get("token");
   const userId = Cookies.get("id");
 
@@ -25,6 +26,20 @@ const Profile = () => {
   useEffect(() => {
     if (token) {
       api
+        .get(`api/Workouts/getUserWorkouts/${userId}`)
+        .then((response) => {
+          if (response.data) {
+            setWorkouts(response.data);
+          }
+        })
+        .catch((error) => {
+           });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      api
         .get(`api/User/getUser/${userId}`)
         .then((response) => {
           if (response.data) {
@@ -32,7 +47,9 @@ const Profile = () => {
           }
         })
         .catch((error) => {
-          toast.error("Error fetching the user! Please, contact a staff member.");
+          toast.error(
+            "Error fetching the user! Please, contact a staff member."
+          );
         });
 
       api
@@ -44,9 +61,7 @@ const Profile = () => {
             setOrders(response.data);
           }
         })
-        .catch((error) => {
-          toast.error("Error getting the orders! Please, contact a staff member.");
-        });
+        .catch((error) => {});
     }
   }, [token]);
 
@@ -61,9 +76,7 @@ const Profile = () => {
             setEnrolledIn(response.data.classType);
           }
         })
-        .catch((error) => {
-          toast.error("Error fetching the class! Please, contact a staff member.");
-        });
+        .catch((error) => {});
     }
   }, [token]);
 
@@ -393,6 +406,58 @@ const Profile = () => {
                               {order.orderTotalAmount}$
                             </td>
                             <td className="px-4 py-2">{order.orderStatus}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div className="my-4"></div>
+
+              <div className="bg-white p-3 shadow-sm rounded-sm">
+                <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                  <span clas="text-blue-500">
+                    <svg
+                      className="h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </span>
+                  <span className="tracking-wide">Workouts</span>
+                </div>
+                <div className="text-gray-700">
+                  <div className="grid md:grid-cols-2 text-sm">
+                    <table className="table-auto w-full">
+                      <thead>
+                        <tr>
+                          <th className="px-4 py-2">Workout ID</th>
+                          <th className="px-4 py-2">Workout Type</th>
+                          <th className="px-4 py-2">Start Time</th>
+                          <th className="px-4 py-2">End Time</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-center">
+                        {workouts.map((workout) => (
+                          <tr key={workout.workoutId}>
+                            <td className="px-4 py-2">{workout.workoutId}</td>
+                            <td className="px-4 py-2">{workout.workoutType}</td>
+                            <td className="px-4 py-2">
+                              {workout.workoutStartTime}
+                            </td>
+                            <td className="px-4 py-2">
+                              {workout.workoutEndTime}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

@@ -25,14 +25,19 @@ const OurWorkouts = () => {
     fetchWorkouts();
   }, []);
 
-  const handleAddWorkout = async (workout) => {
+  const handleAddWorkout = async (workoutId) => {
+        const workoutExists = await api.get(
+          `api/Workouts/getWorkout/${workoutId}`
+        );
+        if (!workoutExists) {
+          console.error("Workout does not exist");
+          toast.error(
+            "Workout does not exist! Please, select a valid workout!"
+          );
+          return;
+        }
     try {
-      await api.post(`api/Workouts/addUserWorkout/${userId}`, {
-        workoutType: workout.workoutType,
-        workoutStartTime: workout.workoutStartTime,
-        workoutEndTime: workout.workoutEndTime,
-        classId: workout.classId,
-      });
+      await api.post(`api/Workouts/addUserWorkout/${userId}/${workoutId}`);
       toast.success("Workout added successfully!");
     } catch (error) {
       console.error("Error adding Workout:", error);
@@ -42,6 +47,18 @@ const OurWorkouts = () => {
 
   return (
     <div className="ourWorkouts">
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <h1>Our Workouts</h1>
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -55,9 +72,6 @@ const OurWorkouts = () => {
               </th>
               <th scope="col" class="px-6 py-3">
                 End Time
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Class
               </th>
               <th scope="col" class="px-6 py-3">
                 Action
@@ -80,10 +94,9 @@ const OurWorkouts = () => {
                     </th>
                     <td class="px-6 py-4">{w.workoutStartTime}</td>
                     <td class="px-6 py-4">{w.workoutEndTime}</td>
-                    <td class="px-6 py-4">{w.classId}</td>
                     <td class="px-6 py-4">
                       <button
-                        onClick={() => handleAddWorkout(w)}
+                        onClick={() => handleAddWorkout(w.workoutId)}
                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
                         Add

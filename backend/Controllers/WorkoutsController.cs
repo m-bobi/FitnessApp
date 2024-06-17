@@ -22,7 +22,7 @@ public class WorkoutsController : Controller
 
     
     [HttpGet("getAllWorkouts")]
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "User, Manager, Trainer")]
 
     public async Task<List<Workouts>> GetAllWorkouts()
     {
@@ -97,40 +97,24 @@ public class WorkoutsController : Controller
         return Ok("Workout updated successfully");
     }
     
-    [HttpPost("addUserWorkout/{userId}")]
-
-    public async Task<IActionResult> AddUserWorkout(string userId, [FromBody] WorkoutDTO workoutDto)
+    [HttpPost("addUserWorkout/{userId}/{workoutId}")]
+    public async Task<IActionResult> AddUserWorkout(string userId, int workoutId)
     {
-        if (workoutDto == null)
-        {
-            return BadRequest("Workout data is required");
-        }
-
         var user = await _dbContext.Users.FindAsync(userId);
-
         if (user == null)
         {
             return BadRequest("User does not exist");
         }
 
-        if (string.IsNullOrEmpty(workoutDto.WorkoutType) ||
-            string.IsNullOrEmpty(workoutDto.WorkoutStartTime) ||
-            string.IsNullOrEmpty(workoutDto.WorkoutEndTime))
+        var workout = await _dbContext.Workouts.FindAsync(workoutId);
+        if (workout == null)
         {
-            return BadRequest("All workout details are required");
+            return BadRequest("Workout does not exist");
         }
 
-        var workout = new Workouts
-        {
-            UserId = userId,
-            WorkoutType = workoutDto.WorkoutType,
-            WorkoutStartTime = workoutDto.WorkoutStartTime,
-            WorkoutEndTime = workoutDto.WorkoutEndTime,
-            ClassId = workoutDto.ClassId
-        };
+        user.Workouts ??= new List<Workouts>();
 
         user.Workouts.Add(workout);
-        await _dbContext.Workouts.AddAsync(workout);
 
         try
         {
@@ -141,11 +125,19 @@ public class WorkoutsController : Controller
             return StatusCode(500, $"An error occurred while saving the workout: {ex.Message}");
         }
 
-        return Ok(workout); 
+        var workoutDto = new WorkoutDTO
+        {
+            WorkoutId = workout.WorkoutId,
+            WorkoutType = workout.WorkoutType,
+            WorkoutStartTime = workout.WorkoutStartTime,
+            WorkoutEndTime = workout.WorkoutEndTime,
+        };
+
+        return Ok(workoutDto);
     }
     
     [HttpGet("getUserWorkouts/{userId}")]
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "User, Manager, Trainer")]
 
     public async Task<IActionResult> GetUserWorkouts(string userId)
     {
