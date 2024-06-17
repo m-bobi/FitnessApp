@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../Auth/api";
+import { useFetch } from "../Context/FetchContext";
 
 const AddClass = () => {
+  const { triggerFetch } = useFetch();
+
   const [formData, setFormData] = useState({
     classType: "",
     classDescription: "",
@@ -44,6 +47,7 @@ const AddClass = () => {
         });
       })
       .then(() => {
+        triggerFetch();
         toast.success("Class successfully added!");
       })
       .catch((error) => {

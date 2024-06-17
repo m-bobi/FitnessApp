@@ -6,8 +6,11 @@ import AddOffers from "./AddOffers";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import showConfirm from "../../utils/Confirm";
+import { useFetch } from "../Context/FetchContext";
 
 const ListOffers = () => {
+  const { shouldFetch } = useFetch();
+
   const exportToPdf = async () => {
     const input = document.getElementById("contacts-table");
     if (!input) {
@@ -73,7 +76,7 @@ const ListOffers = () => {
     };
 
     fetchOffers();
-  }, [token]);
+  }, [shouldFetch]);
 
   const handleDelete = async (id) => {
     const result = await showConfirm(

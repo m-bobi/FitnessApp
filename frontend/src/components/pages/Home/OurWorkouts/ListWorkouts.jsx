@@ -3,8 +3,12 @@ import { toast, ToastContainer } from "react-toastify";
 import AddWorkouts from "./AddWorkouts";
 import api, { setAuthToken } from "../../../Auth/api";
 import showConfirm from "../../../../utils/Confirm";
+import { useFetch } from "../../../Context/FetchContext";
+import Cookies from "js-cookie";
 
 const ListWorkouts = () => {
+  const token = Cookies.get("token");
+  const { shouldFetch } = useFetch();
   const [allWorkouts, setallWorkouts] = useState([]);
 
   const [selectedWorkout, setSelectedWorkout] = useState(null);
@@ -59,6 +63,7 @@ const ListWorkouts = () => {
     try {
       const response = await api.get("api/Workouts/getAllWorkouts");
       setallWorkouts(response.data);
+      setAuthToken(token);
     } catch (error) {
       toast.error("Error fetching workouts:", error);
     }
@@ -66,7 +71,7 @@ const ListWorkouts = () => {
 
   useEffect(() => {
     fetchWorkouts();
-  }, []);
+  }, [shouldFetch]);
 
   const handleDelete = async (id) => {
     const result = await showConfirm(

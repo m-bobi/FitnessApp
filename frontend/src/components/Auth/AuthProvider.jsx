@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
     }, 30 * 1000); // Refresh every 30 seconds
 
     return () => clearInterval(interval);
-  }, [authToken]);
+  }, [refreshToken]);
 
   return (
     <AuthContext.Provider value={{ authToken, logout }}>
