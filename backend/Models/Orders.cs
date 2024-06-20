@@ -19,11 +19,18 @@ namespace backend.Models;
 
         [ForeignKey("Id")]
         public String UserId { get; set; }
+        
         [JsonIgnore]
         public User User { get; set; }
 
         [ForeignKey("ProductId")]
         public int ProductId { get; set; }
+
+        [NotMapped] // This ensures the field is not created in the database
+        public string ProductName { get; set; }
+
+        [NotMapped]
+        public string ProductDescription { get; set; }
 
         public Products Product { get; set; }
     }

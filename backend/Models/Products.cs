@@ -7,10 +7,8 @@ public class Products
     [Key]
     public int? ProductId { get; set; }
     
-    [Required]
     public string ProductName { get; set; }
     
-    [Required]
     [StringLength(30)]
     public string ProductDescription { get; set; }
     

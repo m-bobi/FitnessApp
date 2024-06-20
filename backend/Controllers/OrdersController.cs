@@ -63,14 +63,17 @@ public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrdersSimple()
     try
     {
         var orders = await _dbContext.Orders
+            .Include(o => o.Product)
             .Select(o => new OrderDTO
             {
                 OrderId = o.OrderId,
                 OrderDate = o.OrderDate,
-                OrderTotalAmount = o.OrderTotalAmount,
                 OrderStatus = o.OrderStatus,
+                OrderTotalAmount = o.OrderTotalAmount,
                 UserId = o.UserId,
                 ProductId = o.ProductId,
+                ProductName = o.Product.ProductName,
+                ProductDescription = o.Product.ProductDescription
             })
             .ToListAsync();
 
@@ -137,15 +140,14 @@ public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrdersSimple()
             return NotFound();
         }
 
-        
         existingOrder.OrderStatus = orderDto.OrderStatus;
         existingOrder.OrderDate = orderDto.OrderDate;
         existingOrder.UserId = orderDto.UserId;
         existingOrder.ProductId = orderDto.ProductId;
         existingOrder.OrderTotalAmount = orderDto.OrderTotalAmount;
-        orderDto.ProductName = orderDto.ProductName;
-        orderDto.ProductDescription = orderDto.ProductDescription;
-        
+        existingOrder.ProductName = orderDto.ProductName;
+        existingOrder.ProductDescription = orderDto.ProductDescription;
+
         await _dbContext.SaveChangesAsync();
         return Ok("Order updated successfully!");
     }

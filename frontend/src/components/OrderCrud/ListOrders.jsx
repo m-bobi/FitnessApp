@@ -25,6 +25,7 @@ const ListOrders = () => {
     try {
       const response = await api.get(`api/Orders/getAllOrdersSimple`);
       setOrders(response.data);
+      console.log(response.data)
     } catch (error) {
       toast.error("Error fetching orders!");
     }
@@ -49,9 +50,9 @@ const ListOrders = () => {
     }
   };
 
-  const handleEditField = (field, value) => {
-    setEditedOrder({ ...editedOrder, [field]: value });
-  };
+const handleEditField = (field, value) => {
+  setEditedOrder({ ...editedOrder, [field]: value });
+};
 
   const handleUpdate = async (event) => {
     event.preventDefault();
@@ -102,7 +103,7 @@ const ListOrders = () => {
     const handleStatusFilterChange = (event) => {
       setStatusFilter(event.target.value);
     };
-  
+
     const filteredOrders = statusFilter === "All"
       ? orders
       : orders.filter(order => order.orderStatus === statusFilter);
