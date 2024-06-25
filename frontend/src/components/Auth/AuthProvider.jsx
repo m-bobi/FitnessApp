@@ -38,14 +38,40 @@ const AuthProvider = ({ children }) => {
     setAuthToken(null);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (refreshToken) {
-        refreshAuthToken().catch(logout);
-      }
-    }, 30 * 1000); // Refresh every 30 seconds
 
-    return () => clearInterval(interval);
+
+
+  useEffect(() => {
+    let isMounted = true; 
+
+    const refreshInterval = 30 * 1000; 
+
+    const refreshTokenFunction = async () => {
+      if (refreshToken) {
+        try {
+          await refreshAuthToken();
+        } catch (error) {
+          if (isMounted) {
+            logout();
+          }
+        }
+      }
+    };
+
+    const startRefreshInterval = () => {
+      setTimeout(async () => {
+        if (isMounted) {
+          await refreshTokenFunction();
+          startRefreshInterval(); 
+        }
+      }, refreshInterval);
+    };
+
+    startRefreshInterval(); 
+
+    return () => {
+      isMounted = false; 
+    };
   }, [refreshToken]);
 
   return (
