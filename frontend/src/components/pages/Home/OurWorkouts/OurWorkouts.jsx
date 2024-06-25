@@ -17,7 +17,6 @@ const OurWorkouts = () => {
       );
       setWorkouts(response.data);
     } catch (error) {
-      toast.error("Error fetching workouts! Please, contact a staff member!");
     }
   };
 

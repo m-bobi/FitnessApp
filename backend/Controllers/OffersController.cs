@@ -93,24 +93,27 @@ public class OffersController : Controller
     }
 
     // Create API to update an existing order.
-    [HttpPut("updateOffer/{id}")]
-    public async Task<IActionResult> UpdateOffer([FromBody] Offers offer)
+[HttpPut("updateOffer/{id}")]
+public async Task<IActionResult> UpdateOffer(int id, [FromBody] Offers offer)
+{
+    if (offer is null)
     {
-        if (offer is null || offer.OfferId == 0)
-        {
-            return BadRequest("Invalid offer data");
-        }
-
-        var existingOffer = await _dbContext.Offers.FindAsync(offer.OfferId);
-        if (existingOffer == null)
-        {
-            return NotFound();
-        }
-
-        _dbContext.Entry(existingOffer).CurrentValues.SetValues(offer);
-        await _dbContext.SaveChangesAsync();
-        return Ok("Offer updated successfully");
+        return BadRequest("Invalid offer data");
     }
+
+    var existingOffer = await _dbContext.Offers.FindAsync(id);
+    if (existingOffer == null)
+    {
+        return NotFound();
+    }
+
+    existingOffer.OfferType = offer.OfferType;
+    existingOffer.OfferDescription = offer.OfferDescription;
+    existingOffer.OfferPrice = offer.OfferPrice;
+
+    await _dbContext.SaveChangesAsync();
+    return Ok("Offer updated successfully");
+}
 
 
 
