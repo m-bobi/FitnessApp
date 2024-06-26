@@ -30,12 +30,6 @@ namespace backend.DbContext
         public DbSet<Contact> Contact { get; set; }
         public DbSet<TrainerClass> TrainerClasses { get; set; }
         
-        public DbSet<Team> Team { get; set; }
-        public DbSet<Player> Player { get; set; }
-        
-        public DbSet<Planet> Planets { get; set; }
-        public DbSet<Satellite> Satellites { get; set; }
-
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
@@ -46,7 +40,6 @@ namespace backend.DbContext
 
             base.OnModelCreating(modelBuilder);
 
-            // Seed AspNetUsers table with default admin user
             var hasher = new PasswordHasher<User>();
 
             var adminEmail =
@@ -111,12 +104,7 @@ namespace backend.DbContext
                 .HasOne(tc => tc.Class)
                 .WithMany(c => c.TrainerClasses)
                 .HasForeignKey(tc => tc.ClassId);
-            
-            // modelBuilder.Entity<Team>()
-            //     .HasMany(t => t.Players)
-            //     .WithOne(p => p.Team)
-            //     .HasForeignKey(p => p.TeamId)
-            //     .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

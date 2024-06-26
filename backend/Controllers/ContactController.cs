@@ -41,6 +41,8 @@ public class ContactController : Controller
     }
     
     [HttpDelete("deleteContact/{id}")]
+    [Authorize(Roles = "Manager")]
+
     public async Task<IActionResult> DeleteContact(int id)
     {
         var contact = await _dbContext.Contact.FindAsync(id);

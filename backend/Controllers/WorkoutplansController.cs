@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
-using backend.DbContext; // Assuming this is the correct namespace
+using backend.DbContext;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +19,8 @@ public class WorkoutplansController : Controller
     }
 
     // Get all workout plans.
-    // [EnableCors("_myAllowSpecificOrigins")]  // Uncomment if using CORS
     [HttpGet("getAllWorkoutsplans")]
+    [Authorize(Roles = "User, Manager, Trainer")]
     public async Task<List<WorkoutPlans>> GetAllWorkouts()
     {
         // Get all workout plans from the database
@@ -28,6 +29,8 @@ public class WorkoutplansController : Controller
 
 
     [HttpPost("addWorkoutplans")]
+    [Authorize(Roles = "Manager, Trainer")]
+
     public async Task<IActionResult> AddWorkoutPlans([FromBody]WorkoutPlans workoutplans)
     {
         if (workoutplans is null)
@@ -35,19 +38,15 @@ public class WorkoutplansController : Controller
             return BadRequest();
         }
 
-        // Add the new workout plan to the database
         await _dbContext.AddAsync(workoutplans);
         await _dbContext.SaveChangesAsync();
         return Ok();
     }
 
 
-
-
-
-
     [HttpGet("getWorkoutplans/{id}")]
-    // [EnableCors("_myAllowSpecificOrigins")]  // Uncomment if using CORS
+    [Authorize(Roles = "Manager, Trainer")]
+
     public async Task<IActionResult> GetWorkoutPlansById(int id)
     {
         // Get the workout plan with the specified ID from the database
@@ -60,24 +59,25 @@ public class WorkoutplansController : Controller
         return Ok(workoutplan);
     }
 
-    // Delete a workout plan by ID.
     [HttpDelete("deleteWorkoutplans/{id}")]
+    [Authorize(Roles = "Manager, Trainer")]
+
     public async Task<IActionResult> DeleteWorkoutPlans(int id)
     {
-        // Get the workout plan with the specified ID from the database
         var workoutplan = await _dbContext.WorkoutPlans.FindAsync(id);
         if (workoutplan == null)
         {
             return NotFound();
         }
 
-        // Remove the workout plan from the database
         _dbContext.WorkoutPlans.Remove(workoutplan);
         await _dbContext.SaveChangesAsync();
         return Ok("Workout plan deleted successfully");
     }
         
     [HttpPut("updateWorkoutplans/{id}")]
+    [Authorize(Roles = "Manager, Trainer")]
+
     public async Task<IActionResult> UpdateWorkoutPlans(int id, [FromBody] WorkoutPlans updatedWorkout)
     {
         if (updatedWorkout == null || updatedWorkout.WorkoutPlanId == 0)
@@ -91,9 +91,6 @@ public class WorkoutplansController : Controller
             return NotFound("Workout plan not found.");
         }
 
-        // Update specific properties using reflection (optional)
-        // Update only allowed properties based on your model and security considerations
-        // You might need to modify this based on your specific needs
         var updateProperties = typeof(WorkoutPlans).GetProperties()
             .Where(p => p.CanWrite && p.Name != "Id"); // Exclude Id property
 
@@ -102,23 +99,17 @@ public class WorkoutplansController : Controller
             property.SetValue(existingWorkoutPlan, property.GetValue(updatedWorkout));
         }
 
-      
-
         try
         {
-            _dbContext.Entry(existingWorkoutPlan).State = EntityState.Modified; // Mark entity as modified
+            _dbContext.Entry(existingWorkoutPlan).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
             return Ok("Workout plan updated successfully");
         }
         catch (DbUpdateException ex)
         {
-            // Handle database exceptions here (consider logging the exception)
             return StatusCode(500, "An error occurred while updating the workout plan.");
         }
     }
-
-
-        
 
 
 }

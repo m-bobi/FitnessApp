@@ -79,6 +79,7 @@ public class OffersController : Controller
 
     // Create API to delete an order by ID.
     [HttpDelete("deleteOffer/{id}")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> DeleteOffer(int id)
     {
         var offer = await _dbContext.Offers.FindAsync(id);
@@ -94,6 +95,8 @@ public class OffersController : Controller
 
     // Create API to update an existing order.
 [HttpPut("updateOffer/{id}")]
+[Authorize(Roles = "Manager")]
+
 public async Task<IActionResult> UpdateOffer(int id, [FromBody] Offers offer)
 {
     if (offer is null)

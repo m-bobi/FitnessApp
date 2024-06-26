@@ -4,6 +4,7 @@ using backend.DTO;
 using backend.Enums;
 using backend.Models;
 using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,9 +24,9 @@ public class TrainersController : Controller
         _dbContext = dbContext;
     }
 
-    // Create API to get all orders.
-    // [EnableCors("_myAllowSpecificOrigins")]
     [HttpGet("getAllTrainers")]
+    [Authorize(Roles = "User, Manager, Trainer")]
+
     public async Task<List<Trainers>> GetAllTrainers()
     {
         return await _dbContext.Trainers.ToListAsync();
@@ -33,6 +34,8 @@ public class TrainersController : Controller
 
 
     [HttpPost("addTrainer")]
+    [Authorize(Roles = "Manager, Trainer")]
+
     public async Task<IActionResult> AddTrainer( [FromBody]Trainers trainer)
     {
         if (trainer is null)
@@ -44,15 +47,10 @@ public class TrainersController : Controller
         await _dbContext.SaveChangesAsync();
         return Ok();
     }
-
-
-
-
-
-
-    // Create API to get a specific order by ID.
+    
     [HttpGet("getTrainer/{id}")]
-    // [EnableCors("_myAllowSpecificOrigins")]
+    [Authorize(Roles = "User, Manager, Trainer")]
+
     public async Task<IActionResult> GetTrainerById(int id)
     {
         var trainer = await _dbContext.Trainers.FindAsync(id);
@@ -65,6 +63,8 @@ public class TrainersController : Controller
 
     // Create API to delete an order by ID.
     [HttpDelete("deleteTrainer/{id}")]
+    [Authorize(Roles = "User, Manager, Trainer")]
+
     public async Task<IActionResult> DeleteTrainer(int id)
     {
         var trainer = await _dbContext.Trainers.FindAsync(id);
@@ -80,7 +80,8 @@ public class TrainersController : Controller
 
     // Create API to update an existing order.
     [HttpPut("updateTrainer/{id}")]
-    // [EnableCors("_myAllowSpecificOrigins")]
+    [Authorize(Roles = "User, Manager, Trainer")]
+
     public async Task<IActionResult> UpdateTrainer([FromBody] Trainers trainer)
     {
         if (trainer is null || trainer.TrainerId == 0)

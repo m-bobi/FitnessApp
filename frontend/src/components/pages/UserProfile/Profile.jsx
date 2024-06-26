@@ -6,7 +6,7 @@ import api from "../../Auth/api";
 import { toast, ToastContainer } from "react-toastify";
 
 const Profile = () => {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const [orders, setOrders] = useState([]);
   const [enrolledIn, setEnrolledIn] = useState("");
   const [workouts, setWorkouts] = useState([]);
@@ -44,13 +44,17 @@ const Profile = () => {
         .then((response) => {
           if (response.data) {
             setUser(response.data);
+            setFormData({
+              name: response.data.name,
+              userName: response.data.userName,
+              gender: response.data.gender,
+              Birthdate: response.data.birthdate,
+              phoneNumber: response.data.phoneNumber,
+              address: response.data.address,
+              email: response.data.email,
+            });
           }
         })
-        .catch((error) => {
-          toast.error(
-            "Error fetching the user! Please, contact a staff member."
-          );
-        });
 
       api
         .get(`api/Orders/getOrdersByUser/${userId}`)
@@ -99,6 +103,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const userUpdateDto = {
+        name: formData.name,
         userName: formData.userName,
         address: formData.address,
         phoneNumber: formData.phoneNumber,

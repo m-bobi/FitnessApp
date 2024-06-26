@@ -20,7 +20,7 @@ public class ProductsController : Controller
         _stripeClient = stripeClient;
     }
 
-// Create API to get all Products with pagination.
+    // Create API to get all Products with pagination.
     [HttpGet("getAllProducts")]
     public async Task<ActionResult<IEnumerable<Products>>> GetAllProducts(int page = 1, int limit = 10)
     {
@@ -104,6 +104,8 @@ public class ProductsController : Controller
 
     // Create API to delete an Product by ID.
     [HttpDelete("deleteProduct/{id}")]
+    [Authorize(Roles = "Manager")]
+
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var product = await _dbContext.Products.FindAsync(id);
@@ -114,8 +116,9 @@ public class ProductsController : Controller
         return Ok("Product deleted successfully");
     }
 
-    // Create API to update an existing Product.// Create API to update an existing Product.
     [HttpPut("updateProduct/{id}")]
+    [Authorize(Roles = "Manager")]
+
     public async Task<IActionResult> UpdateProduct(int id, [FromBody] Products product)
     {
         if (product is null)
