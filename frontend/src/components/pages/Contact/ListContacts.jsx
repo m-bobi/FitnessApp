@@ -3,26 +3,9 @@ import { toast, ToastContainer } from "react-toastify";
 import api from "../../Auth/api";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import showConfirm from "../../../utils/Confirm";
 
 const ListContacts = () => {
-
-  // const exportToPdf = async () => {
-  //   const input = document.getElementById('contacts-table');
-  //   if (!input) {
-  //     console.error('Element not found!');
-  //     return;
-  //   }
-
-  //   try {
-  //     const canvas = await html2canvas(input);
-  //     const imgData = canvas.toDataURL('image/png');
-  //     const pdf = new jsPDF();
-  //     pdf.addImage(imgData, 'PNG', 0, 0);
-  //     pdf.save('contacts.pdf');
-  //   } catch (error) {
-  //     console.error('Error generating PDF', error);
-  //   }
-  // };
 
   const exportToPdf = async () => {
     const input = document.getElementById('contacts-table');
@@ -83,7 +66,10 @@ const ListContacts = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this contact?")) {
+    const result = await showConfirm(
+      "Are you sure you want to delete this message?"
+    );
+    if(result){
       try {
         await api.delete(
           `api/Contact/deleteContact/${id}`,
@@ -95,8 +81,7 @@ const ListContacts = () => {
         toast.error("Error deleting contact!")
       }
     }
-  };
-
+  }
 
 
   return (

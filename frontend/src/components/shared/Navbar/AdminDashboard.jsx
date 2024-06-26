@@ -47,6 +47,7 @@ const AdminDashboard = () => {
     labels: [],
     datasets: [],
   });
+
   const [isDark, setIsDark] = useState(() => {
     if (window.localStorage.getItem("dark")) {
       return JSON.parse(window.localStorage.getItem("dark"));

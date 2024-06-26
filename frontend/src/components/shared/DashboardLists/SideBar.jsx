@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useContext } from "react";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import { RiProductHuntLine } from "react-icons/ri";
@@ -9,13 +9,16 @@ import { GiGymBag } from "react-icons/gi";
 import { IoIosContacts } from "react-icons/io";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { CgGym } from "react-icons/cg";
+import { AuthContext } from "../../Auth/AuthProvider";
 
 const SideBar = () => {
   const token = Cookies.get("token");
+  const { logout } = useContext(AuthContext);
 
   const handleSignOut = () => {
     Cookies.remove("token");
     Cookies.remove("id");
+    logout();
   };
   return (
     <>
