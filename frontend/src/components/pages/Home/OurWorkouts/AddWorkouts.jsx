@@ -109,20 +109,27 @@ const AddWorkouts = () => {
               </div>
               <div className="p-4 md:p-5">
                 <form className="space-y-4" onSubmit={addWorkout}>
-                  <div>
+                <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Workout Type
+                      Workout Start Time
                     </label>
-                    <input
-                      type="text"
-                      name="OrderTotalAmount"
+                    <select
+                      name="OrderStatus"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter Workout Type"
+                      required
                       onChange={(event) => {
                         setWorkoutType(event.target.value);
                       }}
-                      required
-                    />
+                    >
+                      <option value="" disabled selected>
+                        Select Workout Type
+                      </option>
+                      <option value="Cardio">Cardio</option>
+                      <option value="Chest">Chest</option>
+                      <option value="Arms">Arms</option>
+                      <option value="Shoulders">Shoulders</option>
+                      <option value="Legs">Legs</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

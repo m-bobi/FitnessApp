@@ -108,20 +108,27 @@ const AddOffers = () => {
               </div>
               <div className="p-4 md:p-5">
                 <form className="space-y-4" onSubmit={addOffer}>
-                  <div>
+                <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Offer Type
                     </label>
-                    <input
-                      type="text"
-                      name="OrderTotalAmount"
+                    <select
+                      name="OrderStatus"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter offer type"
+                      required
                       onChange={(event) => {
                         setOfferType(event.target.value);
                       }}
-                      required
-                    />
+                    >
+                      <option value="" disabled selected>
+                        Select Offer Type
+                      </option>
+                      <option value="Daily">Daily</option>
+                      <option value="Weekly">Weekly</option>
+                      <option value="Monthly">Monthly</option>
+                      <option value="Gold">Gold</option>
+                      <option value="Premium">Premium</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
