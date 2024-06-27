@@ -23,5 +23,7 @@ public class Class
     
     [JsonIgnore]
     public ICollection<UserClass> UserClasses { get; set; }
-
+    
+    public ICollection<TrainerClass> TrainerClasses { get; set; }
+    public string? TrainerId { get; set; }
 }

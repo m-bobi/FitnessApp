@@ -1,3 +1,5 @@
+using backend.Models;
+
 namespace backend.Services;
 
 public interface IStatisticsService
@@ -6,4 +8,6 @@ public interface IStatisticsService
     Task<decimal> GetRevenueAsync();
     Task<int> GetTrainersAsync();
     Task<int> GetClassesAsync();
+    
+    Task<List<RevenueData>> GetRevenueOverTimeAsync();
 }

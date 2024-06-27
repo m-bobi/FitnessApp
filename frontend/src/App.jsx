@@ -6,16 +6,30 @@ import "aos/dist/aos.css";
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Unauthorized from './components/Auth/Unauthorized';
-import Class from './pages/Classes/Class'
-
+import AllClasses from './pages/Classes/AllClasses';
+import UserDashboard from './pages/UserDashboard/UserDashboard';
+import ProductsDashboard from './pages/ProductsDashboard/ProductsDashboard';
+import AuthProvider from './components/Auth/AuthProvider';
+import { FetchProvider } from './components/Context/FetchContext';
 function App() {
 
 
-  const Products = lazy(() => import("./pages/Products/Products"));
-  const Offers = lazy(() => import("./pages/Offers/Offers"));
+  const Class = lazy(() => import("./pages/Classes/Class"));
   const Carts =lazy(() => import("./pages/Cart/Carts"));
   const SignIn = lazy(() => import("./components/SignIn/SignIn"));
   const SignUp = lazy(() => import("./components/SignUp/SignUp"));
+  const Success = lazy(() => import("./components/Payments/Success"))
+  const Cancelled = lazy(() => import("./components/Payments/Cancelled"));
+  const UserProfile = lazy(() => import("./pages/UserProfile/UserProfile"));
+  const ProductDetails = lazy(() => import("./components/shared/ProductDetails/ProductDetails"));
+  const Products = lazy(()=> import("./pages/Products/Products"));
+  const AboutUs = lazy(()=> import("./pages/AboutUs/AboutUs"));
+  const Contact = lazy(()=> import("./pages/ContactUs/Contact"));
+  const ContactDashboard = lazy(()=> import("./pages/ContactDashboard/ContactDashboard"));
+  const ClassesDashboard = lazy(()=> import("./pages/ClassesDashboard/ClassesDashboard"));
+  const OrdersDashboard = lazy(()=> import("./pages/OrdersDashboard/OrdersDashboard"));
+  const OffersDashboard = lazy(()=> import("./pages/OfferDashboard/OfferDashboard"));
+  const WorkoutsDashboard = lazy(()=> import("./pages/WorkoutsDashboard/WorkoutsDashboard"));
 
   useEffect(() => {
     Aos.init({
@@ -26,20 +40,67 @@ function App() {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
+      <AuthProvider>
+      <FetchProvider>
         <Router>
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/products" element={<Products />} />
-            <Route exact path="/offers" element={<Offers />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/className/:id" element={<Class />} />
             <Route exact path="/signin" element={<SignIn />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/cart" element={<Carts />} />
-            <Route path="/class/:id" element={<Class/>} />
+            <Route exact path="/success" element={<Success />} />
+            <Route exact path="/cancelled" element={<Cancelled />} />
+            <Route exact path="/userprofile" element={<UserProfile />} />
+            <Route exact path="/products" element={<Products />} />
+            <Route exact path="/classes" element={<AllClasses />} />
+            <Route exact path="/users" element={<UserDashboard />} />
+            <Route exact path="/aboutus" element={<AboutUs />} />
+            <Route
+              exact
+              path="/productdashboard"
+              element={<ProductsDashboard />}
+            />
+            <Route exact path="/contactus" element={<Contact />} />
+            <Route
+              exact
+              path="/contactdashboard"
+              element={<ContactDashboard />}
+            />
+            <Route
+              exact
+              path="/classesdashboard"
+              element={<ClassesDashboard />}
+            />
+            <Route
+              exact
+              path="/ordersdashboard"
+              element={<OrdersDashboard />}
+            />
+            <Route
+              exact
+              path="/offerdashboard"
+              element={<OffersDashboard />}
+            />
+            <Route
+              exact
+              path="/workoutsdashboard"
+              element={<WorkoutsDashboard />}
+            />
+
+            <Route
+              exact
+              path="/productDetails/:id"
+              element={<ProductDetails />}
+            />
+
             <Route exact path="*" element={<Unauthorized />} />
           </Routes>
         </Router>
+        </FetchProvider>
+        </AuthProvider>
       </Suspense>
     </div>
   );

@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import config from "../../config";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import api from "../Auth/api";
+import { useFetch } from "../Context/FetchContext";
 
 const AddClass = () => {
+  const { triggerFetch } = useFetch();
+
   const [formData, setFormData] = useState({
     classType: "",
     classDescription: "",
     classImage: null,
   });
 
+
   function handleSubmit(event) {
     event.preventDefault();
-
     const {
         classType,
         classDescription,
@@ -35,21 +38,22 @@ const AddClass = () => {
     const formDataObj = new FormData();
     formDataObj.append("image", classImage);
 
-    axios
-      .post(`${config.apiBaseURL}api/UploadImages/addClassImage`, formDataObj)
+    api
+      .post(`api/UploadImages/addClassImage`, formDataObj)
       .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}api/Class/addClass`, {
+        return api.post(`api/Class/addClass`, {
           ...formData,
           classImage: imageResponse.data,
         });
       })
       .then(() => {
-        toast.success("You've successfully registered!");
+        triggerFetch();
+        toast.success("Class successfully added!");
       })
       .catch((error) => {
         console.error(error);
         toast.error(
-          "An error occurred while registering. Please try again later."
+          "An error occurred while adding a class. Please try again later."
         );
       });
   }
@@ -73,6 +77,18 @@ const AddClass = () => {
 
   return (
     <div className="relative">
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -94,7 +110,7 @@ const AddClass = () => {
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Create a new order!
+                  Create a new class!
                 </h3>
                 <button
                   type="button"
@@ -121,19 +137,25 @@ const AddClass = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" onSubmit={handleSubmit} method="POST">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Class Type
                     </label>
-                    <input
-                      type="text"
+                    <select
                       name="ClassType"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                      placeholder="Enter Class Type"
-                      onChange={handleChange}
                       required
-                    />
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled selected>
+                        Select class type
+                      </option>
+                      <option value="Boxing">Boxing</option>
+                      <option value="Yoga">Yoga</option>
+                      <option value="Meditation">Meditation</option>
+                      <option value="Weightlift">Weightlift</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -142,7 +164,7 @@ const AddClass = () => {
                     <input
                       type="text"
                       name="classDescription"
-                      placeholder="Enter class description"
+                      placeholder="Enter className description"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
@@ -151,18 +173,17 @@ const AddClass = () => {
 
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                     Class Image
+                      Class Image
                     </label>
                     <input
                       type="file"
                       name="classImage"
-                      placeholder="Select class image"
+                      placeholder="Select className image"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
                     />
                   </div>
-
 
                   <button
                     type="submit"

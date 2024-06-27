@@ -1,3 +1,4 @@
+using backend.DTO;
 using backend.Enums;
 using backend.Models;
 using Microsoft.AspNetCore.Identity;
@@ -24,9 +25,11 @@ namespace backend.DbContext
         public DbSet<Trainers> Trainers { get; set; }
         public DbSet<WorkoutPlans> WorkoutPlans { get; set; }
         public DbSet<Workouts> Workouts { get; set; }
-        
-        public DbSet<UserClass> UserClasses { get; set; }
 
+        public DbSet<UserClass> UserClasses { get; set; }
+        public DbSet<Contact> Contact { get; set; }
+        public DbSet<TrainerClass> TrainerClasses { get; set; }
+        
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
@@ -37,7 +40,6 @@ namespace backend.DbContext
 
             base.OnModelCreating(modelBuilder);
 
-            // Seed AspNetUsers table with default admin user
             var hasher = new PasswordHasher<User>();
 
             var adminEmail =
@@ -50,21 +52,22 @@ namespace backend.DbContext
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111", // primary key
+                    Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
                     UserName = "admin",
                     NormalizedUserName = adminEmail.ToUpper(),
                     Address = "admin street",
                     Name = "Admin",
-                    Age = 20,
+                    Birthdate = new System.DateTime(1990, 1, 1),
                     Gender = "Male",
                     PhoneNumber = "044234234",
                     PasswordHash = hasher.HashPassword(null, adminPassword),
                     Email = adminEmail,
                     NormalizedEmail = adminEmail.ToUpper(),
-                    Role = Enums.Roles.Manager
+                    Role = Enums.Roles.Manager,
+                    RefreshToken = "f3e1QfQ6UYy3Qec6S0YHYCIBJr650EnapwAOeqs6FtTnCjcBePrZoXaLL7EqzXCwjX2imH01FRPKKQASPPOluCTuOhZBfmWHK5wMYkh6TchNIFsliyl3mw0ArEw9nFBjYkJKZougaMD7SziOGhq5WUbKusE2akIMJUvCiQkxEuZ3D9rMc5tYp7kwU2m4NRkgfkqqPcUPTKOMyaj3w2wkQIxwG3cT6IKTIDaL7ayx0zentz4oZclxCuKmtGvXkYSSJjWd4Edn75HIGZ1o1Kc8NjdkNLsKcddVf7wOCcKdQQHVuHFbcPzibZHMpsYmQK6T"
                 }
             );
-            
+
             modelBuilder.Entity<UserClass>()
                 .HasKey(uc => new { uc.UserId, uc.ClassId });
 
@@ -77,6 +80,31 @@ namespace backend.DbContext
                 .HasOne(uc => uc.Class)
                 .WithMany(c => c.UserClasses)
                 .HasForeignKey(uc => uc.ClassId);
+
+            modelBuilder.Entity<Orders>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId);
+
+            modelBuilder.Entity<Workouts>()
+                .HasOne(w => w.User)
+                .WithMany(u => u.Workouts)
+                .HasForeignKey(w => w.UserId);
+
+
+            modelBuilder.Entity<TrainerClass>()
+                .HasKey(tc => new { tc.TrainerClassId });
+
+            modelBuilder.Entity<TrainerClass>()
+                .HasOne(tc => tc.Trainer)
+                .WithMany(t => t.TrainerClasses)
+                .HasForeignKey(tc => tc.TrainerId);
+
+            modelBuilder.Entity<TrainerClass>()
+                .HasOne(tc => tc.Class)
+                .WithMany(c => c.TrainerClasses)
+                .HasForeignKey(tc => tc.ClassId);
+
         }
     }
 }

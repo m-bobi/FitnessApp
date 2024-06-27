@@ -178,9 +178,41 @@ namespace backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
+                    b.Property<string>("TrainerId")
+                        .HasColumnType("longtext");
+
                     b.HasKey("ClassId");
 
                     b.ToTable("Class");
+                });
+
+            modelBuilder.Entity("backend.Models.Contact", b =>
+                {
+                    b.Property<int?>("ContactId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("ContactId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("ContactId");
+
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("backend.Models.Gym", b =>
@@ -264,19 +296,17 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("OfferDiscount")
+                    b.Property<int>("OfferPrice")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("OfferDurationDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("OfferEndDate")
-                        .HasColumnType("datetime");
 
                     b.Property<string>("OfferType")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<string>("StripePriceId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("OfferId");
 
@@ -302,11 +332,16 @@ namespace backend.Migrations
                     b.Property<decimal>("OrderTotalAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -372,6 +407,32 @@ namespace backend.Migrations
                     b.ToTable("PerWorkouts");
                 });
 
+            modelBuilder.Entity("backend.Models.Player", b =>
+                {
+                    b.Property<int?>("PlayerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("PlayerId"));
+
+                    b.Property<int>("BirthYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerId");
+
+                    b.ToTable("Player");
+                });
+
             modelBuilder.Entity("backend.Models.Products", b =>
                 {
                     b.Property<int?>("ProductId")
@@ -398,11 +459,24 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<double>("ProductPrice")
-                        .HasColumnType("double");
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("ProductRate")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductStock")
                         .HasColumnType("int");
+
+                    b.Property<string>("StripePriceId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("StripeProductId")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("varchar(24)");
 
                     b.HasKey("ProductId");
 
@@ -434,6 +508,47 @@ namespace backend.Migrations
                     b.HasKey("SponsorId");
 
                     b.ToTable("Sponsors");
+                });
+
+            modelBuilder.Entity("backend.Models.Team", b =>
+                {
+                    b.Property<int?>("TeamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int?>("TeamId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("TeamId");
+
+                    b.ToTable("Team");
+                });
+
+            modelBuilder.Entity("backend.Models.TrainerClass", b =>
+                {
+                    b.Property<int>("TrainerClassId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TrainerClassId"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrainerId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("TrainerClassId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("TrainerId");
+
+                    b.ToTable("TrainerClasses");
                 });
 
             modelBuilder.Entity("backend.Models.Trainers", b =>
@@ -487,8 +602,8 @@ namespace backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int?>("Age")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("Birthdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -538,6 +653,10 @@ namespace backend.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
@@ -568,9 +687,9 @@ namespace backend.Migrations
                             Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
                             AccessFailedCount = 0,
                             Address = "admin street",
-                            Age = 20,
-                            ConcurrencyStamp = "60616ec6-1c1a-4705-8ec8-0790f9e8b87c",
-                            CreatedAt = new DateTime(2024, 5, 23, 17, 13, 12, 714, DateTimeKind.Utc).AddTicks(3797),
+                            Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ConcurrencyStamp = "e41cc222-137c-4c2c-ac0a-67d408e36f77",
+                            CreatedAt = new DateTime(2024, 6, 8, 14, 57, 44, 960, DateTimeKind.Utc).AddTicks(540),
                             Email = "root@email.com",
                             EmailConfirmed = false,
                             Gender = "Male",
@@ -578,11 +697,12 @@ namespace backend.Migrations
                             Name = "Admin",
                             NormalizedEmail = "ROOT@EMAIL.COM",
                             NormalizedUserName = "ROOT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN6tEhRY73cNAwyZF3vJ7IzR1zXHcrVXoh3t2EpbRy5AfeoevIUw5CeeARIdC0tsYw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECpsCTv8GLpNLdG1RFoIlPmJVz/uLH+A8TjJ8QXPEPA93sdPy1Vju6RF0AAnxkWOxw==",
                             PhoneNumber = "044234234",
                             PhoneNumberConfirmed = false,
+                            RefreshToken = "f3e1QfQ6UYy3Qec6S0YHYCIBJr650EnapwAOeqs6FtTnCjcBePrZoXaLL7EqzXCwjX2imH01FRPKKQASPPOluCTuOhZBfmWHK5wMYkh6TchNIFsliyl3mw0ArEw9nFBjYkJKZougaMD7SziOGhq5WUbKusE2akIMJUvCiQkxEuZ3D9rMc5tYp7kwU2m4NRkgfkqqPcUPTKOMyaj3w2wkQIxwG3cT6IKTIDaL7ayx0zentz4oZclxCuKmtGvXkYSSJjWd4Edn75HIGZ1o1Kc8NjdkNLsKcddVf7wOCcKdQQHVuHFbcPzibZHMpsYmQK6T",
                             Role = 1,
-                            SecurityStamp = "e92f0ea2-c0fa-4115-b5fe-d8a01a0ad220",
+                            SecurityStamp = "6476d665-b303-4108-9caa-f989496ccb60",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -638,17 +758,27 @@ namespace backend.Migrations
                     b.Property<int?>("ClassId")
                         .HasColumnType("int");
 
-                    b.Property<string>("WorkoutDescription")
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("WorkoutEndTime")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<string>("WorkoutName")
+                    b.Property<string>("WorkoutStartTime")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("WorkoutType")
                         .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
                     b.HasKey("WorkoutId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Workouts");
                 });
@@ -706,13 +836,40 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Orders", b =>
                 {
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.Models.Products", "Product")
                         .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Product");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backend.Models.TrainerClass", b =>
+                {
+                    b.HasOne("backend.Models.Class", "Class")
+                        .WithMany("TrainerClasses")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Models.User", "Trainer")
+                        .WithMany("TrainerClasses")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("backend.Models.UserClass", b =>
@@ -734,14 +891,31 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backend.Models.Workouts", b =>
+                {
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany("Workouts")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("backend.Models.Class", b =>
                 {
+                    b.Navigation("TrainerClasses");
+
                     b.Navigation("UserClasses");
                 });
 
             modelBuilder.Entity("backend.Models.User", b =>
                 {
+                    b.Navigation("Orders");
+
+                    b.Navigation("TrainerClasses");
+
                     b.Navigation("UserClasses");
+
+                    b.Navigation("Workouts");
                 });
 #pragma warning restore 612, 618
         }

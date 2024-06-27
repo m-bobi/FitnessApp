@@ -1,6 +1,60 @@
 .productContainer{
-    margin-top: max(80px,4vw);
     padding: 4%;
     display: flex;
     flex-wrap: wrap;
+    gap: 20px;
+}
+.CartBanner {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../../assets/shopingCartGeneral2.webp");
+    /* height: max(300px, 25vw); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: max(80px, 4vw);
+    padding: 10% 4% 4% 10%;
+ }
+ .CartBanner .firstText{
+    font-weight: bold;
+    font-size: max(30px,2vw);
+ }
+.cartProduct{
+    width: 25% !important;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.buttonsOfProductCart{
+    display: flex;
+    flex-direction: column;
+}
+
+.total{
+    width: 400px;
+    height: 180px;
+    position: fixed;
+    top: 10%;
+    right: 2%;
+    background-color: #fbfbfbfb;
+    padding: 2%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.total p{
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    align-items: flex-start;
+    font-size: max(20px,1.3vw);
+}
+
+.total span{
+    font-weight: bold;
+    font-size: max(20px,1.3vw);
+}
+
+.bagIcon{
+    font-size: max(20px,1.2vw);
 }

@@ -1,0 +1,16 @@
+.allClasses{
+    margin-top: max(80px,4vw);
+}
+
+.classesBanner {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../../assets/classesGeneral.webp");
+    /* height: max(300px, 25vw); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: max(80px, 4vw);
+    padding: 10% 4% 4% 10%;
+ }
+
+ .allClasses .bannerCardsUp{
+    padding: 4%;
+ }

@@ -74,27 +74,34 @@ public class ClassController : Controller
     [HttpGet("getEnrolledUsers/{classId}")]
     public async Task<IActionResult> GetEnrolledUsers(int classId)
     {
-        var classEntity = await _dbContext.Class.FindAsync(classId);
-
-        if (classEntity == null)
+        try
         {
-            return BadRequest("Class does not exist");
+            var classEntity = await _dbContext.Class.FindAsync(classId);
+
+            if (classEntity == null)
+            {
+                return NotFound("Class does not exist!");
+            }
+
+            var userClasses = await _dbContext.UserClasses
+                .Where(uc => uc.ClassId == classId)
+                .Include(uc => uc.User)
+                .ToListAsync();
+
+            var users = userClasses.Select(uc => new UserDto
+            {
+                Id = uc.User.Id,
+                Email = uc.User.Email,
+                Username = uc.User.UserName,
+                Role = uc.User.Role
+            }).ToList();
+
+            return Ok(users);
         }
-
-        var userClasses = await _dbContext.UserClasses
-            .Where(uc => uc.ClassId == classId)
-            .Include(uc => uc.User)
-            .ToListAsync();
-
-        var users = userClasses.Select(uc => new UserDto 
-        { 
-            Id = uc.User.Id, 
-            Email = uc.User.Email, 
-            Username = uc.User.UserName,
-            Role = uc.User.Role
-        }).ToList();
-
-        return Ok(users);
+        catch (Exception e)
+        {
+            return StatusCode(500, $"Internal Server error: {e.Message}");
+        }
     }
 
     [HttpGet("getClass/{id}")]
@@ -124,22 +131,25 @@ public class ClassController : Controller
     }
 
     [HttpPut("updateClass/{id}")]
-    public async Task<IActionResult> UpdateClass([FromBody] Class uClass)
+    public async Task<IActionResult> UpdateClass(int id, [FromBody] Class updatedClass)
     {
-        if (uClass is null || uClass.ClassId == 0)
+        if (updatedClass == null)
         {
-            return BadRequest("Invalid class data");
+            return BadRequest("Invalid Class data");
         }
 
-        var existingClass = await _dbContext.Class.FindAsync(uClass.ClassId);
+        var existingClass = await _dbContext.Class.FirstOrDefaultAsync(p => p.ClassId == id);
         if (existingClass == null)
         {
             return NotFound();
         }
 
-        _dbContext.Entry(existingClass).CurrentValues.SetValues(uClass);
+        existingClass.ClassType = updatedClass.ClassType;
+        existingClass.ClassDescription = updatedClass.ClassDescription;
+        existingClass.TrainerId = updatedClass.TrainerId;
+
         await _dbContext.SaveChangesAsync();
-        return Ok("Class updated successfully");
+        return Ok("Class updated successfully!");
     }
 
 

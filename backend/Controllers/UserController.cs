@@ -18,6 +18,8 @@ public class UserController : Controller
     private readonly TokenService _tokenService;
     private readonly ApplicationDbContext _dbContext;
 
+   private readonly UserService _userService;
+
     public UserController(UserManager<User> userManager, TokenService tokenService, ApplicationDbContext dbContext)
     {
         _userManager = userManager;
@@ -46,13 +48,14 @@ public class UserController : Controller
             Email = registerDto.Email,
             Role = registerDto.Role,
             Image = registerDto.Image,
-            Age = registerDto.Age,
+            Birthdate = registerDto.Birthdate,
             Address = registerDto.Address,
             PhoneNumber = registerDto.Mobile ,
             Gender = registerDto.Gender,
             UserName = registerDto.Username,
         };
-
+        
+        user.RefreshToken = Guid.NewGuid().ToString();
         var result = await _userManager.CreateAsync(user, registerDto.Password);
 
         if (result.Succeeded)
@@ -92,19 +95,35 @@ public class UserController : Controller
             return Unauthorized();
         }
 
-        var accessToken = _tokenService.CreateToken(userInDb);
+        var tokens = _tokenService.CreateTokens(userInDb);
+    
         await _dbContext.SaveChangesAsync();
 
         return Ok(new AuthResponse
         {
             Username = userInDb.UserName,
             Email = userInDb.Email,
-            Token = accessToken,
+            Token = tokens.AccessToken,
+            RefreshToken = tokens.RefreshToken
         });
     }
-
+    
+    [HttpPost("refresh-token")]
+    public IActionResult RefreshToken([FromBody] string refreshToken)
+    {
+        try
+        {
+            var newAccessToken = _tokenService.RefreshAccessToken(refreshToken);
+            return Ok(new { AccessToken = newAccessToken });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
     [HttpGet("getAllUsers")]
-    [Authorize(Roles = "Manager, Trainer")]
+    // [Authorize(Roles = "Manager, Trainer")]
     public async Task<List<User>> GetAllUsers()
     {
         return await _dbContext.Users.ToListAsync();
@@ -113,21 +132,36 @@ public class UserController : Controller
     // Create API to add user.
     [HttpPost("addUser")]
     [Authorize(Roles = "Manager")]
-    public async Task<IActionResult> AddUser([FromBody] User user)
+    public async Task<IActionResult> AddUser([FromBody] UserDto userDto)
     {
-        if (user is null)
+        if (userDto is null)
         {
             return BadRequest();
         }
 
-        await _dbContext.AddAsync(user);
-        await _dbContext.SaveChangesAsync();
-        return Ok();
-    }
+        var user = new User
+        {
+            UserName = userDto.Username,
+            Email = userDto.Email,
+            Name = userDto.Username,
+            PhoneNumber = userDto.PhoneNumber,
+            Address = userDto.Address,
+            Gender = userDto.Gender,
+            Birthdate = userDto.Birthdate,
+            Role = userDto.Role
+        };
 
-    // Create API to get a specific user by ID.
+        var result = await _userManager.CreateAsync(user);
+
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+
+        return BadRequest(result.Errors);
+    }
+    
     [HttpGet("getUser/{id}")]
-    // [Authorize(Roles = "Manager, Trainer")]
     public async Task<IActionResult> GetUserById(String id)
     {
         var user = await _dbContext.Users.FindAsync(id);
@@ -155,33 +189,35 @@ public class UserController : Controller
         return Ok("User deleted successfully");
     }
 
-    // Create API to update an existing user.
     [HttpPut("updateUser/{id}")]
-    [Authorize(Roles = "Manager, Trainer")]
-    public async Task<IActionResult> UpdateUser([FromBody]User user)
+    [Authorize(Roles = "User, Manager, Trainer")]
+    public async Task<IActionResult> UpdateUser(string id, [FromBody]UserDto userDto)
     {
-        if (user is null)
+        if (userDto is null)
         {
             return BadRequest("Invalid user data");
         }
 
-        var existingUser = await _dbContext.Users.FindAsync(user.Id);
+        var existingUser = await _dbContext.Users.FindAsync(id);
         if (existingUser == null)
         {
             return NotFound();
         }
 
-        if (user.Id != existingUser.Id)
-        {
-            return BadRequest("User ID mismatch.");
-        }
+        existingUser.Address = userDto.Address;
+        existingUser.PhoneNumber = userDto.PhoneNumber;
+        existingUser.Birthdate = userDto.Birthdate;
+        existingUser.Gender = userDto.Gender;
+        existingUser.UserName = userDto.Username;
+        existingUser.Name = userDto.Name;
+        existingUser.Role = userDto.Role;
 
-        _dbContext.Entry(existingUser).CurrentValues.SetValues(user);
         await _dbContext.SaveChangesAsync();
         return Ok("User updated successfully!");
     }
 
      [HttpGet("getUserByUsername/{username}")]
+     [Authorize(Roles = "Manager")]
         public async Task<ActionResult<User>> GetUserByUsername(string username)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
@@ -192,7 +228,6 @@ public class UserController : Controller
             return Ok(user);
         }
 
-    [AllowAnonymous]
     [HttpGet("checkEmail")]
     public async Task<IActionResult> CheckEmail(string email)
     {
@@ -202,17 +237,28 @@ public class UserController : Controller
 
         return Ok(usedEmail);
     }
+    
+    [HttpGet("checkUsername")]
+    public async Task<IActionResult> CheckUsername(string username)
+    {
+        var user = await _userManager.FindByNameAsync(username);
+
+        bool usedUsername = user != null;
+
+        return Ok(usedUsername);
+    }
 
     // Create user object
     private UserDto CreateUserObject (User user)
     {
+        var tokens = _tokenService.CreateTokens(user);
         return new UserDto
         {
             Id = user.Id,
             Username = user.UserName,
             Email = user.Email,
-            Token = _tokenService.CreateToken(user),
-            // Image = null, qetu duhet mu bo uncomment edhe me ja qu image te userit qysh e kena ma nalt
+            Token = tokens.AccessToken,
+            RefreshToken = tokens.RefreshToken,
             Role = Enums.Roles.User
         };
     }

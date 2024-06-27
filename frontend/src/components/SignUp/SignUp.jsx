@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import Navbar from "../shared/Navbar/Navbar";
-import "./SignUp.css";
-import config from "../../config";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputField from "../Inputs/Input";
+import {
+  validateEmail,
+  validatePassword,
+  checkEmailExists,
+  checkUsernameExists,
+  validateUsername,
+  runValidations,
+  validatePhoneNumber,
+} from "../../utils/Validations";
+import api from "../Auth/api";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -17,95 +25,120 @@ const SignUp = () => {
     name: "",
     address: "",
     mobile: "",
-    age: 0,
+    birthdate: "",
     password: "",
     gender: "",
     confirmPassword: "",
     image: null,
   });
-
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    const {
-      email,
-      username,
-      name,
-      address,
-      mobile,
-      age,
-      password,
-      confirmPassword,
-      gender,
-      image,
-    } = formData;
-
-    if (
-      !email ||
-      !username ||
-      !name ||
-      !address ||
-      !mobile ||
-      !age ||
-      !password ||
-      !confirmPassword ||
-      !gender
-    ) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
-      return;
-    }
-
-    const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
-    const fileExtension = image.name.split(".").pop().toLowerCase();
-
-    if (!allowedExtensions.includes(fileExtension)) {
-      toast.error(
-        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
-      );
-      return;
-    }
-
-    const formDataObj = new FormData();
-    formDataObj.append("image", image);
-
-    axios
-      .post(`${config.apiBaseURL}api/UploadImages/addUserImage`, formDataObj)
-      .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}api/User/register`, {
-          ...formData,
-          image: imageResponse.data,
-        });
-      })
-      .then(() => {
-        toast.success("You've successfully registered!");
-        setTimeout(() => {
-          navigate("/signin");
-        }, 2000);
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error(
-          "An error occurred while registering. Please try again later."
-        );
-      });
-  }
-
   const handleChange = (event) => {
     const { name, value, files } = event.target;
     setFormData({
       ...formData,
       [name]: files ? files[0] : value,
     });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const {
+        email,
+        username,
+        name,
+        address,
+        mobile,
+        birthdate,
+        password,
+        confirmPassword,
+        gender,
+        image,
+      } = formData;
+
+      const error = await runValidations([
+        () =>
+          (!email ||
+            !username ||
+            !name ||
+            !address ||
+            !mobile ||
+            !birthdate ||
+            !password ||
+            !confirmPassword ||
+            !gender) &&
+          "Please fill in all fields.",
+        () => !validateEmail(email) && "Please enter a valid email address.",
+        async () =>
+          (await checkEmailExists(email)) && "This email is already in use.",
+        () => !validateUsername(username) && "Please enter a valid username.",
+        async () =>
+          (await checkUsernameExists(username)) &&
+          "This username is already in use.",
+        () =>
+          !validatePhoneNumber(mobile) && "Please enter a valid phone number.",
+
+        () =>
+          !validatePassword(password) &&
+          "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+        () => password !== confirmPassword && "Passwords do not match.",
+        () => {
+          const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
+          const fileExtension = image.name.split(".").pop().toLowerCase();
+          return (
+            !allowedExtensions.includes(fileExtension) &&
+            "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+          );
+        },
+      ]);
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      const imageFormData = new FormData();
+      imageFormData.append("image", formData.image);
+
+      let imageName;
+      try {
+        const response = await api.post(
+          `api/UploadImages/addUserImage`,
+          imageFormData
+        );
+        imageName = response.data;
+      } catch (error) {
+        console.error(error);
+        toast.error(
+          "An error occurred while uploading the image. Please try again later."
+        );
+        return;
+      }
+
+      const userData = {
+        ...formData,
+        image: imageName,
+      };
+
+      api
+        .post(`api/User/register`, userData)
+        .then(() => {
+          toast.success("You've successfully registered!");
+          setTimeout(() => {
+            navigate("/signin");
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error(
+            "An error occurred while registering. Please try again later."
+          );
+        });
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "An error occurred while registering. Please try again later."
+      );
+    }
   };
 
   return (
@@ -162,7 +195,7 @@ const SignUp = () => {
                   <InputField
                     type="text"
                     name="mobile"
-                    placeholder="Mobile"
+                    placeholder="Phone Number"
                     value={formData.mobile}
                     onChange={handleChange}
                   />
@@ -173,10 +206,10 @@ const SignUp = () => {
                     onChange={handleChange}
                   />
                   <InputField
-                    type="text"
-                    name="age"
-                    placeholder="Age"
-                    value={formData.age}
+                    type="date"
+                    name="birthdate"
+                    placeholder="Birthdate"
+                    value={formData.birthdate}
                     onChange={handleChange}
                   />
                   <InputField
@@ -214,27 +247,23 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-              </form>
 
-              <button
-                onClick={handleSubmit}
-                type="submit"
-                className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-              >
-                <svg
-                  className="w-6 h-6 -ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                  <circle cx="8.5" cy="7" r="4" />
-                  <path d="M20 8v6M23 11h-6" />
-                </svg>
-                <span className="ml-3">Sign Up</span>
-              </button>
+                <button className="mt-5 tracking-wide font-semibold bg-gray-400 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                  <svg
+                    className="w-6 h-6 -ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                    <circle cx="8.5" cy="7" r="4" />
+                    <path d="M20 8v6M23 11h-6" />
+                  </svg>
+                  <span className="ml-3">Sign Up</span>
+                </button>
+              </form>
             </div>
           </div>
           <div className="flex-1 bg-gray-300 text-center hidden lg:flex justify-center p-3 pt-20 pb-20">

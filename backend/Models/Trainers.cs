@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using backend.DTO;
 
 namespace backend.Models;
 
-public class Trainers
+public class Trainers 
 {
     [Key]
     public int? TrainerId { get; set; }

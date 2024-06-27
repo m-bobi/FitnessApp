@@ -1,112 +1,132 @@
-import React, { useState } from "react";
-import axios from "axios";
-import config from '../../config'
-import { ToastContainer, toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import api, { setAuthToken } from "../Auth/api";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useFetch } from "../Context/FetchContext";
 
 const AddProducts = () => {
 
+  const { triggerFetch } = useFetch();
 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     productName: "",
     productDescription: "",
     productPrice: "",
     productCategory: "",
     productStock: "",
+    productRate: 0,
     productImage: null,
   });
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  const handleChange = (event) => {
+    const { name, value, files } = event.target;
+    if (
+      ["productPrice", "productStock", "productRate"].includes(name) &&
+      value < 0
+    ) {
+      toast.error("Please enter a valid value.");
+      return;
+    }
+    if (files) {
+      setFormData({
+        ...formData,
+        [name]: files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
 
+  async function handleSubmit(event) {
+    event.preventDefault();
     const {
       productName,
       productDescription,
       productPrice,
       productCategory,
       productStock,
+      productRate,
       productImage,
     } = formData;
-
- 
-
 
     const allowedExtensions = ["png", "jpg", "jpeg", "webp"];
     const fileExtension = productImage.name.split(".").pop().toLowerCase();
 
     if (!allowedExtensions.includes(fileExtension)) {
       toast.error(
-        "Only .png, .jpg, .jpeg, and .webp file formats are allowed."
+        "Invalid file type. Only png, jpg, jpeg, and webp files are allowed."
       );
       return;
     }
 
-    const formDataObj = new FormData();
-    formDataObj.append("image", productImage);
+    const imageFormData = new FormData();
+    imageFormData.append("image", productImage);
 
-    axios
-      .post(`${config.apiBaseURL}api/UploadImages/addProductImage`, formDataObj)
-      .then((imageResponse) => {
-        return axios.post(`${config.apiBaseURL}addProduct`, {
-          ...formData,
-          productImage: imageResponse.data,
-        });
-      })
-      .then(() => {
+    let imageName;
+    try {
+      const response = await api.post(
+        `api/UploadImages/addProductImage`,
+        imageFormData
+      );
+      imageName = response.data;
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        "An error occurred while uploading the image. Please try again later."
+      );
+      return;
+    }
+
+    const productData = {
+      productName,
+      productDescription,
+      productPrice,
+      productCategory,
+      productStock,
+      productRate,
+      productImage: imageName,
+    };
+
+    api
+      .post(`api/Products/addProduct`, productData)
+      .then((productResponse) => {
         toast.success("You've successfully added a product!");
-      
+        triggerFetch();
       })
       .catch((error) => {
         console.error(error);
         toast.error(
-          "An error occurred while adding. Please try again later."
+          "An error occurred while adding the product. Please try again later."
         );
       });
   }
 
-  
-  const handleChange = (event) => {
-    const { name, value, files } = event.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-  };
-
+  const refreshToken = Cookies.get("refreshToken");
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
-  // const [productName, setProductName] = useState("");
-  // const [productDescription, setProductDescription] = useState("");
-  // const [productPrice, setProductPrice] = useState("");
-  // const [productCategory, setProductCategory] = useState("");
-  // const [productImage, setProductImage] = useState(""); // Updated to store file
-  // const [productStock, setProductStock] = useState("");
-
-  // const addProduct = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     await axios.post(`${config.apiBaseURL}addProduct`, {
-  //       productName: productName,
-  //       productDescription: productDescription,
-  //       productPrice: productPrice,
-  //       productCategory: productCategory,
-  //       productImage: productImage,
-  //       productStock: productStock
-  //     });
-  //     console.log("Success");
-  //     window.alert("Product has been added.");
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
   return (
     <div className="relative">
-    
-      {/* Modal Trigger Button */}
+      <ToastContainer
+        position="bottom-right"
+        padding="5%"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <button
         data-modal-target="authentication-modal"
         data-modal-toggle="authentication-modal"
@@ -155,7 +175,7 @@ const AddProducts = () => {
                 </button>
               </div>
               <div className="p-4 md:p-5">
-                <form className="space-y-4" >
+                <form className="space-y-4">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Product Name
@@ -192,6 +212,7 @@ const AddProducts = () => {
                       placeholder="Enter product price"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
+                      min={1}
                       onChange={handleChange}
                     />
                   </div>
@@ -200,14 +221,19 @@ const AddProducts = () => {
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Product Category
                     </label>
-                    <input
-                      type="text"
+                    <select
                       name="productCategory"
-                      placeholder="Enter product category"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
-                    />
+                    >
+                      <option value="" disabled selected>
+                        Select product category
+                      </option>
+                      <option value="Clothes">Clothes</option>
+                      <option value="Suplements">Suplements</option>
+                      <option value="Equipments">Equipments</option>
+                    </select>
                   </div>
 
                   <div>
@@ -221,6 +247,22 @@ const AddProducts = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
                       onChange={handleChange}
+                      min={0}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Product Rate
+                    </label>
+                    <input
+                      type="number"
+                      name="productRate"
+                      placeholder="Enter product rate from 1 to 5"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      required
+                      onChange={handleChange}
+                      min={0}
                     />
                   </div>
 
@@ -237,8 +279,7 @@ const AddProducts = () => {
                   </div>
 
                   <button
-                   
-                   onClick={handleSubmit}
+                    onClick={handleSubmit}
                     className="createButton w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Add Product

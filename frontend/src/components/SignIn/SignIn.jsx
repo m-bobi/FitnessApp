@@ -1,15 +1,15 @@
-// SignIn.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SignIn.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {jwtDecode} from "jwt-decode";
-import config from "../../config";
+import { jwtDecode } from "jwt-decode";
 import Navbar from "../shared/Navbar/Navbar";
 import InputField from "../Inputs/Input";
+import Cookies from "js-cookie";
+import api, { setAuthToken } from "../Auth/api";
+import { validateEmail, runValidations } from "../../utils/Validations";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -27,18 +27,30 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    const { email, password } = formData;
+
+    const error = await runValidations([
+      () => (!email || !password) && "Please fill in all fields.",
+      () => !validateEmail(email) && "Please enter a valid email address.",
+    ]);
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
     try {
-      const response = await axios.post(`${config.apiBaseURL}api/User/login`, {
+      const response = await api.post(`api/User/login`, {
         email: formData.email,
         password: formData.password,
       });
 
       if (response.status === 200) {
-        const { token } = response.data;
+        const { token, refreshToken } = response.data;
 
-        localStorage.setItem("token", token);
+        Cookies.set("token", token, { expires: 7, secure: true });
+        Cookies.set("refreshToken", refreshToken, { expires: 7, secure: true });
 
         const decodedToken = jwtDecode(token);
 
@@ -48,21 +60,34 @@ const SignIn = () => {
           ];
 
         if (userId) {
-          localStorage.setItem("id", userId);
+          Cookies.set("id", userId, { expires: 7, secure: true });
         } else {
           console.error("User ID not found in token.");
         }
-
+        setAuthToken(token);
         toast.success("You've successfully logged in! Redirecting..");
 
         setTimeout(() => {
           navigate("/");
         }, 2000);
+      } else {
+        toast.error("Login failed. Please check your email and password.");
       }
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("An error occurred while logging in. Please try again.");
+      toast.error(
+        "An error occurred while logging in. Please try again later."
+      );
     }
+  };
+
+  const handleSignOut = () => {
+    Cookies.remove("token");
+    Cookies.remove("id");
+    Cookies.remove("refreshToken");
+    localStorage.removeItem("cart");
+
+
+    navigate("/signin");
   };
 
   return (

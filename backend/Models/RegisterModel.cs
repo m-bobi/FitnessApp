@@ -20,7 +20,7 @@ public class RegisterModel
     public string? Mobile { get; init; }
 
     public string Image { get; set; }
-    public int? Age { get; init; }
+    public DateTime? Birthdate { get; set; }
 
     
     [Required]
