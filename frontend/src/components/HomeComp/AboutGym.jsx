@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
+import ChatBox from '../AITesting/ChatBox';
 import CountUp from 'react-countup';
 import ScrollTrigger from 'react-scroll-trigger';
-import { FaCirclePlus } from 'react-icons/fa6';
 
 const AboutGym = () => {
   const [counterOn, setCounterOn] = useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center py-8 bg-white shadow-md rounded-lg p-6">
-      <div className="relative md:w-1/2 lg:w-2/5">
-        <div className="absolute top-0 left-0 w-12 h-12 bg-red-500 rounded-full"></div>
-        <div className="h-48 bg-gray-300 rounded-lg mb-4"></div>
-      </div>
-
+      <div className="flex flex-col md:flex-row items-center justify-center py-8 bg-white shadow-md rounded-lg p-10">
       <div className="md:w-1/2 lg:w-3/5 md:pl-8">
         <h2 className="text-2xl md:text-3xl font-semibold mb-2">About Ascend</h2>
         <p className="text-base md:text-lg mb-4">Get your dream body shape with us!</p>
@@ -51,6 +46,9 @@ const AboutGym = () => {
             </div>
           </div>
         </ScrollTrigger>
+      </div>
+    <div className="md:w-1/2 lg:w-2/5 mt-6 md:mt-0">
+        <ChatBox />
       </div>
     </div>
   );
